@@ -1,0 +1,38 @@
+<config>
+    <sections>
+        <marketplace_setting translate="label" module="stocknotification">
+            <groups>
+				<lowstocknotification translate="label" module="stocknotification">
+						<label>Low Stock Notification</label>
+						<frontend_type>text</frontend_type>
+						<sort_order>1000</sort_order>
+	                    <show_in_default>1</show_in_default>
+	                    <show_in_website>1</show_in_website>
+	                    <show_in_store>1</show_in_store>
+						<fields>
+							<stockenable translate="label">
+								<label>Low Stock Enable</label>
+	                            <frontend_type>select</frontend_type>
+	                            <sort_order>20</sort_order>
+	                            <show_in_default>1</show_in_default>
+	                            <show_in_website>1</show_in_website>
+	                            <show_in_store>1</show_in_store>
+	                            <source_model>adminhtml/system_config_source_yesno</source_model>
+							</stockenable>
+							<stockquantity translate="label">
+								<label>Default Low Stock Quantity</label>
+	                            <frontend_type>text</frontend_type>
+	                            <sort_order>90</sort_order>
+	                            <show_in_default>1</show_in_default>
+	                            <show_in_website>1</show_in_website>
+	                            <show_in_store>1</show_in_store>
+							</stockquantity>                      
+						</fields>
+				</lowstocknotification>
+			</groups>
+		</marketplace_setting>
+    </sections>     
+</config> 
+
+
+

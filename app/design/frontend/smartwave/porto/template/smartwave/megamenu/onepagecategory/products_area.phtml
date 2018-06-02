@@ -1,0 +1,60 @@
+<?php
+    $_helper = Mage::helper("megamenu");
+
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();    
+
+    $aspect_ratio = $this->getData("aspect_ratio");
+    if($aspect_ratio == null) {
+        $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
+    }
+    $ratio_width = $this->getData("image_width");
+    if(!$ratio_width) {
+        $ratio_width = Mage::getStoreConfig("porto_settings/category/ratio_width",$code);
+    }
+    $ratio_height = $this->getData("image_height");
+    if(!$ratio_height) {
+        $ratio_height = Mage::getStoreConfig("porto_settings/category/ratio_height",$code);
+    }
+    
+    if(!$ratio_width)
+        $ratio_width = 300;
+    if(!$ratio_height)
+        $ratio_height = 400;
+        
+    $lazy_owl = $this->getData("lazy_owl");
+    if(!$lazy_owl)
+        $lazy_owl = 0;
+    $product_count = $this->getData("product_count");
+    if(!$product_count)
+        $product_count = 12;
+    $columns = $this->getData("columns");
+    if(!$columns)
+        $columns = "[[0,1],[320,2],[480,2],[768,3],[992,4],[1280,5]]";
+    $cat_id = $this->getData("category_id");
+    $cat_model = Mage::getModel('catalog/category')->load($cat_id);
+?>
+<a href="<?php echo $cat_model->getUrl(); ?>" class="category-link"><?php echo $this->__("See More"); ?></a>
+<?php
+    echo $this->getLayout()->createBlock("filterproducts/latest_home_list")->setTemplate("smartwave/megamenu/onepagecategory/owl_list.phtml")->setData("category_id",$cat_id)->setData("product_count",$product_count)->setData("aspect_ratio",$aspect_ratio)->setData("image_width",$ratio_width)->setData("image_height",$ratio_height)->setData("lazy_owl",$lazy_owl)->toHtml();
+?>
+<script type="text/javascript">
+    jQuery(function($){
+        $("#cat_prod_<?php echo $cat_id; ?> .onepagecategory-products .owl-carousel").owlCarousel({
+            lazyLoad:true,
+            itemsCustom:<?php echo $columns; ?>,
+            responsiveRefreshRate:50,
+            slideSpeed:200,
+            paginationSpeed:500,
+            scrollPerPage:false,
+            stopOnHover:true,
+            rewindNav:true,
+            rewindSpeed:600,
+            pagination:true,
+            navigation:false,
+            autoPlay:true
+        });
+    });
+</script>
+<?php
+?>

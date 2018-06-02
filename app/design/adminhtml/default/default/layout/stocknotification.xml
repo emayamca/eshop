@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout>
+     <marketplace_adminhtml_index_edit>
+        <reference name="seller_edit_tabs">
+            <action method="addTabAfter">
+                <name>stocknotification_lowstock_tab</name>
+                <block>stocknotification/adminhtml_stocknotification_edit_tab</block>
+                <after>bank_details</after>
+            </action>
+        </reference>
+    </marketplace_adminhtml_index_edit>
+</layout>

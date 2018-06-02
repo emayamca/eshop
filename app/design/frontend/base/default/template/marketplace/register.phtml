@@ -1,0 +1,187 @@
+<?php
+$sellerProfile = Mage::getModel('marketplace/seller')->getCollection();
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/emipro/colorbox.css');?>" media="all" />
+<script type="text/javascript">
+        if (typeof jQuery == 'undefined'){
+            document.write(unescape("%3Cscript src='<?php echo $this->getSkinUrl('js/emipro/jquery.1.11.2.min.js');?>' type='text/javascript'%3E%3C/script%3E"));
+            document.write(unescape("%3Cscript src='<?php echo $this->getSkinUrl('js/emipro/noConflict.js');?>' type='text/javascript'%3E%3C/script%3E"));
+        }
+</script>  
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/emipro/jquery.colorbox.js');?>"></script>  
+<?php
+$countries = Mage::getModel('directory/country')->getCollection();
+$data = Mage::getSingleton('customer/session')->getCustomerFormData(true);
+$_streetValidationClass = Mage::helper('customer/address')->getAttributeValidationClass('street');
+
+	$data = Mage::getSingleton('core/session')->getSellerdata();
+	$postvalues=0;
+	if($data['email']!=''){
+		$postvalues=1;
+		Mage::getSingleton('core/session')->unsSellerdata();
+	}
+?>
+<div class="account-create">
+    <div class="page-title">
+        <h1><?php echo $this->__('CREATE A SELLER ACCOUNT') ?></h1>
+    </div>
+    <form action="<?php echo Mage::getBaseUrl() . 'marketplace/seller/createpost/'; ?>" method="post" id="form-validate">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Seller Information') ?></h2>
+            <ul class="form-list">
+				<div class="seller_register_field">
+				<li>
+                    <label for="firstname" class="required"><em>*</em><?php echo $this->__('First Name') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="firstname" id="firstname" value="<?php if($postvalues)echo $data['firstname']; ?>" title="<?php echo $this->__('First Name') ?>" class="input-text required-entry" />
+                    </div>
+                </li>
+
+                <li>
+                    <label for="lastname" class="required"><em>*</em><?php echo $this->__('Last Name') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="lastname" id="lastname" value="<?php if($postvalues)echo $data['lastname']; ?>" title="<?php echo $this->__('Last Name') ?>" class="input-text  required-entry"  />
+                    </div>
+                </li>
+                <li>
+                    <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="email" id="email_address" value="<?php  if($postvalues)echo $data['email']; ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry"/>
+                    </div>
+                </li> 
+                 <li>
+                        <label for="vat_number" class="required"><?php echo $this->__('VAT number') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="vat_number" value="<?php if($postvalues) echo $data['vat_number']; ?>" title="<?php echo $this->__('VAT number') ?>" id="vat_number" class="input-text"/>
+                        </div>
+                    
+                </li> 
+                </div>
+                <div class="seller_register_field"> 
+                <li>
+                        <label for="store_name" class="required"><em>*</em><?php echo $this->__('Store Name') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="store_name" value="<?php if($postvalues) echo $data['store_name'];  ?>" title="<?php echo $this->__('Store Name') ?>" class="input-text required-entry" id="store_name" />
+                        </div>
+                   
+                </li>
+                <li>
+                            <input type="hidden" name="store_url" value="<?php echo $sellerProfile->getLastItem()->getId()+1; ?>" title="<?php echo $this->__('Store Url') ?>" class="input-text" id="store_url" />
+
+                </li>
+                </div>
+                <div style="clear:both;">
+                </div>
+            </ul>
+        </div>
+         <div class="fieldset" style="margin-top:20px;">
+                <h2 class="legend"><?php echo $this->__('ADDRESS') ?></h2>
+                <ul class="form-list">
+				<div class="seller_register_field">
+				 <li>
+                    <label for="street_1" class="required"><em>*</em><?php echo $this->__('Street Address') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="street[]" value="<?php if($postvalues) echo $data['street'][0]; ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="input-text <?php echo $_streetValidationClass ?>" />
+                    </div>
+                </li>
+<?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+<?php for ($_i = 2, $_n = Mage::helper('customer/address')->getStreetLines(); $_i <= $_n; $_i++): ?>
+                    <li >
+                        <div class="input-box">
+                            <input type="text" name="street[]" value="<?php if($postvalues) echo $data['street'][$_i-1]; ?>" title="<?php echo $this->__('Street Address %s', $_i) ?>" id="street_<?php echo $_i ?>" class="input-text <?php echo $_streetValidationClass ?>" />
+                        </div>
+                    </li>
+<?php endfor; ?>
+                <li >
+                        <label for="country" class="required"><em>*</em><?php echo $this->__('Country') ?></label>
+                        <div class="input-box">
+                            <select name="country_id" id="country" title="<?php echo $this->__('Country') ?>" class="validate-select required-entry">
+<?php foreach ($countries as $country) {
+    ?>
+                                    <option value="<?php if($postvalues) echo $data['country_id']; else echo $country->getId(); ?>"><?php echo $country->getName(); ?></option>
+                                    <?php }
+                                ?>
+                            </select>
+                        </div>
+				</li>
+				<li>
+                        <label for="region_id" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
+                        <div class="input-box">
+                            <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select required-entry" style="display:none;">
+                                <option value="<?php if($postvalues) echo $data['region_id']; ?>"><?php echo $this->__('Please select region, state or province') ?></option>
+                            </select>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                $('region_id').setAttribute('defaultValue', "<?php //echo $data->getAddress()->getRegionId()  ?>");
+                                //]]>
+                            </script>
+                            <input type="text" id="region" name="region" value="<?php if($postvalues) echo $data['region']; //echo $this->escapeHtml($data->getAddress()->getRegion())  ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text <?php echo Mage::helper('customer/address')->getAttributeValidationClass('region') ?>" style="display:none;" />
+                        </div>
+                    
+                </li>
+            	</div>
+				<div class="seller_register_field">
+			   	 <li>
+                        <label for="city" class="required"><em>*</em><?php echo $this->__('City') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="city" value="<?php if($postvalues) echo $data['city']; ?>" title="<?php echo $this->__('City') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('city') ?>" id="city" class="input-text required-entry"/>
+                        </div>
+                </li>
+                <li>
+                        <label for="postcode" class="required"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="postcode" value="<?php if($postvalues) echo $data['postcode']; ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="input-text validate-alphanum validate-zip-international <?php echo Mage::helper('customer/address')->getAttributeValidationClass('postcode') ?>" />
+                        </div>
+                </li>
+                <li>
+                        <label for="telephone" class="required"><em>*</em><?php echo $this->__('Telephone') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="telephone" value="<?php if($postvalues) echo $data['telephone']; ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text  validate-digits  <?php echo $this->helper('customer/address')->getAttributeValidationClass('telephone') ?>" id="telephone" />
+                        </div>
+                </li>
+				<li>
+                        <label for="mobile" class="required"><em>*</em><?php echo $this->__('Mobile') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="mobile" value="<?php if($postvalues) echo $data['mobile']; ?>" title="<?php echo $this->__('Mobile') ?>" class="input-text  validate-digits  <?php echo $this->helper('customer/address')->getAttributeValidationClass('mobile') ?>" id="mobile" />
+                        </div>
+                </li>
+               </div>
+                <div style="clear:both;">
+                </div>
+                 <div class="termsconditionsblock">
+                    <div>
+                        <input type="checkbox" name="termsconditions" value="1" checked="checked" class="required-entry"/> 
+                        I agree with <a class='termsconditions' href="#termsconditions"  title=""><?php echo $this->__('terms & conditions.');?></a> 
+                    </div> 
+                    <div style="display:none;"> 
+                        <div id='termsconditions' class="em_termsconditions_popup">   
+                        <?php echo Mage::app()->getLayout()->createBlock('cms/block')->setBlockId('seller_termsconditions')->toHtml();?>
+                        </div>
+                    </div>
+                </div> 
+            </ul>
+		 </div>
+        <div class="buttons-set">
+            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+        </div>
+    </form>
+
+        <script>
+        jQuery(document).ready(function(){
+            jQuery(".termsconditions").colorbox({inline:true});
+        }); 
+        </script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var dataForm = new VarienForm('form-validate', true);
+       
+<?php //if($this->getShowAddressFields()):  ?>
+        new RegionUpdater('country', 'region', 'region_id', <?php echo Mage::helper('directory')->getRegionJson() ?>, undefined, 'zip');
+<?php //endif;  ?>
+        //]]>
+    </script>
+</div>
+
+

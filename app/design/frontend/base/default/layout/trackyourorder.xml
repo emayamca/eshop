@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="trackyourorder" ifconfig="trackyourorder/general/activate_fuel_trackorder_enable" > 
+                <label>Track your order</label>
+                <url>trackyourorder/index</url>
+                <title>Track your order</title>
+                <prepare>true</prepare>
+                <urlParams/>
+                <position>10</position>
+            </action>             
+        </reference> 
+        <reference name="head">
+             <action method="addCss"><stylesheet>trackyourorder/trackyourorder.css</stylesheet></action>  
+        </reference>
+    </default>
+    <customer_account_index>
+        <!-- Mage_Sales -->
+        <!--remove name="customer_account_dashboard_top"/-->
+        <reference name="customer_account_dashboard">
+            <block type="sales/order_recent" name="customer_account_dashboard_top" as="top" template="trackyourorder/sales/order/recent.phtml"/>
+        </reference>
+    </customer_account_index>
+    <trackyourorder_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="trackyourorder/trackyourorder" name="trackyourorder" template="trackyourorder/trackyourorder.phtml" />
+        </reference>
+    </trackyourorder_index_index>
+    <trackyourorder_index_trackordersummary>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="trackyourorder/trackyourorder" name="trackyourorder" template="trackyourorder/trackyourordersummary.phtml" />
+        </reference>
+    </trackyourorder_index_trackordersummary>
+	<trackyourorder_index_brands>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+		<reference name="head">
+				<action method="addItem"><type>skin_js</type><name>js/jquery.lazy.min.js</name></action>
+		</reference>
+        <reference name="content">
+            <block type="trackyourorder/brands" name="brandslist" template="trackyourorder/brands.phtml" />
+        </reference>
+    </trackyourorder_index_brands>
+</layout> 

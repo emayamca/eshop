@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<config>
+ <tabs>
+  <Fuel translate="label" module="trackyourorder">
+   <label>Fuel</label>
+   <sort_order>0</sort_order>
+  </Fuel>
+ </tabs>
+ <sections>
+  <trackyourorder translate="label" module="trackyourorder">
+   <label>Track your order</label>
+   <tab>Fuel</tab>
+   <frontend_type>text</frontend_type>
+   <sort_order>0</sort_order>
+   <show_in_default>1</show_in_default>
+   <show_in_website>1</show_in_website>
+   <show_in_store>1</show_in_store>
+   <groups>
+    <general translate="label">
+     <label>General Configuration</label>
+     <sort_order>0</sort_order>
+     <show_in_default>1</show_in_default>
+     <show_in_website>1</show_in_website>
+     <show_in_store>1</show_in_store>
+     <fields>
+      <activate_fuel_trackorder_enable translate="label comment">
+       <label>Enable Track your order</label>
+       <frontend_type>select</frontend_type>
+       <source_model>adminhtml/system_config_source_yesno</source_model>
+       <validate>required-entry</validate>
+       <sort_order>0</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>Enable / Disable Track your order</comment>
+      </activate_fuel_trackorder_enable>
+     </fields>
+    </general>
+    <ordercomments translate="label">
+     <label>Order Status Comments</label>
+     <sort_order>1</sort_order>
+     <show_in_default>1</show_in_default>
+     <show_in_website>1</show_in_website>
+     <show_in_store>1</show_in_store>
+     <fields>
+      <trackyourorder_pending translate="label comment">
+       <label>Approval</label>
+       <frontend_type>textarea</frontend_type>
+       <sort_order>0</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>This comment will appear when Order has been placed and  is just approved</comment>
+      </trackyourorder_pending>
+      <trackyourorder_processing translate="label comment">
+       <label>Processing</label>
+       <frontend_type>textarea</frontend_type>
+       <sort_order>1</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>This comment will appear when Order is under processing
+       </comment>
+      </trackyourorder_processing>
+      <trackyourorder_onhold translate="label comment">
+       <label>On Hold</label>
+       <frontend_type>textarea</frontend_type>
+       <sort_order>2</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>This comment will appear when Order is placed but temporarily on hold</comment>
+      </trackyourorder_onhold>
+      <trackyourorder_cancel translate="label comment">
+       <label>Cancel</label>
+       <frontend_type>textarea</frontend_type>
+       <sort_order>4</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>This comment will appear when Order has been cancelled</comment>
+      </trackyourorder_cancel>
+      <trackyourorder_ship translate="label comment">
+       <label>Shipping</label>
+       <frontend_type>textarea</frontend_type>
+       <sort_order>6</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <comment>This comment will appear when order is shipped</comment>
+      </trackyourorder_ship>
+     </fields>
+    </ordercomments>
+   </groups>
+  </trackyourorder>
+ </sections>
+</config>

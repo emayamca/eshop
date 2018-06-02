@@ -1,0 +1,8 @@
+<config>
+	<modules>
+		<Emipro_Marketplace>
+			<active>true</active> 
+			<codePool>community</codePool>
+		</Emipro_Marketplace>
+	</modules>
+</config>

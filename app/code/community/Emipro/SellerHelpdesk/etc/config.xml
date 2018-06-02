@@ -1,0 +1,167 @@
+<config>
+	<modules>
+		<Emipro_SellerHelpdesk>
+			<version>1.0.0</version>
+		</Emipro_SellerHelpdesk>
+	 </modules>
+<frontend>
+		<routers>
+			<emipro_sellerhelpdesk>
+			<use>standard</use>
+				<args>
+				<module>Emipro_SellerHelpdesk</module>
+				<frontName>sellerhelpdesk</frontName>
+				</args>
+			</emipro_sellerhelpdesk>
+		</routers>
+</frontend>	 
+<admin>
+     <routers>
+         <emipro_sellerhelpdesk>
+            <use>admin</use>
+            <args>
+               <module>Emipro_SellerHelpdesk</module>
+               <frontName>sellerhelpdesk</frontName>
+            </args>
+         </emipro_sellerhelpdesk>
+      </routers>
+ </admin>
+<global>
+	<blocks>
+		<emipro_sellerhelpdesk>
+			<class>Emipro_SellerHelpdesk_Block</class>
+		</emipro_sellerhelpdesk>			 
+	</blocks>
+	<helpers>
+		<emipro_sellerhelpdesk>
+			<class>Emipro_SellerHelpdesk_Helper</class>
+		</emipro_sellerhelpdesk>
+	</helpers>
+
+	<models>
+        <emipro_sellerhelpdesk>
+            <class>Emipro_SellerHelpdesk_Model</class>
+           <resourceModel>sellerhelpdesk_resource</resourceModel>
+        </emipro_sellerhelpdesk>
+		<sellerhelpdesk_resource>
+            <class>Emipro_SellerHelpdesk_Model_Resource</class>
+            <entities>
+                <sellerhelpdesk>
+                    <table>seller_helpdesk_system</table>  
+                </sellerhelpdesk>
+                <sellerconversation>
+                    <table>seller_helpdesk_conversation</table>  
+                </sellerconversation>
+                 <sellerattachment>
+                    <table>seller_helpdesk_attachment</table>  
+                </sellerattachment>
+                 <helpdeskstatus>
+                    <table>helpdesk_status</table>  
+                </helpdeskstatus>
+            </entities>
+        </sellerhelpdesk_resource>
+    </models>
+    
+     <resources> 
+        <sellerhelpdesk_setup>
+            <setup>
+                <module>Emipro_SellerHelpdesk</module>
+            </setup>
+            <connection>
+                <use>core_setup</use>
+            </connection>
+        </sellerhelpdesk_setup>
+        <sellerhelpdesk_write>
+            <connection>
+                <use>core_write</use>
+            </connection>
+        </sellerhelpdesk_write>
+        <sellerhelpdesk_read>
+            <connection>
+                <use>core_read</use>
+            </connection>
+        </sellerhelpdesk_read>
+    </resources> 
+	<template>
+			<email>
+				<sellersupport_emipro_template_ticket_create module="emipro_sellerhelpdesk">
+					<label>New Ticket</label>
+					<file>seller_ticket_create.html</file>
+					<type>html</type>
+				</sellersupport_emipro_template_ticket_create>
+				<sellersupport_emipro_template_ticket_conversation module="emipro_sellerhelpdesk">
+					<label>Ticket conversation</label>
+					<file>seller_ticket_conversation.html</file>
+					<type>html</type>
+				</sellersupport_emipro_template_ticket_conversation>
+				<sellersupport_emipro_template_new_sellerticket_create module="emipro_sellerhelpdesk">
+					<label>New for Seller</label>
+					<file>new_tickete_for_seller.html</file>
+					<type>html</type>
+				</sellersupport_emipro_template_new_sellerticket_create>
+				</email>
+		</template>
+</global>
+<adminhtml>
+	<menu>
+	<marketplace translate="title">
+	
+	<children>
+		<adminsupport>
+		<title>Seller Support Tickets</title> 
+		<action>sellerhelpdesk/adminhtml_index</action>
+		 <sort_order>16</sort_order>
+		</adminsupport>
+		<sellerhelpdesk>
+		<title>My Support Tickets</title> 
+		<action>sellerhelpdesk/adminhtml_seller</action>
+		 <sort_order>16</sort_order>
+		</sellerhelpdesk>
+		</children>
+	</marketplace>
+</menu>
+<acl>
+    <resources>
+		  <all>
+                <title>Allow Everything</title>
+            </all>
+		 <admin>
+                <children>
+                    <marketplace translate="title" >
+						
+                       <children>
+                            <!-- child items go here -->
+                            <sellerhelpdesk translate="title">
+                                <title>My Support Tickets</title>
+                                <sort_order>1</sort_order>
+                            </sellerhelpdesk>
+                           <adminsupport translate="title">
+                                <title>Seller Support Tickets</title>
+                                <sort_order>2</sort_order>
+                            </adminsupport>
+                        </children>
+                    </marketplace>
+                </children>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <sellersupport>
+                                        <title>Seller Support Tickets</title>
+                                    </sellersupport>
+                                </children>
+                            </config>
+                        </children>
+                        
+                    </system>
+                </children>
+                
+            </admin>
+        </resources>
+</acl>
+	
+    
+</adminhtml>
+
+</config>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_existingproduct_index>
+        <reference name="content">
+            <block type="existingproduct/adminhtml_create" name="existingproduct_create">
+                <block type="existingproduct/adminhtml_create_form" template="emipro_existing/catalog/product/create/form.phtml" name="form">
+                    <block type="existingproduct/adminhtml_create_product" template="emipro_existing/catalog/product/create.phtml" name="existingproduct_container">
+                        <block type="existingproduct/adminhtml_grid" name="existingproduct_grid"></block>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_existingproduct_index>
+</layout>
+

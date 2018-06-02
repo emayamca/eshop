@@ -1,0 +1,27 @@
+<?php
+/*
+Get Root Categories
+*/
+$_categories = Mage::helper ( 'sociallogin' )->getHeadCatCollection();
+?>
+<div class="sitemap-cateogry">
+	<?php $flag = 1; $accordion = 1; ?>
+	<?php foreach ($_categories as $_category): ?>
+	<?php if($flag == 1 || $flag == 8 || $flag == 15 || $flag == 21) { ?>
+	<div class="col-md-4">
+	<br> 
+		<div class="panel-group" id="accordionn<?php echo $accordion ?>" style="width:100%;">
+	<?php } ?>
+		<?php
+		if($_category->getIsActive()){
+			echo Mage::helper ( 'sociallogin' )->getSeoChildrenHtml($_category, false, $flag, $accordion);
+		}
+		$flag++;
+		?>
+
+		<?php if($flag == 1 || $flag == 8 || $flag == 15 || $flag == 21) { ?>
+		</div>
+	</div> 
+		<?php $accordion++; } ?>
+	<?php endforeach ?>
+</div>

@@ -1,0 +1,12 @@
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="home-footer-newsletter-validate-detail" onsubmit="setNewsletterCookie()">
+        <div class="input-box">
+            <input type="text" name="email" id="newsletter-footer" title="<?php echo $this->__('Sign up for our newsletter') ?>" class="input-text required-entry validate-email" placeholder="<?php echo $this->__('Email Address'); ?>" />
+            <button type="submit" title="<?php echo $this->__('Subscribe') ?>" class="button"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
+            <div class="clearer"></div>
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var homeFooterNewsletterValidateDetail = new VarienForm('home-footer-newsletter-validate-detail');
+    //]]>
+    </script>

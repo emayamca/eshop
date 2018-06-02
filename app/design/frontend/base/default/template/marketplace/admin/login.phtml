@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<?php 
+     $isSecure = Mage::app()->getStore()->isCurrentlySecure();
+    $baseurl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+    if($isSecure){
+        $baseurl = Mage::getBaseUrl( Mage_Core_Model_Store::URL_TYPE_WEB, true );    
+    }
+	?>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <?php
+		$storename = Mage::getStoreConfig('general/store_information/name');
+		if(trim($storename)=='')
+			$storename = '';
+		else
+			$storename = ' - '.$storename;
+    ?>
+    <title><?php echo Mage::helper('adminhtml')->__('Log in as Seller').$storename; ?></title>
+    <?php 
+    $button = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/maincolor');
+    $textcolor = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/textcolor');
+    $texthovercolor = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/texthovercolor');
+    ?>
+    <style type="text/css">
+    :root {
+        --emi-button: <?php if($button){ echo $button;}else{echo '#0083d5';} ?>;
+        --emi-textcolor:<?php if($textcolor){ echo $textcolor;}else{echo '#FFFFFF';} ?>;
+        --emi-texthovercolor:<?php if($texthovercolor){ echo $texthovercolor;}else{echo '#FFFFFF';} ?>;
+    }
+    </style>
+    <link type="text/css" rel="stylesheet" href="<?php echo $baseurl.'skin/adminhtml/default/default/reset.css'; ?>" media="all" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $baseurl.'skin/adminhtml/default/default/emipro/css/marketplace_admin.css'; ?>" media="all" /> 
+    
+    <?php
+		$folderName = Mage_Adminhtml_Model_System_Config_Backend_Image_Favicon::UPLOAD_DIR;
+        $storeConfig = Mage::getStoreConfig('design/head/shortcut_icon');
+        $faviconFile = Mage::getBaseUrl('media') . $folderName . '/' . $storeConfig;
+        $absolutePath = Mage::getBaseDir('media') . '/' . $folderName . '/' . $storeConfig;
+
+        if(!is_null($storeConfig) && is_file($absolutePath)) {
+            $url = $faviconFile;
+        } else {
+            $url = $baseurl.'skin/adminhtml/default/default/favicon.ico';
+        }
+    ?>    
+    <link rel="icon" href="<?php echo $url; ?>" type="image/x-icon" /> 
+    <link rel="shortcut icon" href="<?php echo $url; ?>" type="image/x-icon" />
+    <script type="text/javascript" src="<?php echo $baseurl.'js/prototype/prototype.js'; ?>"></script>
+    <script type="text/javascript" src="<?php echo $baseurl.'js/prototype/validation.js'; ?>"></script>
+    <script type="text/javascript" src="<?php echo $baseurl.'js/scriptaculous/effects.js'; ?>"></script>
+    <script type="text/javascript" src="<?php echo $baseurl.'js/mage/adminhtml/form.js'; ?>"></script>
+    <script type="text/javascript" src="<?php echo $baseurl.'js/mage/captcha.js'; ?>"></script>
+
+    <!--[if IE]> <link rel="stylesheet" href="<?php echo $baseurl.'skin/adminhtml/default/default/iestyles.css'; ?>" type="text/css" media="all" /> <![endif]-->
+    <!--[if lt IE 7]> <link rel="stylesheet" href="<?php echo $baseurl.'skin/adminhtml/default/default/below_ie7.css'; ?>" type="text/css" media="all" /> <![endif]-->
+    <!--[if IE 7]> <link rel="stylesheet" href="<?php echo $baseurl.'skin/adminhtml/default/default/ie7.css'; ?>" type="text/css" media="all" /> <![endif]-->
+</head>
+<body id="page-login" onload="document.forms.loginForm.username.focus();">
+<?php 
+     if(array_key_exists('adminhtml', $_COOKIE)){
+            $sessionFilePath = Mage::getBaseDir('session').DS.'sess_'.$_COOKIE['adminhtml'];
+            $sessionFile = file_get_contents($sessionFilePath);
+            $oldSession = $_SESSION;
+            session_decode($sessionFile);
+            $adminSessionData = $_SESSION;
+            $_SESSION = $oldSession;
+            if(array_key_exists('user', $adminSessionData['admin'])){
+              $adminUserObj = $adminSessionData['admin']['user'];
+              if($adminUserObj->getUserId()){
+                    $usercheck = Mage::getModel('marketplace/list')->load($adminUserObj->getUserId(),'seller_admin_id');  
+                    if($usercheck->getId()) 
+                    {
+                        $response = Mage::app()->getResponse();  
+                        $redirecturl = Mage::helper("adminhtml")->getUrl('marketplace/adminhtml_dashboard/index');
+                        $response->setRedirect($redirecturl);
+                        return; 
+                    }
+                }
+            }
+        }
+
+		if(Mage::getStoreConfig('marketplace_setting/marketplace/logo'))
+        { 
+            $logourl = Mage::getBaseUrl('media') .'seller/'. Mage::getStoreConfig('marketplace_setting/marketplace/logo');
+        }else{
+            $logosrc = Mage::getStoreConfig('design/header/logo_src');
+            $logosrcsmall = Mage::getStoreConfig('design/header/logo_src_small');
+            if($logosrc!=''){
+                $logourl = $logosrc;
+            }else{
+                $logourl = $logosrcsmall;
+            }
+            $logoalt = Mage::getStoreConfig('design/header/logo_alt'); 
+            $logourl = $this->getSkinUrl($logourl);
+        } 
+	?> 
+    <div>    
+        <a href="<?php echo Mage::getBaseUrl();?>"><img class="admin_logo" width="200px" src="<?php echo $logourl;?>" alt="<?php echo $logoalt;?>"/></a>
+    </div>
+    <div class="login-container">
+        <div class="login-box">
+            <form method="post" action="<?php echo $baseurl;?><?php echo (string)Mage::getConfig()->getNode("admin/routers/adminhtml/args")->frontName;?>/index/login/" id="loginForm" autocomplete="off">
+<input type="hidden" name="seller" value="1">
+                <div class="login-form"> 
+                    <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                    <h2><?php echo Mage::helper('adminhtml')->__('Log in to Seller Panel') ?></h2>
+                    <div id="messages">
+                        <?php
+                        $params = Mage::app()->getFrontController()->getRequest()->getParams();
+                        if(isset($params['failed']))
+                        {
+							echo '<div style="color:red;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('Invalid User Name or Password.') . '</div>';
+						}
+						if(isset($params['reset']))
+                        {
+							echo '<div style="color:green;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('If there is an account associated with this email, you will receive an email with a link to reset your password.'). '</div>';
+						}
+                        if(isset($params['invalid']))
+                        {
+                            echo '<div style="color:red;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('Invalid password reset token.'). '</div>';
+                        }
+                        if(isset($params['wrong']))
+                        {   
+                            echo '<div style="color:red;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('Wrong account specified.'). '</div>';
+                        }
+                        if(isset($params['expired']))
+                        {   
+                            echo '<div style="color:red;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('Your password reset link has expired.'). '</div>';
+                        }
+                        if(isset($params['updated']))
+                        {   
+                            echo '<div style="color:green;font-weight:bold;padding-bottom:10px">'. Mage::helper('adminhtml')->__('Your password has been updated.'). '</div>';
+                        } 
+						Mage::getSingleton('admin/session')->getMessages(true);
+                        ?>
+                    </div>
+                    <div class="input-box input-left"><label for="username"><?php echo Mage::helper('adminhtml')->__('User Name:') ?></label>
+                        <input style="margin-bottom:0px;" type="text" id="username" name="login[username]" placeholder="<?php echo Mage::helper('core')->__('User Name');?>" value="" class="required-entry input-text" /></div>
+                    <div style="margin-top: 10px;" class="input-box input-right"><label for="login"><?php echo Mage::helper('adminhtml')->__('Password:') ?></label><br />
+                        <!-- This is a dummy hidden field to trick firefox from auto filling the password -->
+                        <input type="text" class="input-text no-display" name="dummy" id="dummy" />
+                        <input style="margin-bottom:0px;" type="password" id="login" name="login[password]" class="required-entry input-text" value="" /></div>
+                    <?php //echo $this->getChildHtml('form.additional.info'); ?>
+                    <div class="clear"></div>
+                    <div class="form-buttons">
+						<a style="display:block;padding-top:9px;" class="left" href="<?php echo Mage::helper('adminhtml')->getUrl('marketplace/sellerlogin/forgotpassword', array('_nosecret' => true)) ?>"><?php echo Mage::helper('adminhtml')->__('Forgot your password?') ?></a>
+					</div>
+					<div class="form-buttons" style="width:100%; float:left;">
+					   	<input type="submit" style="cursor:pointer;" class="left form-button" value="<?php echo Mage::helper('adminhtml')->__('Login') ?>" title="<?php echo Mage::helper('adminhtml')->__('Login') ?>" />
+                        <input type="button" class="form-button" style="float:right;cursor:pointer;" onclick="javascript:window.location.href='<?php echo Mage::getBaseUrl();?>marketplace/seller/create/'" value="<?php echo Mage::helper('adminhtml')->__('Sign Up') ?>" title="<?php echo Mage::helper('adminhtml')->__('Sign Up') ?>" />
+                    </div>
+                   
+                </div>
+            </form>
+            <div class="bottom"></div>
+            <script type="text/javascript">
+                 var loginForm = new varienForm('loginForm');
+            </script>
+        </div>
+    </div>
+</body>
+</html>
+

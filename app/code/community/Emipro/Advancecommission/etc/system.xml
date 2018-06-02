@@ -1,0 +1,27 @@
+<config>
+	<sections>
+    	<marketplace_setting translate="label" module="emipro_advancecommission">
+    		<groups>
+				<categorycommission translate="label" >
+				<label>Commission</label>
+				<sort_order>670</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+				   <fields>
+					   	<commission_based_on translate="label" module="emipro_advancecommission"> 
+							<label>Commission Calculation Based On</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>emipro_advancecommission/system_config_source_defaultcommissiontype</source_model>
+ 						</commission_based_on>   
+				   </fields>
+				</categorycommission>
+			</groups>
+    	</marketplace_setting>
+    </sections>
+
+</config>

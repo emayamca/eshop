@@ -1,0 +1,109 @@
+<config>
+	<modules>
+		<Emipro_BulkProductImport>
+			<version>1.0.0</version>
+		</Emipro_BulkProductImport>
+	 </modules>
+<frontend>
+		<routers>
+			<emipro_bulkproductimport>
+			<use>standard</use>
+				<args>
+				<module>Emipro_BulkProductImport</module>
+				<frontName>bulkproductimport</frontName>
+				</args>
+			</emipro_bulkproductimport>
+		</routers>
+		<!--<layout>
+			<updates>
+				<emipro_bulkproductimport>
+					<file>bulkproductimport.xml</file>
+				</emipro_bulkproductimport>
+			</updates>
+		</layout>-->
+</frontend>	 
+<admin>
+     <routers>
+         <emipro_bulkproductimport>
+            <use>admin</use>
+            <args>
+               <module>Emipro_BulkProductImport</module>
+               <frontName>bulkproductimport</frontName>
+            </args>
+         </emipro_bulkproductimport>
+      </routers>
+ </admin>
+<global>
+	
+	<models>
+		<bulkproductimport>
+			<class>
+				Emipro_BulkProductImport_Model
+			</class>
+		</bulkproductimport>
+	</models>
+	<blocks>
+		<emipro_bulkproductimport>
+			<class>Emipro_BulkProductImport_Block</class>
+		</emipro_bulkproductimport>			 
+	</blocks>
+	<helpers>
+		<emipro_bulkproductimport>
+			<class>Emipro_BulkProductImport_Helper</class>
+		</emipro_bulkproductimport>
+	</helpers>
+</global>
+<adminhtml>
+<menu>
+	<catalog translate="title" module="catalog">
+            <children>
+                    <bulkproductimport>
+                        <title>Bulk Product Import</title>
+                        <sort_order>9998</sort_order>
+                        <action>bulkproductimport/adminhtml_index</action>
+                    </bulkproductimport>
+                    
+                    <export>
+                        <title>Export Products</title>
+                        <sort_order>9999</sort_order>
+                        <action>bulkproductimport/adminhtml_export</action>
+                    </export>
+                </children>
+        </catalog>  
+</menu>
+<acl>
+    <resources>
+		  <all>
+                <title>Allow Everything</title>
+            </all>
+		 <admin>
+                <children>
+                   <catalog>
+                            <children>
+                                <bulkproductimport>
+                                    <title>Bulk Product import</title>
+                                    <sort_order>999</sort_order>
+                                </bulkproductimport>
+                                 <export>
+                                    <title>Export Products</title>
+                                    <sort_order>999</sort_order>
+                                </export>
+                            </children>
+                        </catalog>
+                </children>
+            </admin>
+        </resources>
+</acl>
+
+
+	<layout>
+		<updates>
+			<bulkproductimport> 
+			   <file>bulkproductimport.xml</file>
+			</bulkproductimport>
+		</updates>
+	</layout>
+</adminhtml>
+
+ 
+</config>

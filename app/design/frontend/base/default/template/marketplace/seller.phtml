@@ -1,0 +1,13 @@
+<?php
+$_helper = $this->helper('marketplace');
+?>
+<div class="block block-list block-compare">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Seller Information') ?>
+            <?php if($_helper->isVendor()): ?>
+                <small><?php echo $this->__('(%d)', $_helper->getItemCount()) ?></small>
+            <?php endif; ?>
+        </span></strong>
+    </div>
+ </div>
+

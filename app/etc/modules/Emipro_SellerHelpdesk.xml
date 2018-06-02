@@ -1,0 +1,10 @@
+<config>
+	<modules>
+		<Emipro_SellerHelpdesk>
+			<version>1.0.0</version>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends><Emipro_Marketplace /></depends>
+		</Emipro_SellerHelpdesk>
+	</modules>
+</config>

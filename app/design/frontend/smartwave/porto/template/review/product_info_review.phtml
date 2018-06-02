@@ -1,0 +1,210 @@
+<?php
+/**
+ * Businessfuel
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_items = $this->getReviewsCollection()->getItems();?>
+<?php if (count($_items)):?>
+<div class="star-rating-div">
+	<?php 
+	$_product = Mage::registry ( 'current_product' );
+	//Rating count
+	$count = count(Mage::helper('trackyourorder')->totalRatings($_product->getId()));
+	//Average rating
+	$advanced_avg = Mage::helper('trackyourorder')->averageRatings($_product->getId()); 
+	//Total Ratings
+	$ratings = Mage::helper('trackyourorder')->totalRatings($_product->getId()); 
+	?>
+	<div class="rating_top">	
+		<?php if($advanced_avg!=0): ?>
+			<img src="<?php echo $this->getSkinUrl('reviews/images/starrz.png') ?>" height="150px" width="150px">
+			<p class="rating-val"><strong><?php echo round($advanced_avg/20,1); ?></strong></p>
+			<p class="reviews-statement"><?php echo $this->__('Average Rating Based on 5 Ratings') ?></p>
+		<?php endif; ?>
+		<?php if($advanced_avg ==0): ?>
+			<img src="<?php echo $this->getSkinUrl('reviews/images/starrz.png') ?>" height="150px" width="150px">
+			<p class="rating-val"><strong><?php echo round($advanced_avg/20,1); ?></strong></p>
+			<p class="reviews-statement"><?php echo $this->__('Average Rating Based on 5 Ratings') ?></p>
+		<?php endif; ?>	
+	</div>
+		<!-- Stars based on ratings -->
+		<?php
+		$first_star=0;
+		$second_star=0;
+		$third_star=0;
+		$fourth_star=0;
+		$fifth_star=0;
+		// All Rating iteration
+		$ratings = Mage::helper('trackyourorder')->totalRatings($_product->getId());
+		foreach ($ratings as $individual_star) {
+			if($individual_star==20) {
+				$first_star=$first_star+1;
+
+			} elseif ($individual_star==40) {
+				$second_star=$second_star+1;
+			} elseif ($individual_star==60) {
+				$third_star=$third_star+1;
+			} elseif ($individual_star==80) {
+				$fourth_star=$fourth_star+1;
+			} else {
+				$fifth_star=$fifth_star+1;
+			}
+		}
+		// Total Ratings
+		$advanced_total=count($ratings);
+		// Individual Ratings 
+		$advanced_one=ceil(($first_star/$advanced_total)*100);
+		$advanced_two=ceil(($second_star/$advanced_total)*100);
+		$advanced_three=ceil(($third_star/$advanced_total)*100);
+		$advanced_four=ceil(($fourth_star/$advanced_total)*100);
+		$advanced_five=ceil(($fifth_star/$advanced_total)*100);
+		// Checking Rating is available or not
+		if($advanced_total!=0): ?>
+		<?php $ratingbar_color = 'ffce00'; ?>
+	<div class="individual-star-ratings">
+		<ul class="rating-histogram">
+			<li class="advanced-font-small"><span><?php echo $this->__('5 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_five;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+				</div> &nbsp;<strong><?php echo $fifth_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('4 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_four;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+				</div> &nbsp;<strong><?php echo $fourth_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('3 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_three;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+				</div> &nbsp;<strong><?php echo $third_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('2 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_two;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+				</div> &nbsp;<strong><?php echo $second_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('1 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_one;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+				</div> &nbsp;<strong><?php echo $first_star;?> </strong>
+			</li>
+		</ul>
+	</div>
+	<?php else:?>
+	<h3 class="noneRated">
+	</h3><div class="individual-star-ratings">
+		<ul class="rating-histogram">
+			<li class="advanced-font-small"><span><?php echo $this->__('5 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_five;?>%"></div>
+				</div> &nbsp;<strong><?php echo $fifth_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('4 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_four;?>%"></div>
+				</div> &nbsp;<strong><?php echo $fourth_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('3 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_three;?>%"></div>
+				</div> &nbsp;<strong><?php echo $third_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('2 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_two;?>%"></div>
+				</div> &nbsp;<strong><?php echo $second_star;?> </strong>
+			</li>
+			<li class="advanced-font-small"><span><?php echo $this->__('1 Star');?></span>
+				<div class="rating-bars">
+					<div class="progress  " style="width:<?php echo $advanced_one;?>%"></div>
+				</div> &nbsp;<strong><?php echo $first_star;?> </strong>
+			</li>
+		</ul>
+	</div>
+	<?php endif; ?>
+	<div class="reviews-right-block">
+		<p class="p1"><?php echo $this->__('Share Your Thoughts With Other Customers');?></p>
+		<p class="p2"><?php echo $this->__('Rate the Product');?></p>
+		<div class="rating-box fleft">
+			<div class="rating" style="width: <?php echo  ceil($advanced_avg); ?>%"></div>
+		</div>
+		<p class="review-btn"><a href="#write-your-reivews" class="button write-review-a"><span><span><?php echo $this->__('Write Your Review'); ?></span></span></a></p>
+	</div>
+</div>
+
+<div class="collateral-box" id="product-customer-reviews">
+<h3 class="review-view-all"><a target="_blank" href="<?php echo $this->getUrl('review/product/list/').'id/'.$_product->getId() ?>"><?php echo $this->__('see all reviews') ?></a></h3>
+    <?php echo $this->getChildHtml('toolbar') ?>
+
+    <ol>
+	<?php $flag = 1; ?>
+        <?php foreach ($_items as $_review):?>
+            <?php $reviewId = $_review->getId() ?>
+            <li>
+                <div class="avatar-image">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl("images/avatar.jpg"); ?>" width="65" height="65" alt=""/>
+                </div>
+                <div class="review-area">
+                    <strong class="review-title"><?php echo $this->htmlEscape($_review->getTitle()) ?></strong>
+                    <span class="review-by"> <?php echo $this->__('review by %s', "<b>".$this->htmlEscape($_review->getNickname())."</b>") ?> <?php echo $this->__('on %s', $this->formatDate($_review->getCreatedAt()), 'long') ?></span>
+                    <div class="ratings-list">
+                    <?php foreach ($_review->getRatingVotes() as $_vote): ?>
+                        <div class="rating-item">
+                            <span class="label"><?php echo $_vote->getRatingCode() ?></span>
+                            <div class="rating-box">
+                                <div class="rating" style="width: <?php echo $_vote->getPercent() ?>%;"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
+					<?php $lines_string = preg_split("/\r\n|\n|\r/", $_review->getDetail()); ?>
+                    <p class="para-wrapper para-wrapper-exp more-<?php echo $reviewId ?>"><?php echo nl2br($this->htmlEscape($_review->getDetail())) ?></p><?php if(strlen($_review->getDetail()) > 382 || count($lines_string) > 3) {?><div class="readmoreBtn read-<?php echo $reviewId ?>"><?php echo $this->__('read more') ?></div><?php } ?>
+                </div>
+                <div class="clearer"></div>
+            </li>
+            <script type="text/javascript">
+                jQuery('.read-<?php echo $reviewId ?>').click(function(){
+                    jQuery('.more-<?php echo $reviewId ?>').removeClass('para-wrapper'); 
+                    jQuery(this).hide();
+                });
+            </script>
+			<?php 
+			//Displayed recent 5 reviews
+			if($flag == 5){ break; }
+			$flag++; 
+			?>
+        <?php endforeach; ?>
+    </ol>
+
+    <?php echo $this->getChildHtml('toolbar') ?>
+</div>
+<?php else:?>
+<div class="collateral-box" id="product-customer-reviews">
+<ol><li><?php echo $this->__('Be the first to review this product'); ?></li></ol>
+</div>
+<?php endif;?>
+<div id="write-your-reivews"></div>
+<div class="add-review" >
+	<?php echo $this->getLayout()->createBlock('review/form')->setBlockId('product.review.form')->toHtml() ?>
+</div>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Fuel_Customer>
+      <version>0.1.0</version>
+    </Fuel_Customer>
+  </modules>
+
+<frontend>
+  <routers>
+    <customer>
+    <use>standard</use>
+      <args>
+        <modules>
+          <Fuel_Customer before="Mage_Customer">Fuel_Customer</Fuel_Customer>
+        </modules>
+      </args>
+    </customer>
+  </routers>
+</frontend>
+</config>

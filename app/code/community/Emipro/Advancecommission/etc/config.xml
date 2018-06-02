@@ -1,0 +1,116 @@
+<config>
+	<modules>
+		<Emipro_Advancecommission>
+			<version>1.1.0</version>
+		</Emipro_Advancecommission>
+	 </modules>
+<frontend>
+		<routers>
+			<emipro_advancecommission>
+			<use>standard</use>
+				<args>
+				<module>Emipro_Advancecommission</module>
+				<frontName>advancecommission</frontName>
+				</args>
+			</emipro_advancecommission>
+		</routers>
+</frontend>	 
+<admin>
+     <routers>
+         <emipro_advancecommission>
+            <use>admin</use>
+            <args>
+               <module>Emipro_Advancecommission</module>
+               <frontName>advancecommission</frontName>
+            </args>
+         </emipro_advancecommission>
+      </routers>
+ </admin>
+<global>
+	
+	<blocks>
+		<emipro_advancecommission>
+			<class>Emipro_Advancecommission_Block</class>
+		</emipro_advancecommission>	
+	</blocks>
+	<helpers>
+		<emipro_advancecommission>
+			<class>Emipro_Advancecommission_Helper</class>
+		</emipro_advancecommission>
+	</helpers>
+<models>
+        <emipro_advancecommission>
+            <class>Emipro_Advancecommission_Model</class>
+            <resourceModel>advancecommission_resource</resourceModel> 
+        </emipro_advancecommission>
+        <advancecommission_resource>
+            <class>Emipro_Advancecommission_Model_Resource</class>
+            <entities>
+                <advancecommission>
+                    <table>seller_advancecommission</table>  
+                </advancecommission>
+            </entities>
+            <entities>
+                <advanceproductcommission>
+                    <table>seller_advanceproductcommission</table>  
+                </advanceproductcommission>
+            </entities>
+        </advancecommission_resource>
+ </models>
+     <resources> 
+        <advancecommission_setup>
+            <setup>
+                <module>Emipro_Advancecommission</module>
+            </setup>
+            <connection>
+                <use>core_setup</use>
+            </connection>
+        </advancecommission_setup>
+        <advancecommission_write>
+            <connection>
+                <use>core_write</use>
+            </connection>
+        </advancecommission_write>
+        <advancecommission_read>
+            <connection>
+                <use>core_read</use>
+            </connection>
+        </advancecommission_read>
+    </resources>
+    <events>
+       <core_block_abstract_prepare_layout_after>
+            <observers>
+                <emipro_advanceproductcommission_product>
+                    <class>Emipro_Advancecommission_Model_Observer</class>
+                    <method>addProductTabBlock</method>
+                </emipro_advanceproductcommission_product>
+            </observers>
+       </core_block_abstract_prepare_layout_after>
+       
+
+       <catalog_product_save_after>
+            <observers>
+                <some_module_detect_product_changes>
+                    <class>Emipro_Advancecommission_Model_Observer</class>
+                    <method>detectProductChanges</method>
+                </some_module_detect_product_changes>
+            </observers>
+        </catalog_product_save_after>
+    </events>  
+ </global>
+<adminhtml>
+	<menu>
+	<marketplace translate="title">
+	
+	<children>
+		<advancecommission>
+		<title>Seller Advanced Commission</title> 
+		<action>advancecommission/adminhtml_index</action>
+		 <sort_order>4</sort_order>
+		</advancecommission>
+		</children>
+	</marketplace>
+</menu>
+
+</adminhtml>
+</config>

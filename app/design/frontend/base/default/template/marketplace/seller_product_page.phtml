@@ -1,0 +1,73 @@
+<style>
+	.sellerdetail{font-size:12px;border:1px dashed #CCCCCC;padding:4px;}
+</style>
+<?php
+	$data = $this->getcurrentsellerData();
+	if(is_array($data) && isset($data['storeurl'])){ 
+?>
+<div class="sellerdetail">
+	<div>
+		<div>
+		<p class="em_bold"><?php echo $this->__("Seller :"); ?>   <a href="<?php echo Mage::getBaseUrl().$data['storeurl'];?>"><span style="margin:0px 10px;"><?php echo $data['storeurl'];?></span></a> <?php if($data['rate']!=''):?>
+			<div class="ratings">
+        		<div class="rating-box">
+					<div class="rating" style="width:<?php echo $data['rate']*20; ?>%"></div>            
+         		</div>
+
+			</div>
+
+		<?php endif; ?>
+		</p>
+		<?php 
+			$offer1 = Mage::getStoreConfig('marketplace_setting/marketplace/offers1');
+			$offer2 = Mage::getStoreConfig('marketplace_setting/marketplace/offers2');
+			$offer3 = Mage::getStoreConfig('marketplace_setting/marketplace/offers3');
+			if($offer1!='' || $offer2!='' || $offer3!=''){
+		?>
+		<p class="em_bold"><?php echo $this->__("Offers : "); ?>
+			<ul class="em_ul_list" style="margin-left:25px;"> 
+			<?php if($offer1!='') echo '<li>'.$this->__($offer1).'</li>';?>
+			<?php if($offer2!='') echo '<li>'.$this->__($offer2).'</li>';?>
+			<?php if($offer3!='') echo '<li>'.$this->__($offer3).'</li>';?> 
+			</ul>
+		</p> 
+			<?php } ?>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+	<div>
+		<?php
+			if($data['delivered_in']!=''){
+		?>
+		<div style="float:left; width:250px;">
+			<span class="em_bold"><?php echo $this->__('DELIVERED BY');?></span>
+			<ul class="em_ul_list" style="margin-left:25px;">
+				<li>
+				<?php echo $this->__($data['delivered_in']);?>
+				</li>
+			</ul>
+		</div>
+		<?php
+			}
+			$cashondelivery = Mage::getStoreConfig('marketplace_setting/marketplace/cashondelivery');
+			if($cashondelivery!=''){
+		?>
+		<div style="float:left;">
+			<span class="em_bold"><?php echo $this->__('CASH ON DELIVERY');?></span>
+			<ul class="em_ul_list" style="margin-left:25px;">
+				<li><?php echo $this->__($cashondelivery);?></li>
+			</ul>
+		</div>
+		<?php } ?>
+		<div style="clear:both"></div>
+			<?php if($data['replacement_guarantee']){?>
+		<p class="em_bold"><?php echo $this->__('%s Day Replacement Guarantee.',$data['replacement_guarantee']);?></p>
+			<?php } ?>
+	</div>
+	<div style="">
+		<?php  echo $this->getLayout()->createBlock('core/template')->setTemplate('marketplace/product_page_links.phtml')->toHtml();?> 
+	</div>
+		
+</div>
+<br/>
+<?php } ?>

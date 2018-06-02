@@ -1,0 +1,422 @@
+<?xml version="1.0"?>
+<config>
+    <tabs> 
+        <Fuel translate="label" module="sociallogin">
+            <label>Fuel</label>
+            <sort_order>100</sort_order>
+        </Fuel>
+    </tabs>  
+    <sections> 
+        <sociallogin translate="label" module="sociallogin">
+            <label><![CDATA[<div class="sociallogin_logo"></div> <div class="sociallogin_text">Metacrust Configuration</div> <div class="clear"></div>]]></label>
+            <tab>Fuel</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>120</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label" module="sociallogin">
+                    <label>General Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_sociallogin translate="label">
+                            <label>Enable Social Login</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable to show social login - Select "Yes"</comment>
+                        </enable_sociallogin>
+                        <enable_redirect translate="label">
+                            <label>Redirect Customer to Account Dashboard after Logging in</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Customer need stay on the current page - Select "No".</comment>
+                        </enable_redirect>                   
+                    </fields>   
+                </general>
+				<facebook translate="label" module="sociallogin">
+                    <label>Facebook Login Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>       
+                        <enable_fb translate="label">
+                            <label>Enable Facebook Login</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable Facebook Login</comment>
+                        </enable_fb>
+                         <fbapp_id translate="label">
+                            <label>Facebook App Id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Please enter <a href="https://developers.facebook.com/apps" target="_blank">facebook app id</a>]]></comment>
+                             <depends>
+                                <enable_fb>1</enable_fb>
+                            </depends>
+                        </fbapp_id>
+						<!-- Facebook secret key -->
+						<fbapp_secret translate="label">
+							 <label>Facebook App Secret Key</label>
+							 <frontend_type>text</frontend_type>
+							 <sort_order>4</sort_order>
+							 <show_in_default>1</show_in_default>
+							 <show_in_website>1</show_in_website>
+							 <show_in_store>1</show_in_store>
+							 <comment>Please enter <![CDATA[<a href="https://developers.facebook.com/apps" target="_blank">facebook app secret key</a>]]></comment>
+							 <depends>
+                                <enable_fb>1</enable_fb>
+                            </depends>
+						</fbapp_secret>
+                    </fields>   
+                </facebook>
+                <!--<twitter translate="label" module="sociallogin">
+                    <label>Twitter Login Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_twitter translate="label">
+                            <label>Enable Twitter Login</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable Twitter Login</comment>
+                        </enable_twitter>
+                        <tw_key_no translate="label">
+                            <label>Twitter Consumer Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="https://dev.twitter.com/apps/new" target="_blank">twitter consumer key</a>]]></comment>
+                             <depends>
+                                <enable_twitter>0</enable_twitter>
+                            </depends>
+                        </tw_key_no>
+                        <tw_key translate="label">
+                            <label>Twitter Consumer Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="https://dev.twitter.com/apps/new" target="_blank">twitter consumer key</a>]]></comment>
+                             <depends>
+                                <enable_twitter>1</enable_twitter>
+                            </depends>
+                        </tw_key>
+                        <tw_secret_no translate="label">
+                            <label>Twitter Consumer Secret</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="https://dev.twitter.com/apps/new" target="_blank">twitter consumer secret</a>]]></comment>
+                            <depends>
+                                <enable_twitter>0</enable_twitter>
+                            </depends>
+                        </tw_secret_no>
+                        <tw_secret translate="label">
+                            <label>Twitter Consumer Secret</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="https://dev.twitter.com/apps/new" target="_blank">twitter consumer secret</a>]]></comment>
+                            <depends>
+                                <enable_twitter>1</enable_twitter>
+                            </depends>
+                        </tw_secret>
+                    </fields>
+                </twitter> -->
+                <google translate="label" module="sociallogin">
+                    <label>Google Login Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_google translate="label">
+                            <label>Enable Google Login</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable Google Login</comment>
+                        </enable_google>
+                        <google_id translate="label">
+                            <label>Google Client ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="http://developer.google.com/" target="_blank">Google client id</a>]]></comment>
+                            <depends>
+                                <enable_google>1</enable_google>
+                            </depends>
+                        </google_id>
+                        <google_secret translate="label">
+                            <label>Google Client Secret Key</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please enter <![CDATA[<a href="http://developer.google.com/" target="_blank">Google client secret key</a>]]></comment>
+                            <depends>
+                                <enable_google>1</enable_google>
+                            </depends>
+                        </google_secret>
+                    </fields>
+                </google>
+                <deals translate="label" module="sociallogin">
+                    <label>Deals Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_deals translate="label">
+                            <label>Enable Deals</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable to show Deals - Select "Yes"</comment>
+                        </enable_deals>                   
+                    </fields>   
+                </deals>
+				<bulkorders translate="label" module="sociallogin">
+                    <label>Bulk Order Email Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_template>                    
+                    </fields>   
+                </bulkorders>
+				<altius translate="label" module="sociallogin">
+                    <label>Altius Email Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_template>                    
+                    </fields>   
+                </altius>
+				<!-- CI Website Link Configuration -->
+				<newandrent translate="label" module="sociallogin">
+                    <label>New-Equipment and Rentnsell Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <new_equipment translate="label">
+                            <label>New-Equipment URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Please enter New-Equipment website URL]]></comment>
+                        </new_equipment> 
+						<rentnsell translate="label">
+                            <label>Rentnsell URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Please enter Rentnsell website URL]]></comment>
+                        </rentnsell>						
+                    </fields>   
+                </newandrent>
+				<!-- Shipping method section content Configuration -->
+				<notificationmsg translate="label" module="sociallogin">
+                    <label>Shipping Notification Message</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>9</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<message translate="label">
+                            <label>Shipping Notification Message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Please enter Shipping Notification Message]]></comment>
+                        </message>						
+                    </fields>   
+                </notificationmsg>
+				<!-- HTML minify Configuration -->
+				<htmlminify translate="label" module="sociallogin">
+                    <label>MinifyHTML Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<enable_htmlminify translate="label">
+                            <label>Enable MinifyHTML</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable to minify HTML - Select "Yes"</comment>
+                        </enable_htmlminify>						
+                    </fields>   
+                </htmlminify>
+				<!-- Magento server configuration localhost / stage / live  to set COOKIE-->
+				<hostsetting translate="label" module="sociallogin">
+                    <label>Server Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>11</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<configurations translate="label">
+                            <label>Select the server</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/hostsettings</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select the server localhost / stage.metacrust.com / shop.metacrust.com</comment>
+                        </configurations>						
+                    </fields>   
+                </hostsetting>
+				<noproducts translate="label" module="sociallogin">
+                    <label>No Products Found Email Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>12</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_template>                    
+                    </fields>   
+                </noproducts>
+				<emailverification translate="label" module="sociallogin">
+                    <label>Verification Code Email Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>13</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>                    
+                    </fields>   
+                </emailverification>
+				<enquiryform translate="label" module="sociallogin">
+                    <label>ESHOP Home page Enquiry Form Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>14</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>                    
+                    </fields>   
+                </enquiryform>
+            </groups>
+        </sociallogin>
+    </sections>
+</config>

@@ -1,0 +1,22 @@
+<config>
+    <sections>
+        <marketplace_setting translate="label" module="marketplace">
+            <groups>
+				<marketplace translate="label" module="marketplace">
+					<fields>
+						<displaysellerproduct translate="label" module="marketplace">
+							<label>Display Product on Seller Profile</label>
+							<frontend_type>text</frontend_type>
+							<comment>e.g. 9. So, 9 Product Will be Display on Seller Profile</comment>
+							<sort_order>10</sort_order>
+							<validate>validate-number</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>                    
+						</displaysellerproduct>
+					</fields>   
+                </marketplace>
+            </groups>
+        </marketplace_setting>
+    </sections>     
+</config> 

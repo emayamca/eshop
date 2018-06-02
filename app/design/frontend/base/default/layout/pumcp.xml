@@ -1,0 +1,9 @@
+<layout version="0.1.0">
+    <checkout_onepage_review>
+        <reference name="checkout.onepage.review.info.items.after">
+            <block type="pumcp/iframe" name="pumcp.iframe" as="pumcp_iframe">
+                <action method="setBlockId"><block_id>pumcpiframe</block_id></action>
+            </block>
+        </reference>
+    </checkout_onepage_review>
+</layout>

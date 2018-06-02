@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category   Wyomind
+ * @package    Wyomind_Notificationmanager
+ * @license    http://Wyomind.com
+ */
+ --> 
+<config>
+    <modules>
+        <Wyomind_Notificationmanager>
+            <version>2.1.0</version> 
+        </Wyomind_Notificationmanager> 
+    </modules> 
+    <default>
+        <notificationmanager>
+            <notificationmanager>
+                <version>2.1.0</version>
+                <action_required>1</action_required>
+            </notificationmanager>
+        </notificationmanager>
+    </default>
+    <frontend>
+        <routers>
+            <notificationmanager>
+                <use>standard</use>
+                <args>
+                    <module>Wyomind_Notificationmanager</module>
+                    <frontName>notificationmanager</frontName>
+                </args>
+            </notificationmanager>
+        </routers>  
+    </frontend>
+    <global>
+        <resources>
+            <notificationmanager_setup>
+                <setup>
+                    <module>Wyomind_Notificationmanager</module>
+                    <class>Wyomind_Notificationmanager_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </notificationmanager_setup>
+            <notificationmanager_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </notificationmanager_write>
+            <notificationmanager_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </notificationmanager_read>
+        </resources>
+        <helpers>
+            <notificationmanager>
+                <class>Wyomind_Notificationmanager_Helper</class>
+            </notificationmanager>
+        </helpers>
+        <models>
+            <notificationmanager>
+                <class>Wyomind_Notificationmanager_Model</class>
+            </notificationmanager>
+        </models>
+        <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <wyomind_notificationmanager_observer>
+                        <type>singleton</type>
+                        <class>notificationmanager/observer</class>
+                        <method>observe</method>
+                    </wyomind_notificationmanager_observer>
+                </observers>
+            </admin_session_user_login_success>
+        </events>
+    </global>
+</config>

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+  <layout version="1.0">
+  	<default>
+    	<reference name="catalog_product_price_template">
+	      <action method="addPriceBlockType"><type>simple</type><block>catalog/product_price</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+	      <action method="addPriceBlockType"><type>grouped</type><block>catalog/product_price</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+        <action method="addPriceBlockType"><type>configurable</type><block>catalog/product_price</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+        <action method="addPriceBlockType"><type>virtual</type><block>catalog/product_price</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+        <action method="addPriceBlockType"><type>downloadable</type><block>catalog/product_price</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+      </reference> 
+      <reference name="content">
+      	<block type="core/template" name="gcc_script" template="geolocationcc/file.phtml" before="-" />
+      </reference>
+      <reference name="additional_content">
+        <block type="wishlist/customer_sidebar" name="wishlist_sidebar" as="wishlist" template="wishlist/sidebar.phtml"/>
+      </reference>  
+      <reference name="left">
+        <block type="core/template" name="customer_cart_left" template="geolocationcc/geocontent.phtml" after="cart_sidebar"/>
+      </reference>
+      <reference name="right">
+        <block type="core/template" name="customer_cart_right" template="geolocationcc/geocontent.phtml" />
+      </reference>
+      <reference name="wishlist_sidebar">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+      <reference name="catalog_product_price_template">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+  	</default>
+    <PRODUCT_TYPE_bundle translate="label" module="bundle">
+      <reference name="product.info">
+        <block type="bundle/catalog_product_view_type_bundle" name="product.info.bundle" as="product_type_data" template="bundle/catalog/product/view/type/bundle.phtml">
+          <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+          <block type="bundle/catalog_product_price" name="bundle.prices" as="bundle_prices" template="bundle/catalog/product/view/price.phtml"></block>
+        </block>
+      </reference>
+    </PRODUCT_TYPE_bundle>
+    <catalog_category_default>
+      <reference name="product_list">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+    </catalog_category_default>
+    <catalog_category_view>
+      <reference name="product_list">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+    </catalog_category_view>
+    <catalog_category_layered>
+      <reference name="product_list">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+    </catalog_category_layered>
+    <catalog_product_compare_index>
+      <reference name="catalog.compare.list">
+        <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+    </catalog_product_compare_index>
+    <catalogsearch_result_index>
+      <reference name="search_result_list">
+         <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      </reference>
+    </catalogsearch_result_index>
+    <catalogsearch_advanced_result>
+      	<reference name="search_result_list">
+        	<action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+      	</reference>
+    </catalogsearch_advanced_result>
+    <checkout_cart_index>
+      	<reference name="checkout.cart">
+	        <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>geolocationcc/checkout/cart/item/default.phtml</template></action>
+	        <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer</block><template>geolocationcc/catalog/product/price.phtml</template></action>
+	        <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer</block><template>geolocationcc/checkout/cart/item/default.phtml</template></action>
+	        <action method="addItemRender"><type>virtual</type><block>checkout/cart_item_renderer</block><template>geolocationcc/checkout/cart/item/default.phtml</template></action>
+	        <action method="addItemRender"><type>downloadable</type><block>checkout/cart_item_renderer</block><template>geolocationcc/checkout/cart/item/default.phtml</template></action>
+	        <action method="addItemRender"><type>bundle</type><block>bundle/checkout_cart_item_renderer</block><template>geolocationcc/checkout/cart/item/default.phtml</template></action>
+      	</reference>
+      	<!-- <reference name="checkout.cart.crosssell">
+            <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>geolocationcc/bundle/catalog/product/price.phtml</template></action>
+        </reference> -->
+	    <reference name="content">
+	        <block type="core/template" name="gcc_script" template="geolocationcc/file.phtml" before="-" />
+	    </reference>
+    </checkout_cart_index>
+    <checkout_onepage_index>
+      <reference name="content">
+        <block type="core/template" name="checkout.onepage.price" template="geolocationcc/checkout.phtml"/>
+      </reference>
+    </checkout_onepage_index>
+    <checkout_onepage_review translate="label">
+        <reference name="root">
+            <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>geolocationcc/checkout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>geolocationcc/checkout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>geolocationcc/checkout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>bundle</type><block>bundle/checkout_cart_item_renderer</block><template>geolocationcc/checkout/onepage/review/item.phtml</template></action>
+        </reference>
+    </checkout_onepage_review>
+  </layout>

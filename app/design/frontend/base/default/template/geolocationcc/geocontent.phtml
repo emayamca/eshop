@@ -1,0 +1,19 @@
+<script type="text/javascript">
+	jQuery(".block-cart .price").each(function(){
+        if(typeof(jQuery(this).parents(".truncated_full_value").attr("class")) == "undefined"){
+    		var wkprice = jQuery(this).text().replace(/[^0-9\.]/g, '');
+    		if(typeof(jQuery(this).parents(".subtotal").attr("class")) != "undefined"){
+    			var this_this = jQuery(this).parents(".subtotal");
+    		}
+    		else{
+            	var this_this = jQuery(this).parents("li");
+            }
+                var gp_from ="<?php echo Mage::app()->getStore()->getBaseCurrencyCode();?>" ;
+                var gp_to ="<?php echo Mage::app()->getStore()->getCurrentCurrencyCode();?>" ;
+                jQuery.getJSON( "https://ssl.geoplugin.net/currency_converter.gp?k=e41869f2d131d37c&jsoncallback=?",{from:gp_to, to:gp_from, amount:wkprice},
+                function(output){
+                    jQuery(this_this).append('<div class="product-essential disable-conversion" style="padding: 7px;display:inline-block;"><div style="border-bottom:2px solid #BF9999;color: #934B4B;font-weight: bold;"><?php echo $this->__("Converted Price For Your Region"); ?></div><div style="display:inline;color:#C76A25;font-weight: bold;">'+output.from.code+output.from.amount+'</div><span style="color:#C76A25;font-weight: bold;"> = </span><div style="display:inline;color:#C76A25;font-weight: bold;" >'+output.to.code+output.to.amount+"</div><div>");
+                });
+        }
+	});
+</script>

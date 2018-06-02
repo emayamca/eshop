@@ -1,0 +1,44 @@
+<?php 
+/*Customer Information*/
+$cSession = Mage::getSingleton('customer/session');
+if($cSession->isLoggedIn()){ 
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+}
+?>
+
+<!--bulk order form-->
+<div class="col-md-3 submit-enquiry-div">
+    <div class="submitEnquiryForm"> 
+        <h4><?php echo $this->__('SUBMIT YOUR ENQUIRY'); ?></h4>
+        <form action="<?php echo $this->getUrl('bulkorderform/index/saveSubmitEnquiry'); ?>" method="post" id="submit-enquiry-form-validate">
+		<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+            <div class="input-group">
+                <span><i class="fa fa-pencil"></i></span>
+                <input type="text" class="form-control required-entry" name="customerproductname" placeholder="<?php echo $this->__('Enter product name'); ?>"/>
+            </div>
+			<div class="input-group">
+                <span><i class="fa fa-user"></i></span>
+				<input type="text" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getFirstname().''.$customer->getLastname(); } ?>" class="form-control required-entry" name="customername" placeholder="<?php echo $this->__('Enter your fullname'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-envelope"></i></span>
+               <input type="text" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getEmail(); } ?>" class="form-control validate-email required-entry" name="customeremail" placeholder="<?php echo $this->__('Enter your email address'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-phone"></i></span>
+                <input type="text" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getMobile(); } ?>" class="form-control validate-number required-entry input-box validate-length maximum-length-10 minimum-length-10 validate-digits" name="telephone" placeholder="<?php echo $this->__('Enter your phone number'); ?>"/>
+            </div>
+			<div class="input-group">
+                <span><i class="fa fa-comments"></i></span>
+				<textarea class="form-control required-entry" rows="3" name="comments" placeholder="<?php echo $this->__('Any comments'); ?>"></textarea>
+            </div>
+            <button type="submit" id="seqyBtn" class="btn btn-primary form-control"><?php echo $this->__('Submit'); ?></button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	var dataForm = new VarienForm('submit-enquiry-form-validate', false);
+//]]>
+</script>
+<!--bulk order form-->

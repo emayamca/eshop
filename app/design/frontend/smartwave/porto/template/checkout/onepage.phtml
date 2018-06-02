@@ -1,0 +1,249 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout') ?></h1>
+</div>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('varien/accordion.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/opcheckout.js') ?>"></script>
+<ol class="opc" id="checkoutSteps">
+<?php $i=0; foreach($this->getSteps() as $_stepId => $_stepInfo): ?>
+<?php if (!$this->getChild($_stepId) || !$this->getChild($_stepId)->isShow()): continue; endif; $i++ ?>
+    <li id="opc-<?php echo $_stepId ?>" class="section<?php echo !empty($_stepInfo['allow'])?' allow':'' ?><?php echo !empty($_stepInfo['complete'])?' saved':'' ?>">
+        <div class="step-title">
+            <span class="number"><?php echo $i ?></span>
+            <h2><?php echo $_stepInfo['label'] ?></h2>
+            <a href="#"><?php echo $this->__('Edit') ?></a>
+        </div>
+        <div id="checkout-step-<?php echo $_stepId ?>" class="step a-item" style="display:none;">
+            <?php echo $this->getChildHtml($_stepId) ?>
+        </div>
+    </li>
+<?php endforeach ?>
+</ol>
+<script type="text/javascript">
+//<![CDATA[
+    var accordion = new Accordion('checkoutSteps', '.step-title', true);
+    <?php if($this->getActiveStep()): ?>
+    accordion.openSection('opc-<?php echo $this->getActiveStep() ?>');
+    <?php endif ?>
+    var checkout = new Checkout(accordion,{
+        progress: '<?php echo $this->getUrl('checkout/onepage/progress') ?>',
+        review: '<?php echo $this->getUrl('checkout/onepage/review') ?>',
+        saveMethod: '<?php echo $this->getUrl('checkout/onepage/saveMethod') ?>',
+        failure: '<?php echo $this->getUrl('checkout/cart') ?>'}
+    );
+//]]>
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#billing-address-select").change(function(){
+		jQuery('input[name="billing[firstname]"]').val("");
+		jQuery('input[name="billing[middlename]"]').val("");
+		jQuery('input[name="billing[lastname]"]').val("");
+		jQuery('input[name="billing[company]"]').val("");
+		jQuery('input[name="billing[street][]"]').val("");
+		jQuery('input[name="billing[city]"]').val("");
+		jQuery('input[name="billing[postcode]"]').val("");
+		jQuery('input[name="billing[telephone]"]').val("");
+		jQuery('input[name="billing[region]"]').val("");
+		jQuery('select[id="billing:country_id"]').val("").change();
+	});
+	jQuery("#shipping-address-select").change(function(){
+		jQuery('input[name="shipping[firstname]"]').val("");
+		jQuery('input[name="shipping[middlename]"]').val("");
+		jQuery('input[name="shipping[lastname]"]').val("");
+		jQuery('input[name="shipping[company]"]').val("");
+		jQuery('input[name="shipping[street][]"]').val("");
+		jQuery('input[name="shipping[city]"]').val("");
+		jQuery('input[name="shipping[postcode]"]').val("");
+		jQuery('input[name="shipping[telephone]"]').val("");
+		jQuery('input[name="shipping[region]"]').val("");
+		jQuery('select[id="shipping:country_id"]').val("").change();
+	});
+});
+</script>
+<!-- Billing Information -->
+<script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyA2dLt7H3NcR58Nal24hyarXbNk6yG-8Ak"></script>
+<script type="text/javascript">
+jQuery.browser = {};
+(function () {
+	jQuery(document).ready(function(){
+		bcityname = "";
+		bstatename = ""; 
+		bcountycode = "";
+
+	//Find my location using GEO location
+	jQuery('input[name="billing[postcode]').bind('change focusout', function() {
+			var zip = jQuery('input[name="billing[postcode]').val();
+			var geocoder =  new google.maps.Geocoder();
+			geocoder.geocode( { 'address': zip}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					for (i = 0 ; i < results.length ; ++i)
+					{
+						var super_var1 = results[i].address_components;
+						for (j = 0 ; j < super_var1.length ; ++j)
+						{
+						  var super_var2 = super_var1[j].types;
+						  for (k = 0 ; k < super_var2.length ; ++k)
+						  {
+							//find city
+							if (super_var2[k] == "administrative_area_level_2")
+							{
+							  //put the city name in the form
+							  bcityname = super_var1[j].long_name;
+							  if(bcityname) break;
+							}
+							//find State
+							if (super_var2[k] == "administrative_area_level_1")
+							{
+							  //put the state abbreviation in the form
+							  bstatename = super_var1[j].long_name;
+							  if(bstatename) break;
+							}
+							//find county
+							if (super_var2[k] == "country")
+							{
+							  //put the county name in the form
+							  bcountrycode = super_var1[j].short_name;
+							  if(bcountrycode) break;
+							}
+						  }
+						}
+					}
+					updateBaddress(bcityname, bstatename, bcountrycode);
+				} else {
+					console.log("Something went wrong " + status);
+				}
+			});
+		});
+		
+		function updateBaddress(bcityname, bstatename, bcountrycode){
+			billingRegionUpdater.update();
+			billingRegionUpdater.update();
+		   //Updating city, state and country
+		   if(bcityname != '' && bcityname != undefined){
+				jQuery('input[name="billing[city]"]').val(bcityname);
+		   } else {
+			   jQuery('input[name="billing[city]"]').val("");
+		   }
+		   if(bcountrycode == 'US' || bcountrycode == 'FR' || bcountrycode == 'AT' || bcountrycode == 'CA' || bcountrycode == 'EE' || bcountrycode == 'FI' || bcountrycode == 'DE' || bcountrycode == 'LV' || bcountrycode == 'LT' || bcountrycode == 'RO' || bcountrycode == 'ES' || bcountrycode == 'CH'){			   
+				jQuery('input[name="billing[region]"]').css('display','none');
+				jQuery('select[id="billing:region_id"]').css('display','block');
+				jQuery('select[id="billing:region_id"] option').filter(function() {
+					return this.text == bstatename; 
+				}).attr('selected', true);
+		   } else {
+				jQuery('select[id="billing:region_id"]').css('display','none');
+				jQuery('input[name="billing[region]"]').css('display','block');
+				jQuery('input[name="billing[region]"]').val(bstatename);				
+		   }
+		   jQuery('select[id="billing:country_id"]').val("").change();
+		   jQuery('select[id="billing:country_id"]').val(bcountrycode).change();
+		}
+	});
+})();
+    </script>
+	<!-- Shipping Information -->
+	<script type="text/javascript">
+jQuery.browser = {};
+(function () {
+	jQuery(document).ready(function(){
+		scityname = "";
+		sstatename = "";  
+		scountycode = "";
+		
+	//Find my location using GEO location
+	jQuery('input[name="shipping[postcode]').bind('change focusout', function() {
+			var zip = jQuery('input[name="shipping[postcode]').val();
+			var geocoder =  new google.maps.Geocoder();
+			geocoder.geocode( { 'address': zip}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					for (i = 0 ; i < results.length ; ++i)
+					{
+						var super_var1 = results[i].address_components;
+						for (j = 0 ; j < super_var1.length ; ++j)
+						{
+						  var super_var2 = super_var1[j].types;
+						  for (k = 0 ; k < super_var2.length ; ++k)
+						  {
+							//find city
+							if (super_var2[k] == "administrative_area_level_2")
+							{
+							  //put the city name in the form
+							  scityname = super_var1[j].long_name;
+							  if(scityname) break;
+							}
+							//find State
+							if (super_var2[k] == "administrative_area_level_1")
+							{
+							  //put the state abbreviation in the form
+							  sstatename = super_var1[j].long_name;
+							  if(sstatename) break;
+							}
+							//find county
+							if (super_var2[k] == "country")
+							{
+							  //put the county name in the form
+							  scountycode = super_var1[j].short_name;
+							  if(scountycode) break;
+							}
+						  }
+						}
+					}
+					updateBaddress(scityname, sstatename, scountycode);
+				} else {
+					console.log("Something went wrong " + status);
+				}
+			});
+		});
+		
+		function updateBaddress(scityname, sstatename, scountycode){
+			shippingRegionUpdater.update();
+			shippingRegionUpdater.update();
+		   //Updating city, state and country
+		   if(scityname != '' && scityname != undefined){
+				jQuery('input[name="shipping[city]"]').val(scityname);
+		   } else {
+			   jQuery('input[name="shipping[city]"]').val("");
+		   }
+		   if(scountycode == 'US' || scountycode == 'FR' || scountycode == 'AT' || scountycode == 'CA' || scountycode == 'EE' || scountycode == 'FI' || scountycode == 'DE' || scountycode == 'LV' || scountycode == 'LT' || scountycode == 'RO' || scountycode == 'ES' || scountycode == 'CH'){			   
+				jQuery('input[name="shipping[region]"]').css('display','none');
+				jQuery('select[id="shipping:region_id"]').css('display','block');
+				jQuery('select[id="shipping:region_id"] option').filter(function() {
+					return this.text == sstatename; 
+				}).attr('selected', true);
+		   } else {
+				jQuery('select[id="shipping:region_id"]').css('display','none');
+				jQuery('input[name="shipping[region]"]').css('display','block');
+				jQuery('input[name="shipping[region]"]').val(sstatename);				
+		   }
+		   jQuery('select[id="shipping:country_id"]').val("").change();
+		   jQuery('select[id="shipping:country_id"]').val(scountycode).change();
+		}
+	});
+})();
+    </script>

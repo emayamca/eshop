@@ -1,0 +1,134 @@
+<config>
+	<modules>
+		<Emipro_SellerpriceRules>
+			<version>1.0.0</version>
+		</Emipro_SellerpriceRules>
+	 </modules>
+<frontend>
+		<routers>
+			<emipro_sellerpricerules>
+			<use>standard</use>
+				<args>
+				<module>Emipro_SellerpriceRules</module>
+				<frontName>sellerpricerules</frontName>
+				</args>
+			</emipro_sellerpricerules>
+		</routers>
+</frontend>	 
+<admin>
+     <routers>
+         <emipro_sellerpricerules>
+            <use>admin</use>
+            <args>
+               <module>Emipro_SellerpriceRules</module>
+               <frontName>sellerpricerules</frontName>
+            </args>
+         </emipro_sellerpricerules>
+      </routers>
+ </admin>
+<global>
+	<helpers>
+      <sellerpricerules>
+        <class>Emipro_SellerpriceRules_Helper</class>
+      </sellerpricerules>
+    </helpers>
+	<blocks>
+		<emipro_sellerpricerules>
+			<class>Emipro_SellerpriceRules_Block</class>
+		</emipro_sellerpricerules>	
+		<adminhtml>
+				<rewrite>
+				<promo_widget_chooser_sku>Emipro_SellerpriceRules_Block_Adminhtml_Promo_Widget_Chooser_Sku</promo_widget_chooser_sku>
+				</rewrite>  
+				<rewrite>
+					<promo_catalog_grid>Emipro_SellerpriceRules_Block_Adminhtml_Promo_Catalog_Grid</promo_catalog_grid>
+				</rewrite>  
+				<rewrite>
+					<promo_catalog_edit_tab_main>Emipro_SellerpriceRules_Block_Adminhtml_Promo_Catalog_Edit_Tab_Main</promo_catalog_edit_tab_main>
+				</rewrite>  
+		</adminhtml>		 
+	</blocks>
+
+	<models>
+        <emipro_sellerpricerules>
+            <class>Emipro_SellerpriceRules_Model</class>
+        </emipro_sellerpricerules>
+  <catalogrule>
+		  <rewrite> 
+				<rule>Emipro_SellerpriceRules_Model_Rule</rule>
+			</rewrite>
+		  </catalogrule>
+		  <catalogrule_resource>
+				<rewrite>
+					<rule>Emipro_SellerpriceRules_Model_CatalogRule_Resource_Rule</rule>
+				</rewrite>
+			</catalogrule_resource>
+    </models>
+	<resources> 
+        <sellerpricerules_setup>
+            <setup>
+                <module>Emipro_SellerpriceRules</module>
+            </setup>
+            <connection>
+                <use>core_setup</use>
+            </connection>
+        </sellerpricerules_setup>
+        <sellerpricerules_write>
+            <connection>
+                <use>core_write</use>
+            </connection>
+        </sellerpricerules_write>
+        <sellerpricerules_read>
+            <connection>
+                <use>core_read</use>
+            </connection>
+        </sellerpricerules_read>
+    </resources>
+	<events>
+	   <controller_action_postdispatch>
+				<observers> 
+					<emipro_sellerpricerules>
+						<class>emipro_sellerpricerules/observer</class>
+						<method>methodcheck</method>  
+					</emipro_sellerpricerules>   
+				</observers> 
+		</controller_action_postdispatch>
+	</events>
+
+</global>
+<adminhtml>
+<menu>
+	<marketplace translate="emipro_sellerpricerules">
+	<children>
+		<seller_pricerules>
+		<title>Seller Catalog Price Rules</title> 
+		<action>sellerpricerules/adminhtml_pricerules</action>
+		 <sort_order>15</sort_order>
+		</seller_pricerules>
+	</children>
+	</marketplace>
+</menu>
+<acl>
+    <resources>
+		  <all>
+                <title>Allow Everything</title>
+            </all>
+		 <admin>
+                <children>
+                    <marketplace translate="emipro_sellerpricerules" >
+						<children>
+                            <!-- child items go here -->
+                            <seller_pricerules translate="emipro_sellerpricerules">
+                                <title>Seller Catalog Price Rules</title>
+                                <sort_order>3</sort_order>
+                            </seller_pricerules>
+                        </children>
+                    </marketplace>
+                </children>
+            </admin>
+        </resources>
+</acl>
+
+</adminhtml>
+
+</config>

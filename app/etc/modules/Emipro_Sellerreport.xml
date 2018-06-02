@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Emipro_Sellerreport>
+      <active>true</active>
+      <codePool>community</codePool>
+      <version>1.0.0</version>
+      <depends><Emipro_Marketplace /></depends>
+    </Emipro_Sellerreport>
+  </modules>
+</config>

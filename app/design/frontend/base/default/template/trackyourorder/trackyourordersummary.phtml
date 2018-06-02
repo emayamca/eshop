@@ -1,0 +1,505 @@
+<?php
+$enableTrackUrOrder = Mage::getStoreConfig ( 'trackyourorder/general/activate_fuel_trackorder_enable' );
+if (intval ( $enableTrackUrOrder ) > 0) {
+    
+    $license = Mage::helper ( 'trackyourorder' )->TrackOrderKey ();
+    $pendingMsg = Mage::getStoreConfig ( 'trackyourorder/ordercomments/trackyourorder_pending' );
+    $processMsg = Mage::getStoreConfig ( 'trackyourorder/ordercomments/trackyourorder_processing' );
+    $holdMsg = Mage::getStoreConfig ( 'trackyourorder/ordercomments/trackyourorder_onhold' );
+    $cancelMsg = Mage::getStoreConfig ( 'trackyourorder/ordercomments/trackyourorder_cancel' );
+    $shipMsg = Mage::getStoreConfig ( 'trackyourorder/ordercomments/trackyourorder_ship' );
+    $_orderid = $this->getRequest ()->getParam ( 'orderId' );
+    $orderDetails = $this->getOrderObject($_orderid);
+    $totalRefunded = $orderDetails->getTotalRefunded ();
+    if ($totalRefunded < .001) {
+        $totalRefunded = '';
+    }
+    
+    $customer = Mage::getSingleton ( 'customer/session' )->getCustomer ();
+    $collection = $this->getOrderItemCollection($orderDetails->getEntityId () );
+    foreach ( $collection as $item ) {
+        $arr [] = $item->getProductOptions ();
+    }
+    
+    if (count ( $orderDetails > 0 ) && trim ( $orderDetails->getCustomerEmail () ) == trim ( $customer->getEmail () )) {
+        
+        $creditMemos = $orderDetails->getCreditmemosCollection ();
+        
+        $isFullCretitmemo = false;
+        
+        if (abs ( $orderDetails->getStore ()->roundPrice ( $orderDetails->getTotalPaid () ) - $orderDetails->getTotalRefunded () ) < .0001) {
+            $isFullCretitmemo = true;
+        }
+        
+        if ($orderDetails->hasShipments ()) {
+            $flag = true;
+            foreach ( $orderDetails->getTracksCollection () as $key => $value ) {
+                if ($value ['carrier_code'] == 'custom' || $value ['carrier_code'] == '') {
+                    $flag = false;
+                }
+            }
+            if ($flag) {
+                $carrierCode = $value ['carrier_code'];
+                $carrierTitle = $value ['title'];
+                $trackNumber = $value ['track_number'];
+            }
+        }
+        
+        $shippingMethod = $orderDetails->getShippingMethod ();
+        
+        $productDetails = '';
+        $billingDetails = '';
+        $paymentDeatils = '';
+        /* * * Product Listing ** */
+        // Iterate through each product listing the sku, the name, the quantity ordered, and the item price
+        foreach ( $orderDetails->getAllItems () as $item ) {
+            $productDetails .= '<div class="product">';
+            $productDetails .= '<div class="line"><p class="name">Product:' . $item->getName () . '</p>';
+            $productDetails .= '<p class="price">' . Mage::helper ( "core" )->currency ( $item->getPrice () ) . '</p>';
+            $productDetails .= '<p class="qty">' . round ( $item->getQtyOrdered (), 0 ) . '</p>';
+            $productDetails .= '<p class="lineprice">' . Mage::helper ( "core" )->currency ( $item->getPrice () * $item->getQtyOrdered () ) . '</p></div>';
+            $productDetails .= '<p class="model">SKU: ' . $item->getSku () . '</p></div>';
+            
+            if ($item->getProductType () == "configurable") {
+                
+                $options = $item->getProductOptions ();
+                
+                $attribueLabel = $options ['attributes_info'] [0] ['label'];
+                $attribueValue = $options ['attributes_info'] [0] ['value'];
+            }
+        }
+        
+        // Get the product id from the item (useful later for loading product attribute information)
+        
+        $shippingDesc = $orderDetails ["shipping_description"];
+        
+        // Get payment information
+        $paymentMethod = $orderDetails->getPayment ()->getMethodInstance ()->getTitle ();
+        
+        // Get billing address information
+        
+        $shippingData = $orderDetails->getShippingAddress ();
+        
+        $country_name = Mage::app ()->getLocale ()->getCountryTranslation ( $shippingData ['country_id'] );
+        
+        // Output the billing address information
+        $billingDetails .= '<div class="billingaddres">';
+        $billingDetails .= '<p class="cname">' . $shippingData ['firstname'] . "&nbsp" . $shippingData ['lastname'] . '</p>';
+        $billingDetails .= '<p class="street">' . $shippingData ['street'] . '</p>';
+        $billingDetails .= '<p class="city">' . $shippingData ['city'] . ", &nbsp" . $shippingData ['region'] . " - " . $shippingData ['postcode'] . '</p>';
+        $billingDetails .= '<p class="country">' . $country_name . '</p></div>';
+        $productId = $item->getData ( 'product_id' );
+        /* * * Billing amounts ** */
+        // These leverage the Magento core helper to format the numbers to currency
+        $paymentDeatils .= '<p class="subtotal">Subtotal:<span class="amount">' . Mage::helper ( "core" )->currency ( $orderDetails->subtotal ) . "</span></p>";
+        $paymentDeatils .= '<p class="tax">Tax:<span class="amount">' . Mage::helper ( "core" )->currency ( $orderDetails->tax_amount ) . "</span></p>";
+        $paymentDeatils .= '<p class="discount">Discount:<span class="amount">' . Mage::helper ( "core" )->currency ( $orderDetails->discount_amount ) . "</span></p>";
+        $paymentDeatils .= '<p class="paid">Amount Paid:<span class="amount">' . Mage::helper ( "core" )->currency ( $orderDetails->total_paid ) . "</span></p>";
+        $orderStatus = $orderDetails->getStatus ();
+        foreach ( $orderDetails->getShipmentsCollection () as $shipment ) {
+            
+            $shippingDate = date('F j, Y', strtotime($shipment->getCreatedAt ()));
+        }
+        $_ordersHistory = array ();
+        foreach ( $orderDetails->getAllStatusHistory () as $orderComment ) {
+            $orderPlaceLabel = $orderComment->getStatusLabel ();
+            $orderPlaced = date('F j, Y', strtotime($orderComment->getCreatedAt()));
+            $_ordersHistory [$orderPlaceLabel] = $orderPlaced;
+        }
+        
+        if ($pendingMsg == '') {
+            $pendingMsg = $this->__ ( "Order has been placed" );
+        }
+        
+        if ($processMsg == '') {
+            $processMsg = $this->__ ( "Order has been processing" );
+        }
+        
+        if ($holdMsg == '') {
+            $holdMsg = $this->__ ( "The order has been put on hold" );
+        }
+        
+        if ($cancelMsg == '') {
+            $cancelMsg = $this->__ ( "Order has been Canceled" );
+        }
+        
+        if ($shipMsg == '') {
+            $shipMsg = $this->__ ( "Order has been Shipped" );
+        }
+ ?>
+  
+    <div class="trackorder-content">
+        <h3><?php echo $this->__('Track your order'); ?></h3>
+       
+        <div class="trackorder-main-index">
+
+            <div class="ordersummary">
+                <h3><?php echo $this->__('Order Details'); ?></h3>
+                <hr>
+                <hr>
+                <ul>
+                    <li><?php echo round($orderDetails['total_item_count'], 0) . "&nbsp;" . $this->__('Item(s)'); ?></li>
+                    <li>
+                        <label><?php echo $this->__('Order ID'); ?>:</label><?php echo $_orderid; ?>
+                    </li>
+                    
+                    <li>
+                        <label><?php echo $this->__('Date'); ?>:</label><?php echo $orderPlaced; ?>
+                    </li>
+                    <?php if($shippingMethod !=''){ ?>
+                    <li>
+                        <label><?php echo $this->__('Shipping Method'); ?>:</label><?php echo $shippingDesc; ?>
+                    </li>
+                    <?php } ?>
+                    <li>
+                        <label><?php echo $this->__('Total'); ?>:</label> <?php echo Mage::helper("core")->currency($orderDetails->getGrandTotal()) ; ?>
+                    </li>
+                    <p><?php if ($orderDetails->getStatus() == 'complete') { ?>
+
+                            <img src="<?php echo $this->getSkinUrl('trackyourorder/complete.gif'); ?>" width="16" height="16"   title="<?php echo $this->__('Completed'); ?>" />
+                            <b> <?php echo $this->__('Completed'); ?></b>
+                        <?php } elseif ($orderDetails->getStatus() == 'closed') { ?>
+                            <img src="<?php echo $this->getSkinUrl('trackyourorder/closed.png'); ?>" width="16" height="16"  title="<?php echo $this->__('Closed'); ?>" />
+                            <b><?php echo $orderDetails->getStatus(); ?></b>
+                         <?php } elseif ($orderDetails->getStatus() == 'pending') { ?>
+                            <img src="<?php echo $this->getSkinUrl('trackyourorder/pending.png'); ?>" width="16" height="16"  title="<?php echo $this->__('Pending'); ?>" />
+                            <b><?php echo $orderDetails->getStatus(); ?></b>
+                         <?php } elseif ($orderDetails->getStatus() == 'processing') { ?>
+                            
+                           <img src="<?php echo $this->getSkinUrl('trackyourorder/process.png'); ?>" width="16" height="16"  title="<?php echo $this->__('Processing'); ?>" />
+                           <b><?php echo $orderDetails->getStatus(); ?></b> 
+                        <?php } elseif ($orderDetails->getStatus() == 'holded') { ?>
+                            <img src="<?php echo $this->getSkinUrl('trackyourorder/hold.png'); ?>" width="16" height="16" title="<?php echo $this->__('Holded'); ?>" />
+                            <b><?php    echo $orderDetails->getStatus(); ?></b>
+                        <?php }else {
+                            echo "<b>".$orderDetails->getStatus()."</b>";
+                        }
+                        ?>
+                    </p>
+                </ul>
+
+            </div>
+            <div class="ordersummaryborder">
+
+            </div>
+            <div class="ordersummary">
+                <h3><?php echo $this->__('Shipping Address'); ?></h3>
+                <hr>
+                <hr>
+                    <?php echo $billingDetails; ?>
+                
+                <?php echo '<p class="trackcus-mobno">'.$this->__('Contact No')."&nbsp;:&nbsp;".$shippingData['telephone']."</p>"; ?>
+                
+                <?php if($paymentMethod != '') { echo '<br /><p>'.$this->__("Payment Method") .':&nbsp;<b>'.$paymentMethod.'</b></p>'; } ?>
+            </div>
+        </div>
+        <div class="trackurorder-carrier">
+            <span><?php echo $this->__('Order ID'); ?>:<b><?php echo $_orderid; ?></b></span>
+    <?php if ($carrierCode){
+        
+        if ($carrierCode=="usps"){
+            $trackUrl = "http://trkcnfrm1.smi.usps.com/PTSInternetWeb/InterLabelInquiry.do?origTrackNum=".$trackNumber;
+        }elseif($carrierCode=="ups"){
+            $trackUrl = "http://wwwapps.ups.com/WebTracking/processInputRequest?tracknum=".$trackNumber;
+        }elseif($carrierCode=="dhl"){
+            $trackUrl = "http://track.dhl-usa.com/TrackByNbr.asp?ShipmentNumber=".$trackNumber;
+        }elseif($carrierCode=="fedex"){
+            $trackUrl = "http://www.fedex.com/Tracking?tracknumbers=".$trackNumber;
+        }else{
+            $trackUrl = "javascript:;";
+        }
+        ?>
+            
+            
+            
+            <div class="right">
+                <span><i><?php echo $this->__('Carrier'); ?> :</i> <b><?php echo $carrierTitle; ?></b></span><span class="track-num"><i><?php echo $this->__('Track Number'); ?>:</i> <a href="<?php echo $trackUrl; ?>" target="_blank" title="<?php echo $carrierTitle; ?>"><?php echo $trackNumber; ?></a></span>
+            </div>
+    <?php } ?>
+                
+        </div>
+        <div> 
+
+            <table border='0' cellspacing="0" width="100%" cellpadding="0" class="trackurorder-tbl">
+                <tr>
+                    <th width="33%;"><?php echo $this->__('Product Details'); ?></th>
+                    <th width="38%" class="trackurorder-shipment" align="left">
+                <div style="overflow: visible;">
+                    <div class="trackurpdt tractpdt_approve">
+                        <?php echo $this->__('Approval'); ?><span></span>
+                    </div>
+                    <div class="trackurpdt tractpdt_process">
+                    <?php if ($orderStatus != "holded") { ?><?php echo $this->__('Processing'); ?> <?php
+                    } else {
+                        echo $this->__('On Hold');
+                    }
+                    ?><span></span>
+                    </div>
+                    <div class="trackurpdt tractpdt_ship">
+                    <?php echo $this->__('Shipping'); ?><span></span>
+                    </div>
+    
+                </div>
+                </th>
+
+                <th width="12%;" class="a-center"><?php echo $this->__('Status'); ?></th>
+                <th width="13%;" class="a-right"><?php echo $this->__('Sub Total'); ?></th>
+                </tr>
+                
+                <?php 
+                $first = TRUE;
+                foreach ($orderDetails->getAllItems() as $item) {
+                    if($item->getParentItemId()==''){
+                      ?>
+                
+                <tr>
+                    <td class="trackurorder-productimg"><div class="left">
+                     <ul>
+                        <?php 
+                        
+                            $productId = $item->getData('product_id');
+
+                            $productCollection = $this->getProductObject($productId); 
+                            
+                            $productName = $productCollection->getName();
+                            $imageUrl = $productCollection->getImageUrl();
+                            $productUrl = $productCollection->getProductUrl();
+                            $qtyOrdered = round($item->getQtyOrdered());
+                         
+                             ?>
+                              <li>
+                                    <div class="fimage left">
+                                <a href="<?php echo $productUrl; ?>" title="<?php echo $productName; ?>">
+                                    <img src="<?php echo $imageUrl; ?>" />
+                                </a>
+                                    </div>
+                                    <div class="content left">
+                        <?php if($item->getProductType()=="configurable"){
+          
+                                    $options = $item->getProductOptions();
+
+                                    $attribueLabel = $options['attributes_info'][0]['label'];
+                                    $attribueValue = $options['attributes_info'][0]['value']; ?>
+
+                            <p><a href="<?php echo $productUrl; ?>" title="<?php echo $productName; ?>">
+                                <?php echo $productName; ?></a>&nbsp;<?php echo $attribueLabel. ":".$attribueValue ?><br />Qty : <?php echo $qtyOrdered; ?></p>
+                            <?php }else if ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) { ?>
+                                    <p><a href="<?php echo $productUrl; ?>" title="<?php echo $productName; ?>">
+                                <?php echo $productName; ?></a></p> <span>Qty : <?php echo $qtyOrdered; ?></span>
+                               <?php     $options = $item->getProductOptions();
+                                      
+                                    foreach ($arr[0]['bundle_options'] as $k =>$v){
+                                       echo  "<b>".$v['label']."</b><br />".$v['value'][0]['qty']."&nbsp;x&nbsp;".$v['value'][0]['title']."&nbsp;".$v['value'][0]['price']."<br />";
+                                    }
+                                
+                            }else{ ?>
+                                  <p><a href="<?php echo $productUrl; ?>" title="<?php echo $productName; ?>">
+                                <?php echo $productName; ?></a></p> <span>Qty : <?php echo $qtyOrdered; ?></span>
+                             <?php  } ?>
+                            
+                      
+                            </div></li> 
+                    </ul></div></td>
+                    
+                    
+                    <?php if($first){  /* Here the bullet info cannot load multiple times */?>
+                   
+                    <td class="vtop trackorder-tdblocks"> 
+ <?php if($orderStatus != "canceled"){ ?>					
+                        <ul class="trackorder-td-content">
+                            <li class="trackorder-tdblock1">
+                                <ul>
+    <?php if (array_key_exists('Pending', $_ordersHistory) && $orderStatus != "closed") { ?>
+                                        <li id="1" class="trackorder-statuspoint <?php 
+        if ($orderStatus == "pending") {
+            echo 'trackorder-approvetab';
+        }
+        ?>">
+
+                                            <p id="trackorder-details-div1" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $pendingMsg; ?></b><br />
+                                            <?php echo $_ordersHistory['Pending']; ?>                    
+
+                                            </p>
+                                        </li>
+                                            <?php } else { ?>
+                                        <li id="1" class="trackorder-statuspoint <?php
+                                                if ($orderStatus == "closed") {
+                                                    echo 'trackorder-canceltab';
+                                                }
+                                                ?>">
+
+                                            <p id="trackorder-details-div1" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php if($orderStatus == 'canceled'){ echo $cancelMsg; } else { echo $this->__('Approved'); } ?></b><br />
+                                        <?php echo $pendingMsg; ?>  <?php echo $_ordersHistory['Pending']; ?>    
+
+                                            </p>
+                                        </li>
+    <?php } ?>
+                                </ul>
+                            </li>                        
+                            <li id="2" class="trackorder-tdblock2 trackorder-statuspoint">
+                                <ul>
+    <?php if (array_key_exists('Processing', $_ordersHistory) || array_key_exists('Pending Payment', $_ordersHistory) && $orderStatus != "closed") { ?>
+                                        <li class="trackorder-processtab <?php
+                                        if ($orderStatus == "processing" || $orderStatus == 'pending_payment' && $shippingDate !='') {
+                                            echo 'trackorder-approvetab';
+                                        }
+                                        ?>">
+
+                                            <p id="trackorder-details-div2" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $processMsg; ?></b><br />
+                                                <?php echo $_ordersHistory['Processing']; ?>
+                                            </p>
+                                        </li>
+                                            <?php } elseif ($orderStatus == "holded") { ?>
+                                        <li class="trackorder-processtab <?php
+                                        if ($orderStatus == "holded") {
+                                            echo 'trackorder-holdtab';
+                                        }
+                                                ?>">
+
+                                            <p id="trackorder-details-div2" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $holdMsg; ?></b><br />
+        <?php
+        if (array_key_exists('On Hold', $_ordersHistory)) {
+            echo $_ordersHistory['On Hold'];
+        }
+        ?>
+                                            </p>
+                                        </li>
+                                    <?php } elseif ($orderStatus == "closed") { ?>
+                                        <li id="2" class="trackorder-statuspoint <?php
+                                        if ($orderStatus == "closed") {
+                                            echo 'trackorder-canceltab';
+                                        }
+                                        ?>">
+
+                                            <p id="trackorder-details-div2" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $cancelMsg; ?></b><br />
+                                        <?php echo $this->__('Order has been Processed'); ?> :
+        <?php echo $_ordersHistory['Processing']; ?>
+
+                                            </p>
+                                        </li>
+
+                                    <?php } else { ?>
+                                        <li id="2" class="trackorder-unprocesstab">
+
+                                            <p id="trackorder-details-div2" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $this->__('Order waiting for Processing'); ?></b><br />
+
+                                            </p>
+                                        </li>
+    <?php } ?>
+                                </ul>
+                            </li>
+                            <li class="trackorder-tdblock3">
+                                <ul>
+                                        <?php if ($orderDetails->hasShipments() && $orderDetails->getStatus() != "closed") { ?>
+                                        <li id="3" class="trackorder-statuspoint <?php
+                                    if ($orderStatus = "complete") {
+                                        echo 'trackorder-approvetab';
+                                    }
+                                    ?>">
+
+                                            <p id="trackorder-details-div3" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $shipMsg; ?></b><br />
+                                            <?php echo date('F j, Y, g:i A', strtotime($shippingDate)); ?>
+                                            </p>
+
+                                        </li>
+                                        <?php } elseif ($orderStatus == "closed") { ?>
+                                        <li id="3" class="trackorder-statuspoint <?php if ($orderStatus == "closed") { echo 'trackorder-canceltab'; } ?>">
+
+                                            <p id="trackorder-details-div3" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $cancelMsg; ?></b><br />
+        <?php
+        if ($orderDetails->hasShipments()) {
+            echo $this->__('Order has been Shipped:') . $shippingDate;
+        }
+        ?>            
+
+                                            </p>
+                                        </li>
+                                    <?php } else { ?> 
+                                        <li id="3" class="trackorder-unprocesstab trackorder-statuspoint" >
+
+                                            <p id="trackorder-details-div3" class="trackorder-details-div" style="display:none;">
+                                                <span class="trackorder-tooltip"></span>
+                                                <b><?php echo $this->__('Order waiting for shipping'); ?></b><br />
+
+                                            </p>
+
+                                        </li>    
+                                            <?php } ?>
+                                </ul>
+                            </li>
+                        </ul>  
+<?php } ?>						
+                    </td>
+					
+                    <td class="a-center" style="padding-top: 45px;"><i class="track-staging"><?php echo $orderDetails->getStatus(); ?></i></td>
+                  <?php $first=FALSE; } else {  echo '<td>&nbsp;</td><td>&nbsp;</td>'; }  ?>  
+                    <td class="a-right" style="padding-top: 28px;font-weight: bold;">
+                        <div class="trackrowtotal">
+                        <ul><?php echo "<li>".Mage::helper("core")->currency($item->getRowTotal())."</li>"; ?></ul>
+                        </div></td>
+                    
+                </tr> 
+               <?php } } ?>  <!-- TR Ends -->
+                
+                <tr>
+                    <td colspan="4"><span class="shippingdetail"><?php echo $this->__('Shipping & Handling') .":<b>".  Mage::helper("core")->currency($orderDetails->getBaseShippingAmount())."</b>"; ?> </span></td>
+                </tr>
+                <tr class="total-row-bottom">
+                    <td colspan="4">
+                        
+                        <span><?php echo $this->__('Total'); ?> : <b><?php echo Mage::helper("core")->currency($orderDetails->getGrandTotal()); ?> </b></span>
+                    </td>
+
+                </tr>
+                <?php if($totalRefunded != ''){ ?>
+                <tr class="total-row-bottom">
+                    <td colspan="4"><span class="shippingdetail"><?php echo $this->__('Toal Refunded') .":<b class='tracrefundprice'>".  Mage::helper("core")->currency($totalRefunded)."</b>"; ?> </span></td>
+                </tr>
+                <?php } ?>
+            </table>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        document.observe("dom:loaded", function() {
+            // initially hide all containers for tab content
+
+            $$('.trackorder-statuspoint').each(function(e) {
+                e.observe("mouseover", function(event) {
+                    $$('.trackorder-details-div').each(Element.hide);
+                    var detailRel = $(this).readAttribute('id');
+                    $('trackorder-details-div' + detailRel).show();
+
+
+                });
+
+            });
+
+        });
+    </script>
+
+<?php } else{ ?>
+            
+            <div class="trackorder-content">
+        <h3><?php echo $this->__('Track your order'); ?></h3>
+        <p><?php echo $this->__('The Order ID and Customer email id in-correct'); ?></p>
+            </div>
+    <?php }
+} ?>

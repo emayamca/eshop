@@ -1,0 +1,8 @@
+<style>
+.one-page-registers, .one-page-guest{float:left !important;}
+</style>
+<div class="buttons-set">
+		<input type="hidden" name="checkout_method" id="login:guest" value="guest" checked="checked" class="radio" />
+		<button type="button" class="button one-page-guest" onclick="checkout.setMethod();"><span><span><?php echo $this->__('Checkout as guest') ?></span></span></button>
+		<button type="button" class="button one-page-registers" onclick="javascript:fuel_sociallogin();" title="<?php echo $this->__('Login (or) Register') ?>"><span><span><?php echo $this->__('Login (or) Register') ?></span></span></button>
+</div>

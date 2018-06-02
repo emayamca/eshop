@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<widgets>
+    <marketplace_productpageblock type="marketplace/productpageblock" translate="name description" module="marketplace">
+        <name>Marketplace Product Page Block</name>
+        <description type="desc">Marketplace Product Page Block</description>
+    </marketplace_productpageblock>
+</widgets> 

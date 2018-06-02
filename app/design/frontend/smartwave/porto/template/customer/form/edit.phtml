@@ -1,0 +1,355 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Edit Account Information') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<form action="<?php echo $this->getUrl('customer/account/editPost') ?>" method="post" id="form-validate" autocomplete="off">
+    <div class="fieldset">
+        <?php echo $this->getBlockHtml('formkey')?>
+        <h2 class="legend"><?php echo $this->__('Account Information') ?></h2>
+        <ul class="form-list">
+            <li class="fields">
+                <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getCustomer())->toHtml() ?>
+            </li>
+		<li>
+			<label for="email"><?php echo $this->__('Email Address') ?></label>
+			<div class="input-box">
+			<label for="email"><?php echo $this->escapeHtml($this->getCustomer()->getEmail()) ?><span id="emailotpModalBtn" <?php if(!$this->getCustomer()->getEmail()){ echo 'style="float:left;font-weight: 600;"'; } ?>><?php if(!$this->getCustomer()->getEmail()){ echo $this->__('Click here to register your email address'); } else { echo $this->__('Edit'); }?></span></label>
+				<input type="hidden" name="email" id="email" value="<?php echo $this->escapeHtml($this->getCustomer()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text" />
+			</div>
+		</li>
+		<!-- Mobile Custom Customer Attribute -->
+		<li>
+			<label for="mobile" class="required"><em>*</em><?php echo $this->__('Mobile Number') ?></label>
+			<div class="input-box">
+			<label for="mobile" class="required"><?php echo $this->escapeHtml($this->getCustomer()->getMobile()) ?><span id="otpModalBtn" <?php if(!$this->getCustomer()->getMobile()){ echo 'style="float:left;font-weight: 600;"'; } ?>><?php if(!$this->getCustomer()->getMobile()){ echo $this->__('Click here to register your mobile number'); } else { echo $this->__('Edit'); }?></span></label>
+				<input type="hidden" autocapitalize="off" autocorrect="off" spellcheck="false" name="mobile" id="mobile" value="<?php echo $this->escapeHtml($this->getCustomer()->getMobile()) ?>" title="<?php echo $this->__('Mobile Number') ?>" class="input-text required-entry" />
+			</div>
+		</li>
+        <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+        <?php if ($_dob->isEnabled()): ?>
+            <li><?php echo $_dob->setDate($this->getCustomer()->getDob())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+        <?php if ($_taxvat->isEnabled()): ?>
+            <li><?php echo $_taxvat->setTaxvat($this->getCustomer()->getTaxvat())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+        <?php if ($_gender->isEnabled()): ?>
+            <li><?php echo $_gender->setGender($this->getCustomer()->getGender())->toHtml() ?></li>
+        <?php endif ?>
+            <li>
+                <label for="current_password" class="required"><em>*</em><?php echo Mage::helper('core')->quoteEscape($this->__('Current Password')) ?></label>
+                <div class="input-box">
+                    <!-- This is a dummy hidden field to trick firefox from auto filling the password -->
+                    <input type="text" class="input-text no-display" name="dummy" id="dummy" />
+                    <input type="password" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Current Password')) ?>" class="input-text required-entry" name="current_password" id="current_password" />
+                </div>
+            </li>
+            <li class="control">
+                <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Change Password')) ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> class="checkbox" /><label for="change_password"><?php echo $this->__('Change Password') ?></label>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="fieldset" style="display:none;">
+        <h2 class="legend"><?php echo $this->__('Change Password') ?></h2>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="password" class="required"><em>*</em><?php echo $this->__('New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo Mage::helper('core')->quoteEscape($this->__('New Password')) ?>" class="input-text required-entry validate-password" name="password" id="password" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirm New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Confirm New Password')) ?>" class="input-text required-entry validate-cpassword" name="confirmation" id="confirmation" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+        <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+        <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Save')) ?>" class="button"><span><span><?php echo $this->__('Save') ?></span></span></button>
+    </div>
+</form>
+<div class="otpOverlay"></div>
+<div class="otpModal">
+    <h4><?php echo $this->__('Mobile Number Verification'); ?><span class="otpCloseBtn"><i class="fa fa-times"></i></span></h4>
+    <hr>
+	<div id="success_msg" class="success-sociallogin" style="display:none"></div>
+	<div id="ajax-mobile">
+		<form id="mobile_number_verification" method="post" action="<?php echo $this->getUrl('sociallogin/index/mobileNumberOTP'); ?>" onkeypress="return event.keyCode != 13;">
+			<div class="input-group">
+				<input type="text" name="mobile" id="mobile" class="form-control required-entry input-box" placeholder="Enter Your mobile number "/>
+				<input type="hidden" name="customer_id" class="input-box" value="<?php echo $this->getCustomer()->getId(); ?>"/>
+				<div id="progress_image_cmbv" style="display: none"><img src="<?php echo $this->getSkinUrl('sociallogin/images/ajax-loader.gif'); ?>" alt="loading please wait" /></div>
+				<button type="submit" class="btn btn-primary otpBtn" id="send_otp_btn"><?php echo $this->__('Send OTP'); ?></button>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="emailotpModal">
+    <h4><?php echo $this->__('Email address verification'); ?><span class="emailotpCloseBtn"><i class="fa fa-times"></i></span></h4>
+    <hr>
+	<div id="success_email_msg" class="success-email-sociallogin" style="display:none"></div>
+	<div id="ajax-email">
+		<form id="email_address_verification" method="post" action="<?php echo $this->getUrl('sociallogin/index/emailAddressOTP'); ?>" onkeypress="return event.keyCode != 13;">
+			<div class="input-group">
+				<input type="text" name="email" id="email" class="form-control validate-email required-entry input-box" placeholder="Enter Your email address "/>
+				<input type="hidden" name="customer_id" class="input-box" value="<?php echo $this->getCustomer()->getId(); ?>"/>
+				<input type="hidden" name="name" class="input-box" value="<?php echo $this->getCustomer()->getName(); ?>"/>
+				<div id="progress_image_email_cmbv" style="display: none"><img src="<?php echo $this->getSkinUrl('sociallogin/images/ajax-loader.gif'); ?>" alt="loading please wait" /></div>
+				<button type="submit" class="btn btn-primary emailotpBtn" id="send_email_otp_btn"><?php echo $this->__('Send Verification'); ?></button>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    function setPasswordForm(arg){
+        $('password').up('.fieldset')[arg ? 'show': 'hide']();
+    }
+
+    <?php if($this->getCustomer()->getChangePassword()): ?>
+        setPasswordForm(true);
+    <?php endif; ?>
+//]]>
+</script>
+<script>
+    jQuery(document).ready(function(){
+       jQuery("#otpModalBtn").click(function(){
+           jQuery(".otpModal").css("display","block");
+           jQuery(".otpOverlay").css("display","block");
+       }); 
+       jQuery(".otpCloseBtn, .otpOverlay").click(function(){
+           jQuery(".otpModal").css("display","none");
+           jQuery(".otpOverlay").css("display","none");
+       }); 
+	   //Email Verification
+	   jQuery("#emailotpModalBtn").click(function(){
+           jQuery(".emailotpModal").css("display","block");
+           jQuery(".otpOverlay").css("display","block");
+       }); 
+       jQuery(".emailotpCloseBtn, .otpOverlay").click(function(){
+           jQuery(".emailotpModal").css("display","none");
+           jQuery(".otpOverlay").css("display","none");
+       }); 
+    });
+	
+	jQuery('#mobile_number_verification').submit(function(e){
+		jQuery('#progress_image_cmbv').show();
+		jQuery('#send_otp_btn').attr('disabled', true);
+		jQuery.post(jQuery('#mobile_number_verification').attr('action'), jQuery('#mobile_number_verification').serialize(), function( data ) {
+			//Based on reponse data displayed error and success message
+			if(data.status == 1){
+				jQuery('#send_otp_btn').attr('disabled', true);
+				jQuery('#progress_image_cmbv').hide();
+				jQuery('#ajax-mobile').html(data.form);
+				jQuery('#success_msg').html(data.message);
+				jQuery('#success_msg').show();
+				jQuery('#success_msg').css('color','#3d6611');
+			} else {
+				jQuery('#send_otp_btn').attr('disabled', false);
+				jQuery('#success_msg').html(data.message);
+				jQuery('#success_msg').show();
+				jQuery('#success_msg').css('color','red');
+				jQuery('#progress_image_cmbv').hide();
+			}
+		}, 'json');
+		return false;		
+	});
+	
+	function save_mobile(){
+		jQuery('#progress_image_cmbv').show();
+		if(jQuery('#otp_code').val() == '' || jQuery('#otp_code').val() == 'undefined'){
+			jQuery('#success_msg').show();
+			jQuery('#success_msg').html('Please enter OTP.');
+		} else {
+			jQuery('#success_msg').hide();
+			jQuery('#verifiy_otp_btn').attr('disabled', true);
+			var form_action = '<?php echo Mage::getUrl('sociallogin/index/saveMobile') ?>';
+			jQuery.ajax({
+				url:form_action,
+				data:jQuery('#save_mobile').serialize(),
+				type:'post',
+				crossDomain: true,
+				dataType:'json',
+				success:function(data){
+					if(data.status == 1){
+						jQuery('#resend_otp').attr('disabled', true);
+						jQuery('#verifiy_otp_btn').attr('disabled', true);
+						jQuery('#success_msg').show();
+						jQuery('#success_msg').html(data.message);
+						jQuery('#success_msg').css('color','#3d6611');
+						setTimeout(function(){ // wait for 5 secs(2)
+							   location.reload();
+						  }, 2000); 
+					} else {
+						jQuery('#verifiy_otp_btn').attr('disabled', false);
+						jQuery('#success_msg').show();
+						jQuery('#success_msg').html(data.message);
+						jQuery('#success_msg').css('color','red');
+					}
+					jQuery('#progress_image_cmbv').hide(); 
+				}
+			});
+		}
+	}
+
+	function resendOtp(){
+		jQuery('#progress_image_mbv').show();
+		jQuery('#resend_otp').attr('disabled', true);
+		var base_url = "<?php echo Mage::getUrl('sociallogin/index/resendOtp/') ?>";
+		jQuery.ajax({
+			url:base_url,
+			data:jQuery('#save_mobile').serialize(),
+			type:'post',
+			crossDomain: true,
+			dataType:'json',
+			success:function(data){
+				if(data.success == 1){
+					jQuery('#resend_otp').attr('disabled', false);
+					jQuery('#success_msg').html(data.message);
+					jQuery('#success_msg').css('color','#3d6611');
+				} else {
+					jQuery('#success_msg').html(data.message);
+					jQuery('#resend_otp').attr('disabled', false);
+					jQuery('#success_msg').css('color','red');
+				}
+				jQuery('#progress_image_mbv').hide(); 
+			}
+		});
+	}
+	//Email Verification Code
+	jQuery('#email_address_verification').submit(function(e){
+		jQuery('#progress_image_email_cmbv').show();
+		jQuery('#send_email_otp_btn').attr('disabled', true);
+		jQuery.post(jQuery('#email_address_verification').attr('action'), jQuery('#email_address_verification').serialize(), function( data ) {
+			//Based on reponse data displayed error and success message
+			if(data.status == 1){
+				jQuery('#send_email_otp_btn').attr('disabled', true);
+				jQuery('#progress_image_email_cmbv').hide();
+				jQuery('#ajax-email').html(data.form);
+				jQuery('#success_email_msg').show();
+				jQuery('#success_email_msg').html(data.message);
+				jQuery('#success_email_msg').css('color','#3d6611');
+			} else {
+				jQuery('#send_email_otp_btn').attr('disabled', false);
+				jQuery('#success_email_msg').show();
+				jQuery('#success_email_msg').html(data.message);
+				jQuery('#success_email_msg').css('color','red');
+				jQuery('#progress_image_email_cmbv').hide();
+			}
+		}, 'json');
+		return false;		
+	});
+	
+	function save_email(){
+		jQuery('#progress_image_email_cmbv').show();
+		if(jQuery('#otp_code').val() == '' || jQuery('#otp_code').val() == 'undefined'){
+			jQuery('#success_email_msg').show();
+			jQuery('#success_email_msg').html('Please enter OTP.');
+		} else {
+			jQuery('#success_email_msg').hide();
+			jQuery('#verifiy_email_otp_btn').attr('disabled', true);
+			var form_action = '<?php echo Mage::getUrl('sociallogin/index/saveEmail') ?>';
+			jQuery.ajax({
+				url:form_action,
+				data:jQuery('#save_email').serialize(),
+				type:'post',
+				crossDomain: true,
+				dataType:'json',
+				success:function(data){
+					if(data.status == 1){
+						jQuery('#resend_email_otp').attr('disabled', true);
+						jQuery('#verifiy_email_otp_btn').attr('disabled', true);
+						jQuery('#success_email_msg').show();
+						jQuery('#success_email_msg').html(data.message);
+						jQuery('#success_email_msg').css('color','#3d6611');
+						setTimeout(function(){ // wait for 5 secs(2)
+							   location.reload();
+						  }, 2000); 
+					} else {
+						jQuery('#verifiy_email_otp_btn').attr('disabled', false);
+						jQuery('#success_email_msg').show();
+						jQuery('#success_email_msg').html(data.message);
+						jQuery('#success_email_msg').css('color','red');
+					}
+					jQuery('#progress_image_email_cmbv').hide(); 
+				}
+			});
+		}
+	}
+
+	function resendEmailOtp(){
+		jQuery('#progress_image_email_cmbv').show();
+		jQuery('#resend_email_otp').attr('disabled', true);
+		var base_url = "<?php echo Mage::getUrl('sociallogin/index/resendVcode/') ?>";
+		jQuery.ajax({
+			url:base_url,
+			data:jQuery('#save_email').serialize(),
+			type:'post',
+			crossDomain: true,
+			dataType:'json',
+			success:function(data){
+				if(data.success == 1){
+					jQuery('#resend_email_otp').attr('disabled', false);
+					jQuery('#success_email_msg').html(data.message);
+					jQuery('#success_email_msg').css('color','#3d6611');
+				} else {
+					jQuery('#success_email_msg').html(data.message);
+					jQuery('#resend_email_otp').attr('disabled', false);
+					jQuery('#success_email_msg').css('color','red');
+				}
+				jQuery('#progress_image_mbv').hide(); 
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+//Disable submit button
+        var formAlreadySubmitted = false;
+        jQuery('#form-validate').submit(function(e){
+           if(dataForm.validator.validate()){
+              if(formAlreadySubmitted){
+                 e.preventDefault();
+                    return false;
+                 }
+                 var submitChildren = jQuery(this).find('button[type=submit]');
+                 submitChildren.attr('disabled', 'disabled');
+                 submitChildren.addClass('disabled');
+                 formAlreadySubmitted = true;
+            }
+        });
+</script>

@@ -1,0 +1,115 @@
+<script type="text/javascript">
+	if (typeof jQuery == 'undefined'){
+		document.write(unescape("%3Cscript src='<?php echo $this->getSkinUrl('js/emipro/jquery.1.11.2.min.js');?>' type='text/javascript'%3E%3C/script%3E"));
+		document.write(unescape("%3Cscript src='<?php echo $this->getSkinUrl('js/emipro/noConflict.js');?>' type='text/javascript'%3E%3C/script%3E"));
+	}
+</script> 
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/emipro/colorbox.css');?>" media="all" />
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/emipro/jquery.colorbox.js');?>"></script>  
+<?php 
+	$_currentproduct = Mage::registry('current_product');
+	if(isset($_currentproduct) && !empty($_currentproduct))
+	{
+		$_prodid = $_currentproduct->getId();
+	 if($_prodid){ 
+			$prodcheck = Mage::getModel('catalog/product')->load($_prodid);
+			$seller = Mage::getModel('marketplace/list')->load($prodcheck->getVendorId(),'product_vendor_id');
+			if(isset($seller) && !empty($seller['id']))
+			{
+				$customerid =''; 
+				if(Mage::getSingleton('customer/session')->isLoggedIn()) {
+					 $customerData = Mage::getSingleton('customer/session')->getCustomer();
+					 $customerid = $customerData->getId();
+				}
+				$sellerdetail = Mage::getModel('marketplace/seller')->load($seller['id'],'seller_id');
+?>
+<div>
+	<div>
+		<a href="<?php echo Mage::getBaseUrl().$sellerdetail['store_url'];?>"  title=""><?php echo $this->__('View All Products');?></a>&nbsp <span class="separator">|</span> &nbsp
+		<!--<a href="<?php //echo Mage::getBaseUrl().$sellerdetail['store_url'];?>"  title=""><?php //echo $this->__('View Profile');?></a> &nbsp <span class="separator">|</span> &nbsp -->
+		<a class='askquestion' href="#questionpopup"  title=""></a>
+		<a href="#popup" onclick="usercheck()" title=""><?php echo $this->__('Ask Product Question');?></a>
+	</div> 
+</div> 
+<div style="display:none;"> 
+	<div id='questionpopup'>
+<div class="modal-body">
+	<div id="askquestionform">
+	<div><span class="label">Subject :</span><input name="questionsubject" class="questionsubject" type="text"></div>
+	<div><span class="label">Question :</span><textarea name="question" class="question"></textarea></div>
+	<div>
+		<input name="product-sku" value="<?php echo $prodcheck['sku'];?>" type="hidden" />
+		<input name="seller-id" value="<?php echo $seller['id'];?>" type="hidden" />
+		<input type="hidden" name="customer_id" value="<?php echo $customerid;?>" />
+	</div> 
+	</div>
+</div>
+<div class="modal_footer">
+	<div class="error" style="height:20px;"></div>
+	<button name="reset" class="questionbutton" onclick="questionreset()">Reset</button>
+	<button name="ask" class="questionbutton" onclick="askquestion()">Question Submit</button>
+</div>
+
+	</div>
+</div>
+<script>
+		jQuery(document).ready(function(){
+			jQuery(".askquestion").colorbox({inline:true, width:"380px"});
+		});
+		function questionreset(){
+			jQuery('.error').text('');
+			jQuery('input[name="questionsubject"]').val('');
+			jQuery('textarea[name="question"]').val('');
+		}
+		function usercheck(){
+			jQuery.ajax({
+				url:'<?php echo Mage::getBaseUrl()."marketplace/seller/currentcustomerid";?>',
+				type:'POST',
+				data:'customerid=1',
+				success:function(result){
+					if(result=='false')
+					{
+						alert('You need to login.'); 
+						return;	
+					}
+					else{
+						jQuery('input[name="customer_id"]').val(result);
+						jQuery('.askquestion').click();
+					}
+				} 
+			});  
+		}
+		function askquestion(){
+			jQuery('.error').text('  ');  
+			jQuery('.error').html("<div style='text-align:center;'><img src='<?php echo $this->getSkinUrl("css/emipro/images/loading.gif");?>' alt='loading' style='width:20px;'/></div>");
+			var customer_id = jQuery('input[name="customer_id"]').val();
+			if(customer_id==''){ 
+				alert('You need to login.');
+				return;
+			} 
+			var questionsubject = jQuery('input[name="questionsubject"]').val();
+			var question = jQuery('textarea[name="question"]').val();
+			var productsku = jQuery('input[name="product-sku"]').val();
+			var sellerid = jQuery('input[name="seller-id"]').val();
+			if(questionsubject!='' && question!=''){
+				jQuery.ajax({
+						url:'<?php echo Mage::getBaseUrl().'marketplace/seller/emailToSeller';?>',
+						type:'POST',
+						data:'customer_id='+customer_id+'&questionsubject='+questionsubject+'&question='+question+'&product-sku='+productsku+'&seller-id='+sellerid,
+						 success:function(data){
+							jQuery('.error').text(data);
+						} 
+					});
+			}else{
+				jQuery('.error').text('Please fill the form.');
+			}
+		}
+		jQuery('.askquestion').click(function(){
+			questionreset();
+		});
+</script>
+<?php
+			}
+ 	   }
+ 	}
+?> 

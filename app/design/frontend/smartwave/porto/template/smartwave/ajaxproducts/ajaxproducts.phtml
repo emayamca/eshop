@@ -1,0 +1,95 @@
+<?php
+    $_helper = Mage::helper("megamenu");
+    $categories = $_helper->getFirstLevelCategories();
+    
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();    
+
+    $aspect_ratio = $this->getData("aspect_ratio");
+    if($aspect_ratio == null) {
+        $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
+    }
+    $ratio_width = $this->getData("image_width");
+    if(!$ratio_width) {
+        $ratio_width = Mage::getStoreConfig("porto_settings/category/ratio_width",$code);
+    }
+    $ratio_height = $this->getData("image_height");
+    if(!$ratio_height) {
+        $ratio_height = Mage::getStoreConfig("porto_settings/category/ratio_height",$code);
+    }
+    
+    if(!$ratio_width)
+        $ratio_width = 300;
+    if(!$ratio_height)
+        $ratio_height = 400;
+        
+    $lazy_owl = $this->getData("lazy_owl");
+    if(!$lazy_owl)
+        $lazy_owl = 0;
+    $product_count = $this->getData("product_count");
+    if(!$product_count)
+        $product_count = 10;
+    $columns = $this->getData("columns");
+    if(!$columns)
+        $columns = 5;
+?>
+<div class="ajax-products">
+    <div class="category-list col-sm-2">
+        <span><?php echo $this->__("Shop by"); ?>:</span>
+        <ul>
+        <?php
+            $i = 0;
+            foreach($categories as $category) {
+                $cat_id = $category->getId();
+                if($category->getIsActive()) {
+                    echo '<li><a class="';
+                    if($i == 0)
+                        echo 'active';
+                    echo '" cat_id="'.$cat_id.'" href="javascript:void(0)"><span>'.$category->getName().'</span></a></li>';
+                    $i++;
+                }
+            }
+        ?>
+        </ul>
+    </div>
+    <div class="category-detail col-sm-10">
+        <div class="ajax_products_loader" style="text-align: center; display: none;"><i class="ajax-loader large animate-spin" style="position: absolute;top: 50%;top: 35vh;margin-top: -20px;left: 50%;margin-left: -18px;"></i></div>
+        <div class="products-area"></div>
+    </div>
+</div>
+<div class="clearer"></div>
+<script type="text/javascript">
+jQuery(function($){
+    $(document).ready(function(){
+        $(".ajax-products > .category-list > ul > li > a").off("click").on("click", function(){
+            url = "<?php echo Mage::getBaseUrl()."swporto/index/showcategoryproducts" ?>";
+            cat_id = $(this).attr("cat_id");
+            $(this).parent().parent().children("li").children("a").removeClass("active");
+            $(this).addClass("active");
+            $(".ajax-products > .category-detail > .ajax_products_loader").fadeIn();
+            
+            $.ajax({
+                method:"POST",
+                url:url,
+                data:{
+                    aspect_ratio:"<?php echo $aspect_ratio; ?>",
+                    image_width:"<?php echo $ratio_width; ?>",
+                    image_height:"<?php echo $ratio_height; ?>",
+                    lazy_owl:"<?php echo $lazy_owl; ?>",
+                    product_count:"<?php echo $product_count; ?>",
+                    columns:"<?php echo $columns; ?>",
+                    category_id:cat_id
+                },
+                dataType: 'json'
+            }).done(function(data){
+                $(".ajax-products > .category-detail > .products-area").html(data.category_products);
+            }).fail(function(){
+                
+            }).always(function(){
+                $(".ajax-products > .category-detail > .ajax_products_loader").fadeOut();
+            });
+        });
+        $(".ajax-products > .category-list > ul > li:first-child > a").click();
+    });
+});
+</script>

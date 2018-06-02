@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+ <acl>
+  <resources>
+   <admin>
+    <children>
+     <system>
+      <children>
+       <config>
+        <children>
+         <trackyourorder translate="title" module="trackyourorder">
+          <title>Track Your Order</title>
+          <sort_order>0</sort_order>
+         </trackyourorder>
+        </children>
+       </config>
+      </children>
+     </system>
+    </children>
+   </admin>
+  </resources>
+ </acl>
+</config>

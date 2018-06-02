@@ -1,0 +1,173 @@
+<?xml version="1.0"?> 
+<config> 
+        <menu>
+					<marketplacedashboard module="marketplace">
+					    <title>Dashboard</title>
+                        <sort_order>0</sort_order>
+                        <action>marketplace/adminhtml_dashboard</action>
+                    </marketplacedashboard>
+         <catalog translate="title" module="catalog">
+            <children>
+					<add_new_product translate="title" module="marketplace">
+                        <title>Add New Product</title>
+                        <sort_order>1</sort_order>
+                        <action>adminhtml/catalog_product/new</action>
+                    </add_new_product> 
+                    <multiple_image_upload translate="title" module="marketplace">
+                        <title>Upload Multiple Product Images</title>
+                        <sort_order>999</sort_order>
+                        <action>marketplace/adminhtml_imageupload</action>
+                    </multiple_image_upload>
+                </children>
+        </catalog>                    
+		<marketplace translate="title" module="marketplace">
+                <title>Marketplace</title>
+                <sort_order>100</sort_order>
+                <children>
+                    <manageseller translate="title" module="marketplace">
+                        <title>Manage Sellers</title>
+                        <sort_order>0</sort_order>
+                        <action>marketplace/adminhtml_index</action>
+                    </manageseller> 
+                    <seller_account translate="title" module="marketplace">
+						<title>My Account</title>
+						<sort_order>0</sort_order>
+						<action>adminhtml/system_account</action>
+                    </seller_account>
+                    <seller_profile translate="title" module="marketplace">
+						<title>My Profile</title>
+						<sort_order>1</sort_order>
+						<action>marketplace/adminhtml_sellerprofile</action>
+                    </seller_profile>
+                    <seller_bankdetails translate="title" module="marketplace">
+						<title>My Bank Details</title>
+						<sort_order>2</sort_order>
+						<action>marketplace/adminhtml_sellerbankdetails</action>
+                    </seller_bankdetails>
+                    <sellercommission translate="title" module="marketplace">
+                        <title>Order Transactions</title>
+                        <sort_order>3</sort_order>
+                        <action>marketplace/adminhtml_commission</action>
+                    </sellercommission>
+                     <seller_rule translate="title" module="marketplace">
+                        <title>Seller Default Commission</title>
+                        <sort_order>3</sort_order>
+                        <action>marketplace/adminhtml_rules</action>
+                    </seller_rule >
+                     <seller_withdraw translate="title" module="marketplace">
+                        <title>My Withdrawals</title>
+                        <sort_order>5</sort_order>
+                        <action>marketplace/adminhtml_withdraw</action>
+                    </seller_withdraw>
+                    <seller_report translate="title" module="marketplace">
+                        <title>Balance Statement</title>
+                        <sort_order>6</sort_order>
+                        <action>marketplace/adminhtml_report</action>
+                    </seller_report>
+                    <seller_category translate="title" module="marketplace">
+                        <title>Category - Attribute Set Mapping</title>
+                        <sort_order>11</sort_order>
+                        <action>marketplace/adminhtml_category</action>
+                    </seller_category>
+                    <seller_review translate="title" module="marketplace">
+                        <title>Seller Review</title>
+                        <sort_order>12</sort_order>
+                        <action>marketplace/adminhtml_review</action>
+                    </seller_review>
+                    <customer_question translate="title" module="marketplace">
+                        <title>Customer Product Question</title>
+                        <sort_order>13</sort_order>
+                        <action>marketplace/adminhtml_questionanswer</action>
+                    </customer_question>
+                </children>
+            </marketplace>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+						<marketplacedashboard>
+							<title>Marketplace Dashboard</title>
+							<sort_order>0</sort_order>
+						</marketplacedashboard> 
+                        <catalog>
+                            <children>
+								<add_new_product>
+									<title>Add New Product</title>
+									<sort_order>1</sort_order>
+								</add_new_product> 
+                                <multiple_image_upload>
+                                    <title>Multiple Image Upload</title>
+                                    <sort_order>999</sort_order>
+                                </multiple_image_upload>
+                            </children>
+                        </catalog>
+                        <marketplace>
+                            <title>Marketplace</title>
+                            <sort_order>1000</sort_order>
+                            <children>
+							    <manageseller>
+                                    <title>Manage Sellers</title>
+                                    <sort_order>0</sort_order>
+                                </manageseller>
+                                <seller_account translate="title" module="marketplace">
+									<title>My Account</title>
+									<sort_order>0</sort_order> 
+								</seller_account>
+                                <seller_profile>
+									<title>My Profile</title>
+									<sort_order>1</sort_order>
+								</seller_profile>  
+								<seller_bankdetails>
+									<title>My Bank Details</title>
+									<sort_order>1</sort_order>
+								</seller_bankdetails>  
+							    <sellercommission>
+                                    <title>Order Transactions</title>
+                                    <sort_order>2</sort_order>
+                                </sellercommission>
+                                <seller_rule>
+                                    <title>Seller Default Commission</title>
+                                    <sort_order>3</sort_order>
+                                </seller_rule>
+                                 <seller_withdraw>
+                                    <title>My Withdrawals</title>
+                                    <sort_order>5</sort_order>
+                                </seller_withdraw>
+                                 <seller_report>
+                                    <title>Balance Statement</title>
+                                    <sort_order>6</sort_order>
+                                </seller_report>
+								<seller_category>
+									<title>Category - Attributeset Mapping</title>
+									<sort_order>11</sort_order>
+								</seller_category>
+								<seller_review>
+									<title>Seller Review</title>
+									<sort_order>12</sort_order>
+								</seller_review>
+								<customer_question>
+									<title>Customer Question</title>
+									<sort_order>13</sort_order>
+								</customer_question>
+                            </children>
+                        </marketplace>
+						<system>
+                            <children>
+                                <config>  
+                                    <children>
+                                        <marketplace_setting>
+                                            <title>Marketplace Setting</title>
+                                        </marketplace_setting>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+</config>

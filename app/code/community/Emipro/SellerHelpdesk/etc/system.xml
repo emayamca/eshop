@@ -1,0 +1,78 @@
+<config>
+    <sections>
+        <sellersupport translate="label" module="emipro_sellerhelpdesk">
+            <label>Seller Support Tickets</label>
+            <tab>emipro</tab> 
+            <sort_order>2000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+			<groups>
+                <emipro_group translate="label" module="emipro_sellerhelpdesk">
+                    <label>Email Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+						<ticket_admin translate="label">
+                            <label>Select Supper Admin</label>
+							<source_model>emipro_sellerhelpdesk/system_config_source_adminuser</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </ticket_admin>
+                    </fields>
+                </emipro_group>
+                
+                <emipro_template translate="label" module="emipro_sellerhelpdesk">
+                    <label>Ticket Email Template</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+						<ticket_create translate="label">
+                            <label>New Ticket Template for Admin</label>
+							<source_model>emipro_sellerhelpdesk/system_config_source_email_template</source_model>
+							<frontend_type>select</frontend_type>
+							<comment>Email will be sent to admin, when seller create new ticket.</comment>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </ticket_create>
+                     <new_sellerticket_create translate="label">
+                            <label>New Ticket Template for Seller</label>
+							<source_model>emipro_sellerhelpdesk/system_config_source_email_template</source_model>
+							<frontend_type>select</frontend_type>
+							<comment>Email will be sent to seller, when seller create new ticket.</comment>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </new_sellerticket_create>
+                     <ticket_conversation translate="label">
+                            <label>Ticket conversation Template</label>
+							<source_model>emipro_sellerhelpdesk/system_config_source_email_template</source_model>
+							<frontend_type>select</frontend_type>
+							<comment>When Seller/admin put new message on ticket, another person will get email.</comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </ticket_conversation>
+                    
+                    </fields>
+                </emipro_template>
+                
+            </groups>
+        </sellersupport>
+    </sections>
+</config>

@@ -1,0 +1,23 @@
+<layout> 
+
+  <checkout_cart_index translate="label">
+        <reference name="checkout.cart.shipping">
+             <action method="setTemplate"><template>flexishipping/shipping.phtml</template></action>
+         </reference>
+   </checkout_cart_index>
+   <checkout_onepage_shippingmethod>
+        <!-- Mage_Checkout -->
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <block type="checkout/onepage_shipping_method_available" name="root" output="toHtml" template="flexishipping/available.phtml"/>
+    </checkout_onepage_shippingmethod>
+    <catalog_product_view>
+		 
+<reference name="product.info.extrahint">
+			 
+		<block type="catalog/product_view" name="emipro.flexishipping"  template="flexishipping/checkshipping.phtml" />
+     
+		 </reference>
+    </catalog_product_view>
+</layout> 

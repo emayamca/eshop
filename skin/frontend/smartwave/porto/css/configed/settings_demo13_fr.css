@@ -1,0 +1,35 @@
+/**
+ * WARNING: Do not change this file. Your changes will be lost.
+ * 2015-04-06 14:10:52 */
+
+.footer-top { padding: 0; }
+.footer-top > .container { width: 100%; }
+.footer-top > .container > .row > .col-sm-12 { padding: 0; }
+.col-main .category-products .products-grid { margin-left: -15px !important; margin-right: -15px !important; }
+.col-main .category-products .products-grid li.item { padding-left: 15px !important; padding-right: 15px !important; }
+.product-image-area { padding: 0; border: 0; border-radius: 0; }
+.col-main .category-products .products-grid li.item .product-image { border-radius: 0; }
+a.quickview-icon { border-radius: 0; }
+.top-container >.breadcrumbs {margin-top: 15px;}
+.header-container.type11 .main-nav .menu>li .nav-sublist-dropdown{border:0;}
+.top-container >.breadcrumbs {margin-top: 5px; margin-bottom: -15px;}    .catalog-category-view .breadcrumbs > .container, .catalog-product-view .breadcrumbs > .container, .catalog-category-view .main-container > .container, .catalog-product-view .main-container > .container { width: 100%; }
+
+    @media (min-width:1280px){
+        .catalog-category-view .breadcrumbs > .container, .catalog-product-view .breadcrumbs > .container, .catalog-category-view .main-container > .container, .catalog-product-view .main-container > .container { padding: 0 20px }
+        .catalog-category-view  .col2-left-layout .col-main { width: 80%; }
+        .catalog-category-view  .col2-left-layout .col-left { width: 20%; }
+        .catalog-category-view  .col2-right-layout .col-main { width: 80%; }
+        .catalog-category-view  .col2-right-layout .col-right { width: 20%; }
+        .catalog-category-view  .col3-layout .col-wrapper { width: 80%; }
+        .catalog-category-view  .col3-layout .col-main { width: 75%; }
+        .catalog-category-view  .col3-layout .col-left { width: 25%; }
+        .catalog-category-view  .col3-layout .col-right { width: 20%; }
+        .catalog-product-view  .col2-left-layout .col-main { width: 80%; }
+        .catalog-product-view  .col2-left-layout .col-left { width: 20%; }
+        .catalog-product-view  .col2-right-layout .col-main { width: 80%; }
+        .catalog-product-view  .col2-right-layout .col-right { width: 20%; }
+        .catalog-product-view  .col3-layout .col-wrapper { width: 80%; }
+        .catalog-product-view  .col3-layout .col-main { width: 75%; }
+        .catalog-product-view  .col3-layout .col-left { width: 25%; }
+        .catalog-product-view  .col3-layout .col-right { width: 20%; }
+    }

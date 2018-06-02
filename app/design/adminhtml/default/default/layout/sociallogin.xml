@@ -1,0 +1,1 @@
+<?xml version="1.0"?><layout version="0.1.0">    <adminhtml_system_config_edit>        <reference name="head">                    <action method="addCss">                <stylesheet>sociallogin/sociallogo.css</stylesheet>            </action>        </reference>    </adminhtml_system_config_edit></layout> 

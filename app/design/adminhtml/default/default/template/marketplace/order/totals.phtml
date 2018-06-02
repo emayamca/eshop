@@ -1,0 +1,142 @@
+<?php
+	  $current_user = Mage::getSingleton('admin/session')->getUser();
+	$_roleId=$current_user->getRole()->getRoleId();
+
+	$roleId=Mage::helper("marketplace")->getVendorRoleId();
+?>
+<?php 
+// if($_roleId!=$roleId)
+{
+?>
+<?php /*$_source = $this->getSource(); ?>
+<?php $this->setPriceDataObject($_source) ?>
+<?php if ($_source): ?>
+<table cellspacing="0" width="100%">
+    <?php echo $this->getChildHtml('main'); ?>
+    <?php echo $this->getChildHtml('footer'); ?>
+</table>
+<?php endif;*/ ?>
+<table cellspacing="0" width="100%">
+    <col />
+    <col width="1" />
+    <?php $_totals = $this->getTotals('')?>
+    <?php if ($_totals):?>
+    <tbody>
+    <?php
+        $sellerorderdata = Mage::getSingleton('adminhtml/session')->getSellerOrderData(true);
+        $sellerid = Mage::helper("marketplace")->getSellerIdfromLoginUser();
+    ?>
+    <?php foreach ($_totals as $_code => $_total): ?>
+        <?php
+        if($sellerid)
+        {
+            if(isset($sellerorderdata) && !empty($sellerorderdata))
+            {
+                if ($_total->code=='subtotal') {
+                    $_total->value = $sellerorderdata['sellersubtotal'];
+                    $_total->base_value = $sellerorderdata['sellerbasesubtotal'];
+                }
+                if ($_total->code=='shipping') {
+                    $order_id = $this->getRequest()->getParam('order_id');
+                    $orderobj = Mage::getModel('sales/order')->load($order_id);
+                    $shippingmethod = $orderobj->getShippingMethod();  
+                    if($shippingmethod=='flexishipping_flexishipping'){
+                        $_total->value = $sellerorderdata['sellershippingcharge']; 
+                        $_total->base_value = $sellerorderdata['sellerbaseshippingcharge']; 
+                    }else{
+                        $_total->value = 0;
+                        $_total->base_value = 0;
+                    }
+                }    
+                if($_total->code=='discount')
+                {
+                    $_total->value = '-'.$sellerorderdata['sellerdiscountamount'];
+                    $_total->base_value = '-'.$sellerorderdata['sellerbasediscountamount'];    
+                } 
+                if($_total->code=='tax'){
+                    $_total->value = $sellerorderdata['sellertaxamount'];
+                    $_total->base_value = $sellerorderdata['sellerbasetaxamount'];
+                }  
+            }
+        }
+        ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?php
+                if($sellerid && $_total->code=='tax'){
+                    $order_id = $this->getRequest()->getParam('order_id');
+                    $orderobj = Mage::getModel('sales/order')->load($order_id);
+                    $orderbaseSymbolCode = Mage::app()->getLocale()->currency($orderobj->getOrderBaseCurrencyCode())->getSymbol();
+                    $orderSymbolCode = Mage::app()->getLocale()->currency($orderobj->getOrderCurrencyCode())->getSymbol();
+                ?>
+                <tr>
+                    <td class="label">
+                        <div class="summary-collapse"><?php echo $this->__('Tax');?></div>
+                    </td> 
+                   <td>
+                    <strong><span class="price"></span><?php echo $orderbaseSymbolCode.$sellerorderdata['sellerbasetaxamount'];?></strong><br>[<span class="price"><?php echo $orderSymbolCode.$sellerorderdata['sellertaxamount'];?></span>]      
+                   </td>
+                </tr>
+                <?php
+                }else{
+                    echo $this->getChildHtml($_total->getBlockName(), false);
+                }
+            ?>
+        <?php else:?>
+        <tr class="<?php echo $_code?>">
+            <td <?php echo $this->getLabelProperties()?> class="label">
+                <?php if ($_total->getStrong()):?>
+                <strong><?php echo $_total->getLabel()?></strong>
+                <?php else:?>
+                <?php echo $_total->getLabel()?>
+                <?php endif?>
+            </td>
+            <?php if ($_total->getStrong()):?>
+            <td <?php echo $this->getValueProperties()?> class="emph">
+                <strong><?php echo $this->formatValue($_total) ?></strong>
+            <?php else:?>
+            <td <?php echo $this->getValueProperties()?>>
+                <?php echo $this->formatValue($_total) ?>
+            <?php endif?>
+            </td>
+        </tr>
+        <?php endif?>
+    <?php endforeach?>
+    </tbody>
+    <?php endif?>
+
+    <?php $_totals = $this->getTotals('footer')?>
+    <?php if ($_totals):?>
+    <tfoot>
+    <?php foreach ($this->getTotals('footer') as $_code => $_total): ?>
+        <?php
+        if($sellerid){
+            if(isset($sellerorderdata) && !empty($sellerorderdata))
+            {
+                if($_total->code=='grand_total')
+                { 
+                    $_total->value = ($sellerorderdata['sellersubtotal']+$sellerorderdata['sellershippingcharge']+$sellerorderdata['sellertaxamount']-$sellerorderdata['sellerdiscountamount']);   
+                    $_total->base_value = ($sellerorderdata['sellerbasesubtotal']+$sellerorderdata['sellerbaseshippingcharge']+$sellerorderdata['sellerbasetaxamount']-$sellerorderdata['sellerbasediscountamount']);      
+                } 
+                else{ 
+                    continue;
+                }
+            } 
+        }
+        ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+        <?php else:?>
+        <tr class="<?php echo $_code?>">
+            <td <?php echo $this->getLabelProperties()?> class="label">
+                <strong><?php echo $_total->getLabel()?></strong>
+            </td>
+            <td <?php echo $this->getValueProperties()?> class="emph">
+                <strong><?php echo $this->formatValue($_total) ?></strong>
+            </td>
+        </tr>
+        <?php endif?>
+    <?php endforeach?>
+    </tfoot>
+    <?php endif?>
+</table>
+<?php }?>

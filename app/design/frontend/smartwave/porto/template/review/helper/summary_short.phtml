@@ -1,0 +1,110 @@
+<?php if ($this->getReviewsCount()): ?>
+    <div class="ratings">
+	<a target="_blank" href="<?php echo $this->getUrl('review/product/list/').'id/'.$this->getProduct()->getId(); ?>">
+        <?php if ($this->getRatingSummary()):?>
+		<?php
+		$_productId = $this->getProduct()->getId();
+		$class1 = "rating-star-pop-up-$_productId";
+		$class2 = "mouse-hover-review-$_productId";
+		$jsclass1 = ".rating-star-pop-up-$_productId";
+		$jsclass2 = ".mouse-hover-review-$_productId";
+		?>
+            <div class="rating-box <?php echo $class1; ?>">
+                <div class="rating" style="width:<?php echo $this->getRatingSummary() ?>%"></div>
+            </div>
+			<div class="list-page-review-popup star-rating-div <?php echo $class2; ?>" style="display:none;">
+			<?php 
+			//Rating count
+			$count = count(Mage::helper('trackyourorder')->totalRatings($_productId));
+			//Average rating
+			$advanced_avg = Mage::helper('trackyourorder')->averageRatings($_productId); 
+			//Total Ratings
+			$ratings = Mage::helper('trackyourorder')->totalRatings($_productId); 
+			?>
+			<div class="rating_top group">	
+				<?php if($advanced_avg!=0): ?>
+				<h5 class="fleft">
+					<strong> <?php echo round($advanced_avg/20,1); ?> <span class="out_of"><?php echo $this->__(" out of "); ?></span> <?php echo $this->__("5 stars"); ?></strong>
+				</h5>
+				<?php endif; ?>
+			</div>
+				<!-- Stars based on ratings -->
+				<?php
+				$first_star=0;
+				$second_star=0;
+				$third_star=0;
+				$fourth_star=0;
+				$fifth_star=0;
+				// All Rating iteration
+				$ratings = Mage::helper('trackyourorder')->totalRatings($_productId);
+				foreach ($ratings as $individual_star) {
+					if($individual_star==20) {
+						$first_star=$first_star+1;
+
+					} elseif ($individual_star==40) {
+						$second_star=$second_star+1;
+					} elseif ($individual_star==60) {
+						$third_star=$third_star+1;
+					} elseif ($individual_star==80) {
+						$fourth_star=$fourth_star+1;
+					} else {
+						$fifth_star=$fifth_star+1;
+					}
+				}
+				// Total Ratings
+				$advanced_total=count($ratings);
+				// Individual Ratings 
+				$advanced_one=ceil(($first_star/$advanced_total)*100);
+				$advanced_two=ceil(($second_star/$advanced_total)*100);
+				$advanced_three=ceil(($third_star/$advanced_total)*100);
+				$advanced_four=ceil(($fourth_star/$advanced_total)*100);
+				$advanced_five=ceil(($fifth_star/$advanced_total)*100);
+				// Checking Rating is available or not
+			$ratingbar_color = 'ffce00'; ?>
+			<div class="individual-star-ratings">
+				<ul class="rating-histogram">
+					<li class="advanced-font-small"><span><?php echo $this->__('5 Star');?></span>
+						<div class="rating-bars">
+							<div class="progress  " style="width:<?php echo $advanced_five;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+						</div> &nbsp;<strong><?php echo $fifth_star;?> </strong>
+					</li>
+					<li class="advanced-font-small"><span><?php echo $this->__('4 Star');?></span>
+						<div class="rating-bars">
+							<div class="progress  " style="width:<?php echo $advanced_four;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+						</div> &nbsp;<strong><?php echo $fourth_star;?> </strong>
+					</li>
+					<li class="advanced-font-small"><span><?php echo $this->__('3 Star');?></span>
+						<div class="rating-bars">
+							<div class="progress  " style="width:<?php echo $advanced_three;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+						</div> &nbsp;<strong><?php echo $third_star;?> </strong>
+					</li>
+					<li class="advanced-font-small"><span><?php echo $this->__('2 Star');?></span>
+						<div class="rating-bars">
+							<div class="progress  " style="width:<?php echo $advanced_two;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+						</div> &nbsp;<strong><?php echo $second_star;?> </strong>
+					</li>
+					<li class="advanced-font-small"><span><?php echo $this->__('1 Star');?></span>
+						<div class="rating-bars">
+							<div class="progress  " style="width:<?php echo $advanced_one;?>%; background-color: <?php echo '#'.$ratingbar_color; ?> !important;"></div>
+						</div> &nbsp;<strong><?php echo $first_star;?> </strong>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript" data-footer-js-skip="true">
+		jQuery('<?php echo $jsclass1 ?>')
+		  .mouseover(function() {
+			i += 1;
+			jQuery( '<?php echo $jsclass2 ?>' ).show();
+		  })
+		  .mouseout(function() {
+			jQuery( '<?php echo $jsclass2 ?>' ).hide();
+		  });
+		</script>
+        <?php endif;?>
+        <!--<span class="amount"><a href="#" onclick="var t = opener ? opener.window : window; t.location.href='<?php //echo $this->getReviewsUrl() ?>'; return false;"><?php //echo $this->__('%sReview(s)', '<span class="number">'.$this->getReviewsCount().'</span>') ?></a></span>-->
+    </a>
+	</div>
+<?php elseif ($this->getDisplayIfEmpty()): ?>
+    <p class="no-rating"><a href="<?php echo $this->getReviewsUrl() ?>#review-form"><?php echo $this->__('Be the first to review this product') ?></a></p>
+<?php endif; ?>

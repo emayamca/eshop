@@ -1,0 +1,34 @@
+<!--@subject Email Verification Code! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+@-->
+
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="action-content">
+                        <h2 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Hello {{var name}},</h2>
+                        <p style="font-size:14px;margin:10px;">Your email {{var email}} must be confirmed before updating into our website.</p>
+                        <p style="margin-left:10px;margin-right: 10px;float: left;">Verification code: <h2 style="color: #1ca89f;">{{var verificationcode}}</h1></p>
+                        <p style="font-size:12px;font-weight:600;margin:30px 10px 10px 10px;">
+                            If you have any questions, please feel free to contact us at
+                            <a href="mailto:{{var store_email}}" style="color:#2fa4fa;text-decoration:none;">{{var store_email}}</a>
+                            {{depend store_phone}} or by phone at <a href="tel:{{var phone}}" style="color:#2fa4fa;text-decoration:none;">{{var store_phone}}</a>{{/depend}}.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

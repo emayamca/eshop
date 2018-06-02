@@ -1,0 +1,42 @@
+<?php
+    $category = Mage::getModel('catalog/category');
+    if(is_object(Mage::registry('current_category'))){
+        $currentCategoryPath=Mage::registry('current_category')->getPathIds();
+    }else{
+        $currentCategoryPath = array();
+    }
+    $category->load(Mage::app()->getStore()->getRootCategoryId());
+    $childrenString = $category->getChildren();
+    $children = explode(',',$childrenString);
+    $categoryOptions='';
+    foreach($children as $c){
+        if($this->getRequest()->getParam('cat')==""){
+            $selected = (in_array($c, $currentCategoryPath))?'SELECTED':'';
+        }else{
+            $selected = ($this->getRequest()->getParam('cat')==$c)?'SELECTED':'';
+    }
+    $categoryOptions.= '<option value="' . $c . '" ' . $selected . '>' . $category->load($c)->getName() . '</option>' . "\n";
+    }
+    ?>
+<form id="search_mini_form" action="<?php echo $this->helper('catalogsearch')->getResultUrl() ?>" method="get" enctype="multipart/form-data">
+    <div class="form-search">
+        <input id="search" autocomplete="OFF" type="text" name="<?php echo $this->helper('catalogsearch')->getQueryParamName() ?>" value="<?php echo $this->helper('catalogsearch')->getEscapedQueryText() ?>" class="input-text" />
+		<button type="submit" title="<?php echo $this->__('Search') ?>" class="button meta-search-btn"><i class="icon-search"></i><i class="spinner"></i></button>
+		<div id="search_autocomplete_result" class="search-autocomplete_result"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+            var searchForm = new Varien.searchForm('search_mini_form', 'search', '<?php echo $this->helper('autosuggestion')->getSearchBoxDefaultText() ?>');
+            var options, a;
+            (function(jQuery){
+				jQuery(document).ready(function() {
+				   jQuery('#search').autocomplete({
+						serviceUrl:'<?php echo $this->helper('autosuggestion')->getSuggestUrl() ?>',
+						minChars:2
+					});
+				});
+            })(jQuery);
+            
+        //]]>
+        </script>
+    </div>
+</form>

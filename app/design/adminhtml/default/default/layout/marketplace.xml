@@ -1,0 +1,278 @@
+<layout>
+	<default>
+		<reference name="head">
+			 <action method="setTemplate"><template>marketplace/page/head.phtml</template></action>
+			 <action method="addJs"><file>emipro/jscolor/jscolor.js</file></action>
+		</reference>
+		<reference name="header">
+			 <action method="setTemplate"><template>marketplace/page/header.phtml</template></action>
+		</reference>
+		 <reference name="footer">
+			 <action method="setTemplate"><template>marketplace/page/footer.phtml</template></action>
+		</reference>
+	</default>
+	<adminhtml_sales_order_invoice_new>
+		<reference name="order_info">
+			<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+		</reference> 
+		<reference name="form">  
+			<action method="setTemplate"><template>marketplace/order/invoice/create/form.phtml</template></action>
+		</reference> 
+		<reference name="order_items">
+			<action method="setTemplate"><template>marketplace/invoice/create/items.phtml</template></action>
+			<action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>marketplace/sales/items/column/name.phtml</template></action>
+            <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>marketplace/sales/items/column/name.phtml</template><type>grouped</type></action>
+		</reference> 
+	</adminhtml_sales_order_invoice_new>
+	
+<adminhtml_sales_order_invoice_updateqty> 
+	<reference name="order_items">
+		<action method="setTemplate"><template>marketplace/invoice/create/items.phtml</template></action>
+		<action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>marketplace/sales/items/column/name.phtml</template></action>
+        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>marketplace/sales/items/column/name.phtml</template><type>grouped</type></action>
+	</reference> 
+</adminhtml_sales_order_invoice_updateqty> 
+
+	 <adminhtml_sales_order_invoice_view>
+		<reference name="order_info">
+			<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+		</reference>  
+		<reference name="form"> 
+			<action method="setTemplate"><template>marketplace/order/invoice/view/form.phtml</template></action>
+		</reference> 
+		<reference name="invoice_items">
+			<action method="setTemplate"><template>marketplace/invoice/view/items.phtml</template></action>
+			<action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>marketplace/sales/items/column/name.phtml</template></action>
+            <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>marketplace/sales/items/column/name.phtml</template><type>grouped</type></action>
+		</reference> 
+	</adminhtml_sales_order_invoice_view>
+	
+<adminhtml_sales_order_shipment_new>
+	<reference name="order_info">
+		<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+	</reference> 
+	<reference name="form"> 
+		<action method="setTemplate"><template>marketplace/order/shipment/create/form.phtml</template></action>
+	</reference>
+	<reference name="order_items">
+	<action method="setTemplate"><template>marketplace/shipment/create/items.phtml</template></action>
+	<action method="addItemRender">
+			<type>default</type>
+			<block>adminhtml/sales_items_renderer_default</block>
+			<template>marketplace/order/shipment/create/items/renderer/default.phtml</template>
+	</action>
+	
+	<action method="addItemRender">
+			<type>bundle</type>
+			<block>bundle/adminhtml_sales_order_items_renderer</block>
+			<template>marketplace/bundle/sales/shipment/create/items/renderer.phtml</template>
+	</action>
+	
+	</reference>
+</adminhtml_sales_order_shipment_new>
+<adminhtml_sales_order_shipment_view>
+	<reference name="order_info">
+		<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+	</reference> 
+	<reference name="form"> 
+		<action method="setTemplate"><template>marketplace/order/shipment/view/form.phtml</template></action>
+	</reference>
+<reference name="shipment_items">
+	<action method="setTemplate"><template>marketplace/shipment/view/items.phtml</template></action>
+	<action method="addItemRender">
+			<type>default</type>
+			<block>adminhtml/sales_items_renderer_default</block>
+			<template>marketplace/order/shipment/view/items/renderer/default.phtml</template>
+		</action>
+	
+	<action method="addItemRender">
+			<type>bundle</type>
+			<block>bundle/adminhtml_sales_order_items_renderer</block>
+			<template>marketplace/bundle/sales/shipment/view/items/renderer.phtml</template>
+	</action>
+	</reference>
+</adminhtml_sales_order_shipment_view>	
+
+<adminhtml_sales_order_creditmemo_new>
+	<reference name="order_info"> 
+		<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+	</reference> 
+	<reference name="form"> 
+		<action method="setTemplate"><template>marketplace/order/creditmemo/create/form.phtml</template></action>
+	</reference> 
+	<reference name="order_items">
+		<action method="setTemplate"><template>marketplace/creditmemo/create/items.phtml</template></action>
+		<remove name="order_totalbar"/>
+	</reference>
+</adminhtml_sales_order_creditmemo_new>
+<adminhtml_sales_order_creditmemo_updateqty> 
+	<reference name="order_items">
+		<action method="setTemplate"><template>marketplace/creditmemo/create/items.phtml</template></action>
+		<remove name="order_totalbar"/>
+	</reference>
+</adminhtml_sales_order_creditmemo_updateqty>
+
+<adminhtml_sales_order_creditmemo_view>
+	<reference name="order_info">
+		<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+	</reference> 
+	<reference name="form"> 
+		<action method="setTemplate"><template>marketplace/order/creditmemo/view/form.phtml</template></action>
+	</reference>
+	<reference name="creditmemo_items"> 
+		<action method="setTemplate"><template>marketplace/creditmemo/view/items.phtml</template></action>
+	</reference> 
+</adminhtml_sales_order_creditmemo_view>	
+<adminhtml_sales_order_view>
+	<reference name="order_tab_info">
+		<action method="setTemplate"><template>marketplace/order/tab/info.phtml</template></action>
+	</reference>
+	<reference name="order_info">
+		<action method="setTemplate"><template>marketplace/order/view/info.phtml</template></action>
+	</reference> 
+<reference name="order_items">
+	<action method="setTemplate"><template>marketplace/order/view/items.phtml</template></action>
+	<action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>marketplace/sales/items/column/name.phtml</template></action>
+	<action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>marketplace/sales/items/column/name.phtml</template><type>grouped</type></action>
+</reference>
+<reference name="order_totals">
+	<action method="setTemplate"><template>marketplace/order/totals.phtml</template></action>
+</reference>
+</adminhtml_sales_order_view>	
+    <marketplace_adminhtml_index_index>
+        <reference name="content">
+            <block name="seller.list.grid" type="marketplace/adminhtml_sellerlist" />
+        </reference>
+    </marketplace_adminhtml_index_index>
+    <marketplace_adminhtml_index_edit>
+		<reference name="head">
+		   <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadTinyMce"><flag>1</flag></action>
+            <action method="addJs"><script>mage/adminhtml/variables.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/wysiwyg/widget.js</script></action>
+            <action method="addJs"><script>lib/flex.js</script></action>
+            <action method="addJs"><script>lib/FABridge.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/flexuploader.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/browser.js</script></action>
+		</reference> 
+        <reference name="content">
+            <block type="marketplace/adminhtml_sellerlist_edit" name="seller_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="marketplace/adminhtml_sellerlist_edit_tabs" name="seller_edit_tabs"></block>
+        </reference>
+    </marketplace_adminhtml_index_edit>
+    <marketplace_adminhtml_product>
+        <reference name="content">
+            <block name="seller_info" type="marketplace/adminhtml_sellerlist_edit" />
+        </reference>
+    </marketplace_adminhtml_product>
+    <adminhtml_catalog_product_edit>
+		<reference name="content">
+			<block type="core/template" name="editproductvendor" template="marketplace/productedit.phtml" />
+		</reference>
+	</adminhtml_catalog_product_edit>
+	<adminhtml_catalog_product_new>
+		<reference name="content">
+			<block type="core/template" name="newproductvendor" template="marketplace/productedit.phtml" />
+		</reference>
+	</adminhtml_catalog_product_new>
+	<adminhtml_catalog_product_index>
+		<reference name="store_switcher"> 
+			<action method="setTemplate"><template>marketplace/switcher.phtml</template></action>
+		</reference> 
+	</adminhtml_catalog_product_index>
+	
+	<marketplace_adminhtml_commission_index>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_commission" name="seller_commission"></block>
+		</reference>
+    </marketplace_adminhtml_commission_index>
+    <marketplace_adminhtml_commission_new>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_commission_edit" name="seller_commission_edit"></block>
+		</reference>
+		<reference name="left">
+			  <block type="marketplace/adminhtml_commission_edit_tabs" name="seller_commission_edit_tabs"></block>
+		</reference>
+    </marketplace_adminhtml_commission_new>
+    <marketplace_adminhtml_commission_edit>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_commission_edit" name="seller_commission_edit"></block>
+		</reference>
+		<reference name="left">
+			  <block type="marketplace/adminhtml_commission_edit_tabs" name="seller_commission_edit_tabs"></block>
+		</reference>
+    </marketplace_adminhtml_commission_edit>
+    
+    <marketplace_adminhtml_rules_index>
+		<reference name="content">
+			<block type="marketplace/adminhtml_rules" name="seller_rules"/>
+		</reference>
+    </marketplace_adminhtml_rules_index>
+    <marketplace_adminhtml_rules_edit>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_rules_edit" name="seller_rules_edit"></block>
+		</reference>
+		<reference name="left">
+			<block type="marketplace/adminhtml_rules_edit_tabs" name="seller_rules_tabs"/>
+		</reference>
+	</marketplace_adminhtml_rules_edit>
+	<marketplace_adminhtml_rules_new>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_rules_edit" name="seller_rules_edit"></block>
+		</reference>
+		<reference name="left">
+			<block type="marketplace/adminhtml_rules_edit_tabs" name="seller_rules_tabs"/>
+		</reference>
+	</marketplace_adminhtml_rules_new>
+	
+    <marketplace_adminhtml_withdraw_index>
+		<reference name="content">
+			<block type="marketplace/adminhtml_withdraw" name="seller_withdraw"/>
+		</reference>
+    </marketplace_adminhtml_withdraw_index>
+    <marketplace_adminhtml_withdraw_edit>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_withdraw_edit" name="seller_withdraw_edit"></block>
+		</reference>
+		<reference name="left">
+			<block type="marketplace/adminhtml_withdraw_edit_tabs" name="seller_withdraw_tabs"/>
+		</reference>
+	</marketplace_adminhtml_withdraw_edit>
+	<marketplace_adminhtml_withdraw_new>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_withdraw_edit" name="seller_withdraw_edit"></block>
+		</reference>
+		<reference name="left">
+			<block type="marketplace/adminhtml_withdraw_edit_tabs" name="seller_withdraw_tabs"/>
+		</reference>
+	</marketplace_adminhtml_withdraw_new>
+ 
+	<marketplace_adminhtml_report_index>
+		<reference name="content">
+			  <block type="marketplace/adminhtml_report" name="seller_report"></block>
+		</reference>
+    </marketplace_adminhtml_report_index>
+    <marketplace_adminhtml_dashboard_index>
+		<reference name="content">
+			<block type="marketplace/adminhtml_dashboard" name="seller_dashboard">
+				<block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher" template="store/switcher.phtml">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+			</block>
+		</reference>
+    </marketplace_adminhtml_dashboard_index>
+    <marketplace_adminhtml_sellerprofile_edit>
+		<reference name="head"> 
+		   <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadTinyMce"><flag>1</flag></action>
+            <action method="addJs"><script>mage/adminhtml/variables.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/wysiwyg/widget.js</script></action>
+            <action method="addJs"><script>lib/flex.js</script></action>
+            <action method="addJs"><script>lib/FABridge.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/flexuploader.js</script></action>
+            <action method="addJs"><script>mage/adminhtml/browser.js</script></action>
+		</reference> 
+    </marketplace_adminhtml_sellerprofile_edit>
+</layout>

@@ -1,0 +1,111 @@
+<?php
+$seller = $this->getSeller();
+if (isset($seller) && !empty($seller)) {
+    ?>
+    <div class="seller-profile-products">
+        <div class="em-store-name">
+            <h1><?php echo $seller->getStoreurl() ?></h1>
+        </div>
+        <?php
+        $desc = ($seller->getCompanyDescription());
+        $reviews = $this->getCollection();
+            ?>
+            <div class="seller_profile_content">
+                <div>
+                    <?php if($seller->getBanner()!=''){ ?>
+                    <div>
+                        <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . 'media/' . $seller->getBanner(); ?>" alt="" class="banner_image"/>
+                    </div>  
+                    <?php } ?> 
+                    <?php if($desc!=''){?>
+                    <div class="product-collateral toggle-content tabs" style="margin:10px 0px;">
+                        <dl class="collateral-tabs" id="collateral-tabs">
+                            <dt class="tab last"><span><?php echo $this->__('Description'); ?></span></dt>
+                            <dd class="tab-container last">
+                                <div class="tab-content">
+                                    <div class="seller_description">
+										<?php echo $desc; ?>
+                                    </div>
+                                </div> 
+                            </dd>
+									<?php if ($seller->getShippingPolicies() != '') { ?>		
+                                <dt class="tab current"><span><?php echo $this->__('Shipping Policy'); ?></span></dt>
+                                <dd class="tab-container current">
+                                    <div class="tab-content">
+									<?php echo $seller->getShippingPolicies(); ?>
+                                    </div>
+                                </dd>
+                            <?php } ?>
+								<?php if ($seller->getReturnPolicies() != '') { ?>
+                                <dt class="tab"><span><?php echo $this->__('Return Policy'); ?></span></dt>
+                                <dd class="tab-container">
+                                    <div class="tab-content">
+										<?php echo $seller->getReturnPolicies(); ?>
+                                    </div>
+                                </dd>
+							<?php } ?>
+                        </dl>
+                    </div>
+                    <?php } ?>	
+                    <?php echo $this->getChildHtml('product_list_custom'); ?>
+                    <?php
+                    if ($reviews->count() > 0) {
+                        ?>
+                        <div class="em_review_table">
+                            <?php $rate = Mage::helper('marketplace')->getSellerRating($seller->getSellerId()); ?>
+                            <?php if ($rate != ''){ ?> 
+                            <div>
+                                <div style="float:left;margin-right:10px;">
+                                    <h4 style="text-transform:capitalize;">
+                                            <?php echo $this->__('Rating '); ?>
+                                        </h4>
+                                </div>
+                                    <div class="ratings">
+                                        <div class="rating-box">
+                                            <div class="rating" style="width:<?php echo $rate * 20; ?>%"></div>            
+                                        </div>
+                                    </div>
+                            </div>
+                            <div style="clear:both;"></div>
+                            <?php } ?>
+                            <?php
+                            if (isset($reviews) && !empty($reviews)) {
+                                echo $this->getPagerHtml();
+                                ?>
+                                <div> 
+                                    <table class="seller_review">  
+                                        <thead>
+                                            <tr>
+                                                <th><?php echo $this->__('DATE'); ?></th>
+                                                <th><?php echo $this->__('RATING'); ?></th>
+                                                <th><?php echo $this->__('CUSTOMER'); ?></th>
+                                                <th><?php echo $this->__('REVIEWS'); ?></th>
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                            <?php foreach ($reviews as $reviewitem) { ?>
+                                                <tr>
+                                                    <td><?php echo date('d M, Y', strtotime($reviewitem['created_date'])); ?></td>
+                                                    <td>
+                                                        <div class="ratings">
+                                                            <div class="rating-box">
+                                                                <div class="rating" style="width:<?php echo $reviewitem["rating"] * 20; ?>%"></div>            
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><?php echo $reviewitem['firstname']; ?></td>
+                                                    <td class="text"><?php echo nl2br($reviewitem['text']); ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <?php } ?>	
+                        </div>
+                    <?php } ?>	
+                </div>
+            </div>
+    </div>
+    <?php
+}
+?>

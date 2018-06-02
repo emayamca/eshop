@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+         <Enterprise_Search>
+            <active>false</active>
+            <codePool>core</codePool>
+            <depends>
+                <Mage_CatalogSearch/>
+                <!-- uncomment the below line when using Seo Layer Pro -->
+                <!--<Wyomind_Layer/>-->
+            </depends>
+        </Enterprise_Search>
+        <Wyomind_Elasticsearch>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Wyomind_Elasticsearch>
+    </modules>
+</config>

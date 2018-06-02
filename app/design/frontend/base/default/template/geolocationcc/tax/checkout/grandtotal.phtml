@@ -1,0 +1,48 @@
+<?php if ($this->includeTax() && $this->getTotalExclTax()>=0):?>
+<tr>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
+        <strong><?php echo $this->helper('tax')->__('Grand Total Excl. Tax')?></strong>
+    </td>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right">
+        <strong><?php echo $this->helper('checkout')->formatPrice($this->getTotalExclTax()) ?></strong>
+    </td>
+</tr>
+<?php echo $this->renderTotals('taxes', $this->getColspan()); ?>
+<tr>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
+        <strong><?php echo $this->helper('tax')->__('Grand Total Incl. Tax')?></strong>
+    </td>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right">
+        <strong><?php echo $this->helper('checkout')->formatPrice($this->getTotal()->getValue()) ?></strong>
+    </td>
+</tr>
+<?php else:?>
+<tr>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
+        <strong><?php echo $this->getTotal()->getTitle() ?></strong>
+    </td>
+    <td style="<?php echo $this->getStyle() ?>" class="a-right">
+        <strong><?php echo $this->helper('checkout')->formatPrice($this->getTotal()->getValue()) ?></strong>
+    </td>
+</tr>
+<?php endif;?>
+<?php  if(Mage::getStoreConfig("geolocationcc/geolocationccparams/status")==1)  { ?> 
+<tr>
+    <td colspan="5">
+        <div class="product-essential disable-conversion" style="padding: 7px;"> 
+            <div style="border-bottom:2px solid #BF9999;color: #934B4B;font-weight: bold;"><?php echo $this->__("Converted Price For Your Region"); ?></div>                                       
+            <div class="gp_grand"></div>
+        </div>  
+    </td>
+</tr>
+
+<script type="text/javascript">
+        var wkprice = "<?php echo $this->getTotal()->getValue(); ?>";
+        var gp_from ="<?php echo Mage::app()->getStore()->getBaseCurrencyCode();?>";
+        var gp_to ="<?php echo Mage::app()->getStore()->getCurrentCurrencyCode();?>" ;
+        jQuery.getJSON( "https://ssl.geoplugin.net/currency_converter.gp?k=e41869f2d131d37c&jsoncallback=?",{from:gp_to, to:gp_from, amount:wkprice},
+        function(output){
+            jQuery(".gp_grand").html('<div style="display:inline;color:#C76A25;font-weight: bold;">'+output.from.code+output.from.amount+'</div><span style="color:#C76A25;font-weight: bold;"> = </span><div style="display:inline;color:#C76A25;font-weight: bold;" >'+output.to.code+output.to.amount+"</div>");
+        });
+</script>
+<?php } ?>

@@ -1,0 +1,21 @@
+<div class="brand-title">
+<h1><?php echo $this->__('Our Brands') ?></h1>
+</div>
+<ul class="brands_logo">
+<?php
+$attributeCode = 'brands';
+$attribute = Mage::getModel('catalog/resource_eav_attribute')->loadByCode('catalog_product', $attributeCode);
+$attributeOptions = $attribute->getSource()->getAllOptions();
+foreach($attributeOptions as $each){
+	if($each['value']){
+	$url = 'by-brands.html?brands';
+?>
+ <li class="clsbord">
+<a href="<?php echo Mage::getBaseUrl().$url.'='.$each['value']; ?>" style="text-decoration: none;" class="floatleft">
+	<img data-src="<?php echo Mage::helper('attributeimage')->getAttributeImage($each['value']); ?>" width="160px" height="100px">
+</a>
+<p class="primary_name"><?php echo $each['label']; ?></p>
+</li>
+
+<?php } } ?>
+</ul>

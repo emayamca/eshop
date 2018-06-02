@@ -1,0 +1,187 @@
+.em-logo{  float: left;margin-bottom:5px;max-width:100%;}
+.em_review_table table{border:1px solid #cccccc;}
+.em_review_table th{font-weight:bold;}
+.em_review_table td,.em_review_table th{width:140px;padding:5px;text-align:left;} 
+.em_review_table tr{border-bottom:1px solid #cccccc;} 
+.em_review_table td.text{width:600px;}
+.em_review_table .pager-no-toolbar{float:none !important;margin:0px !important;border:1px solid #cccccc;}
+.em_review_table .pager-no-toolbar .pages{margin-bottom:0px;}
+.em_review_table .pager-no-toolbar ol li,.em_review_table .pager-no-toolbar ol li>a{height :20px !important;width:20px !important;line-height:20px !important;}
+.em_review_table .pager-no-toolbar ol li{margin-top:5px !important;} 
+.profile_data{ border:1px solid #cccccc; margin-top:53px;}
+.em_clear{clear:both;} 
+.seller_profile_content{border:1px solid #cccccc; }  
+.seller_profile_content > div, .profile_data > div{padding:5px 15px;} 
+.em_review_table{}
+.em_review_table .pager{padding-left:5px;} 
+ul.em_ul_list{list-style-type: disc;margin-left:10px;}
+.em_bold{font-weight:bold;}
+#questionpopup span.label{width:68px;display:inline-block;text-align:left;}
+#questionpopup div{margin:5px;}
+.questionbutton{background-color:#2E8AB8;color:#fff;padding:8px;} 
+#questionpopup{padding:10px; background:#fff;}
+#askquestionform input, #askquestionform textarea{width:200px;}
+.sellertable table td,.sellertable table th{max-width:250px; padding:5px;}
+.tabletitle{font-weight:bold;font-size:16px;width:280px; padding:8px; }
+.seller-list{margin:20px 0px;}
+.multiseller_table{border:1px solid #CCCCCC;padding:4px;} 
+.multiseller_table td,.multiseller_table th{padding:0px 5px;} 
+.seller_description{margin:15px 0px;text-align:justify;} 
+.em_left{float:left;}
+.m_index_product_img{border:1px solid silver;border-radius:4px; height:160px;}
+.m_index_product{width:155px;min-height:200px;display:block;margin:5px 5px;}
+.m_index_text{text-align:center;} 
+.em_index_productlist{margin:20px 0px;}  
+.em_index_seller{display:block;padding:5px;margin:5px ;border:1px solid silver;border-radius:4px;}
+.em_index_logo{height: 70px;width: 142px;text-align:center;} 
+.em_index_logo a img{max-height:70px;max-width:142px;display:inline-block;} 
+.m_index_product_img .image{max-height:150px;max-width:150px; margin:3px auto;display: block;}
+ 
+.em-fieldset{border: 1px solid #2e8ab8; margin: 10px 0;}
+.fieldset-title{background-color: #2e8ab8; color: white; padding: 10px;}
+.fieldset-content{margin:10px 5px;}
+
+.seller_profile_content .sort-by{display:none;}
+.seller_profile_content .toolbar,.seller_profile_content .toolbar-bottom{display:block;}
+.seller_profile_content .product-collateral .toggle-tabs li > span {font-size:14px !important;text-transform:capitalize !important;}
+
+.em_field
+{
+width:100%;
+margin:5px 0px;
+}
+.em_field_div
+{
+float:right;
+margin-right:5px;
+}
+@media only screen and (max-width: 740px) { 
+.em_review_table td, .em_review_table th { padding: 0px !important;}
+} 
+
+@media only screen and (max-width: 740px) {   
+.marketplace-seller-viewprofile  .main {position: relative;} 
+.marketplace-seller-viewprofile  .main  .col-left {position: absolute;top: 0;max-width:250px;} 
+}  
+@media only screen and (max-width: 800px) { 
+.marketplace-seller-viewprofile  .main  .col-left {position: absolute;top: 0;max-width:250px;}
+.marketplace-seller-viewprofile  .main  .col-main { padding-top: 360px !important;width:100%;}
+.marketplace-seller-viewprofile .main .profile_data{margin-top:30px !important;} 
+} 
+/* custom changes for responsive*/
+.seller_banner
+{
+border:1px solid #E1E1E1;
+margin-bottom: 10px; 
+padding: 7px; 
+text-align:center;
+}
+.banner_image
+{
+max-height: 100%; margin: 0px auto;max-width:100%;
+}
+.seller_register_field
+{
+width:50%;float:left;
+}
+.view_sellerprofile_button
+{
+text-decoration:none;color:#fff;background-color:#3399CC; padding:10px;margin:10px;
+}
+.view_sellerprofile
+{
+margin:4px;
+}
+.view_sellerprofile_button:hover
+{
+color:white;
+text-decoration:none;
+
+}
+.seller_menu
+{
+width:130px;float:right;margin-bottom:10px;border:0px none;margin-right:200px;
+}
+.seller-nav-primary
+{
+margin-top: 0px;
+}
+.header-seller
+{
+display:none;
+background: #fbfbfb none repeat scroll 0 0;
+border: 1px solid silver;
+position:absolute;
+width:140px;
+z-index:99;
+}
+.header-seller li
+{
+margin: 4px;
+padding-left: 10px;
+}
+.header-seller li a{
+    color:#636363;
+}
+.header-seller li a:hover{
+    color:#3399cc;    
+}
+.seller_label
+{
+padding-left:0px;
+display:flex;
+}
+
+@media only screen and (max-width: 770px) { 
+.seller_register_field
+{
+width:100%;
+}
+.view_sellerprofile
+{
+ margin: 6px;
+    position: absolute;
+    right: 0;
+    top: 20px;
+
+}
+.view_sellerprofile_button
+{
+ background-color: #3399cc;
+    color: #fff;
+    margin: 10px;
+    padding: 9px;
+    text-decoration: none;
+    
+}
+.seller_menu
+{
+display:none;
+}
+}
+@media only screen and (max-width: 480px) {  
+   .em_termsconditions_popup{max-width:320px;max-height:350px;text-align:justify;} 
+}
+@media only screen and (min-width: 481px) and (max-width: 770px) { 
+	.em_termsconditions_popup{max-width:480px;max-height:650px;text-align:justify;}  
+} 
+@media only screen and (min-width: 771px) { 
+.em_termsconditions_popup{max-width:700px;max-height:500px;text-align:justify;} 
+} 
+@media all and (min-width:414px) and (max-width:768px){
+	.marketplace-seller-viewprofile .main-container{padding:0;}
+	.marketplace-seller-viewprofile  .main  .col-left{padding: 170px 30px 0px 10px;max-width: none;width: 250px;}
+	.marketplace-seller-viewprofile  .main  .col-main{padding: 100px 10px 0 10px;padding-top: 120px !important;}
+}
+@media all and (min-width:320px) and (max-width:414px){
+.marketplace-seller-viewprofile .main-container{padding:0;}
+.marketplace-seller-viewprofile  .main  .col-left{max-width: 0;
+    position: relative;
+    float: right !important;
+    right: 75%;
+    padding: 0;
+    margin: 0;}
+.marketplace-seller-viewprofile  .main  .col-main{padding: 0;padding-top: 110px !important;}
+.marketplace-seller-viewprofile .mb-filter-div{display:none !important;}
+.marketplace-seller-viewprofile .category-products .toolbar{border-top:0;}
+}

@@ -1,0 +1,30 @@
+<h2 class="filter-title" style="margin-top:24px;"><span class="content"><strong><?php echo $this->__('Top Brands') ?></strong></span><span class="brand-view-all"><a href="<?php echo $this->getUrl('ourbrands.html') ?>"><?php echo $this->__('View All') ?></a></span></h2>
+<div id="brandslogo">
+    <div class="filter-products">
+        <div class="brands-logo owl-carousel">
+    <?php
+        $attributeCode = 'brands';
+        $attribute = Mage::getModel('catalog/resource_eav_attribute')->loadByCode('catalog_product', $attributeCode);
+        $attributeOptions = $attribute->getSource()->getAllOptions();
+		$logoFlag = 1;
+        foreach($attributeOptions as $each){
+            if($each['value']){
+				$url = 'by-brands.html?brands';
+            ?>
+            <a href="<?php echo Mage::getBaseUrl().$url.'='.$each['value']; ?>" title="<?php echo $each['label']; ?>">
+                <img data-src="<?php echo Mage::helper('attributeimage')->getAttributeImage($each['value']); ?>" width="160px" height="100px">
+            </a>
+            <?php
+			if($logoFlag == 11){break;}
+			$logoFlag++;
+            }
+        }
+    ?>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  jQuery(function($){
+    $("#brandslogo .filter-products .owl-carousel").owlCarousel({lazyLoad: true,    itemsCustom: [ [0, 1], [320, 1], [480, 2], [768, 3], [992, 4], [1280, 5] ],    responsiveRefreshRate: 50,    slideSpeed: 200,    paginationSpeed: 500,    scrollPerPage: false,    stopOnHover: true,    rewindNav: true,    rewindSpeed: 600,    pagination: false,    navigation: true,    autoPlay: true,    navigationText:["<i class='icon-left-open'></i>","<i class='icon-right-open'></i>"]});
+  });
+</script>

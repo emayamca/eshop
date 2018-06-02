@@ -1,0 +1,12 @@
+<config>
+	<modules>
+		<Emipro_SellerpriceRules>
+			<version>1.0.0</version>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Emipro_Marketplace />
+			</depends>
+		</Emipro_SellerpriceRules>
+	</modules>
+</config>

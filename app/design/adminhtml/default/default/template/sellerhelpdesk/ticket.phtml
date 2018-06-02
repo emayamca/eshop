@@ -1,0 +1,144 @@
+<?php
+$Id = $this->getRequest()->getParam('id');
+$collection  = Mage::getModel('emipro_sellerhelpdesk/sellerhelpdesk')->load($Id);
+$status=$collection->getStatusId();
+$ticketStatus=Mage::getModel('emipro_sellerhelpdesk/helpdeskstatus')->load($status);
+
+$currentDate=Mage::getModel('core/date')->date('Y-m-d H:i');
+$baseUrl=Mage::getBaseUrl();
+$sellerId =  $collection ->getSellerId();
+
+$Seller_info = Mage::getModel('marketplace/seller')->load($sellerId,'seller_id');
+$seller_id=$Seller_info->getSellerId();
+$storeUrl=$Seller_info->getStoreUrl();
+$admin_info = Mage::getSingleton('admin/session')->getUser();
+$name=$admin_info->getUsername();
+$roleId=Mage::getSingleton('admin/session')->getUser()->getRoles();
+$roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();		
+		
+
+?>
+<script>
+//<![CDATA[
+function reply()
+{
+editForm.submit($('edit_form').action+'back/edit/');
+
+}
+
+
+//]]>
+</script>
+<div class="box-rigth" style="width:100%!importnat">
+     <div class="entry-edit">
+		<div class="entry-edit-head">
+		<h4 class="icon-head head-account">Ticket Information</h4>
+      </div>
+	<div class="fieldset">
+            <table cellspacing="0" class="form-list">
+          
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Ticket ID') ?></label></td>
+                <td class="value"><strong><?php echo $collection ->getId(); ?></strong></td>
+                
+                <td class="label"><label><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Status') ?></label></td>
+                <td class="value"><strong><?php echo $ticketStatus->getStatus(); ?></strong></td>
+            </tr> 
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Seller') ?></label></td>
+                <td class="value"><strong>
+					<a target="_blank" href="<?php echo $this->getUrl('marketplace/seller/viewprofile/profile_id/'.$collection ->getSellerId()) ?>"><?php echo $storeUrl; ?></a>
+					
+				</strong></td>
+            
+                <td class="label"><label><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Created Date') ?></label></td>
+                <td class="value"><strong><?php echo date("D, j M, Y h:i A", strtotime($collection ->getdate())); ?></strong></td>
+         
+            
+            <tr >
+				  <td class="label"><label><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Subject') ?></label></td>
+                <td class="value" colspan="3"><strong><?php echo $collection ->getSubject(); ?></strong></td>
+            </tr>
+            </table>
+        </div>
+	</div>
+<div class="box-left"  >
+   
+   <div class="entry-edit-head">
+		<h4 class="icon-head head-account">Post Reply</h4>
+      </div>
+   <div class="fieldset" >
+	  <span class="field-row" >
+            <label class="normal" for="message"><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Message') ?></label>
+            <textarea name="message" rows="3" cols="5" style="height:6em; width:99%;" id="message" ><?php echo nl2br(Mage::getSingleton('core/session')->getTicketmessage());?></textarea>
+     </span>
+       <span class="field-row" >
+            <label class="normal" for="file"><?php echo Mage::helper('emipro_sellerhelpdesk')->__('Ticket Attachment') ?></label>
+             <input type="file" name="file" id="file">
+     </span>
+  <div style="float:left;margin-left:50%;margin-top:10px">
+   <?php if($status!=2):?>
+     <span>
+		<input type="checkbox" name="status" id="status" value=2>
+		 <label class="normal" for="status"> <B>Close ticket</B></label>
+     </span>
+     
+     <?php endif;?>
+     </div>
+	<div class="field-row" style="margin-left:75%;margin-top:10px">
+	<?php if($status!=2){ ?>
+	<button  style="" 	 class="scalable save" type="button" onclick="reply()" title="Quick Submit" id="replay"><span><span><span>Quick Submit</span></span></span></button>
+	<?php } else {?>
+    <button  style="" 	 class="scalable save" type="button" onclick="reply()" title="Reopen" id="replay"><span><span><span>Reopen</span></span></span></button>
+	<?php }?>
+     </div>
+	 <span class="field-row" >
+         
+        <input type="hidden" name="id" id="id" value=<?php echo $Id ;?>>
+            <input type="hidden" name="name" id="name" value=<?php echo $name;?>>
+           
+			<input type="hidden" name="date" id="date" value="<?php echo $currentDate;?>" >
+        </span>
+	</div>    
+</div>
+
+<div class="clear"></div>
+	
+	<?php
+	
+	
+	$conversation=Mage::getModel('emipro_sellerhelpdesk/sellerconversation')->getCollection();
+	$conversation->getSelect()->join(array("helpdesk"=>Mage::getConfig()->getTablePrefix()."helpdesk_status"),"main_table.status_id=helpdesk.status_id")->where("main_table.id=".$Id)->order("main_table.conversation_id DESC");
+	
+	foreach($conversation->getData() as $value)
+	{
+		
+		$attachment=Mage::getModel('emipro_sellerhelpdesk/sellerattachment')->load($value["conversation_id"],"conversation_id");
+	?>
+	
+	 <div class="entry-edit">
+		<div class="entry-edit-head">
+			
+		<h4 class="icon-head head-account " Style="float:right;font-size:12px!important"><span style="margin-right:20px;color:#DCDCDC"><?php echo $value["status"];?> </span><?php echo date("D, j M, Y h:i A", strtotime($value["date"]));?></h4>
+		
+		<h4 class="icon-head head-account" style="text-transform: capitalize;font-size:14px!important"><?php echo $value["name"];?></h4>
+      </div>
+	
+	<div class="fieldset">
+	
+	<div><?php echo nl2br($value["message"]);?></div>
+	<?php if($attachment->getAttachmentId()!=""):?>
+	
+	<div  style="padding-top:10px">
+		<span><b><?php echo $attachment->getCurrentFileName();?> </b></span>
+		<a style="margin-left:10px;" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'sellerhelpdesk/attachment/'.$attachment->getFile() ?>" download="<?php echo $attachment->getCurrentFileName();?>">Download</a></div>
+	<?php endif;?>
+	</div>
+	</div>
+	<?php
+	}
+	?>
+</div>
+
+
+

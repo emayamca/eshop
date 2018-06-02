@@ -1,0 +1,256 @@
+<config>
+	<modules>
+		<Emipro_FlexiShipping>
+			<version>1.0.0</version>
+		</Emipro_FlexiShipping>
+	 </modules>
+<frontend>
+		<routers>
+			<emipro_flexishipping>
+			<use>standard</use>
+				<args>
+				<module>Emipro_FlexiShipping</module>
+				<frontName>flexishipping</frontName>
+				</args>
+			</emipro_flexishipping>
+		</routers>
+		<layout>
+			<updates>
+				<emipro_flexishipping>
+					<file>flexishipping.xml</file>
+				</emipro_flexishipping>
+			</updates>
+		</layout>
+</frontend>	 
+<admin>
+     <routers>
+         <emipro_flexishipping>
+            <use>admin</use>
+            <args>
+               <module>Emipro_FlexiShipping</module>
+               <frontName>flexishipping</frontName>
+            </args>
+         </emipro_flexishipping>
+      </routers>
+ </admin>
+<global>
+	
+	<fieldset>
+        <sales_convert_quote_item>
+            <shipping_charge>
+                <to_order_item>shipping_charge</to_order_item>
+            </shipping_charge>
+        </sales_convert_quote_item>
+
+        <sales_convert_order_item>
+            <shipping_charge>
+                <to_quote_item>*</to_quote_item>
+                <!--<to_invoice_item>*</to_invoice_item>
+                <to_shipment_item>*</to_shipment_item>-->
+                <to_cm_item>*</to_cm_item>
+            </shipping_charge>
+        </sales_convert_order_item>
+</fieldset>
+	<blocks>
+		<emipro_flexishipping>
+			<class>Emipro_FlexiShipping_Block</class>
+		</emipro_flexishipping>		
+		<adminhtml>
+			<!-- <rewrite>
+			<promo_widget_chooser_sku>Emipro_FlexiShipping_Block_Adminhtml_Promo_Widget_Chooser_Sku</promo_widget_chooser_sku>
+			</rewrite>  --> 
+	</adminhtml>	 
+	</blocks>
+	<helpers>
+		<emipro_flexishipping>
+			<class>Emipro_FlexiShipping_Helper</class>
+		</emipro_flexishipping>
+	</helpers>
+
+	<models>
+        <emipro_flexishipping>
+            <class>Emipro_FlexiShipping_Model</class>
+            <resourceModel>flexishipping_resource</resourceModel> 
+        </emipro_flexishipping>
+        <flexishipping_resource>
+            <class>Emipro_FlexiShipping_Model_Resource</class>
+            <entities>
+                <flexishipping>
+                    <table>emipro_flexi_shipping_rules</table>  
+                </flexishipping>
+                <flexishipping1>
+                    <table>emipro_flexi_shipping_rules_products</table>  
+                </flexishipping1>
+            </entities>
+        </flexishipping_resource>
+    </models>
+     <resources> 
+        <flexishipping_setup>
+            <setup>
+                <module>Emipro_FlexiShipping</module>
+            </setup>
+            <connection>
+                <use>core_setup</use>
+            </connection>
+        </flexishipping_setup>
+        <flexishipping_write>
+            <connection>
+                <use>core_write</use>
+            </connection>
+        </flexishipping_write>
+        <flexishipping_read>
+            <connection>
+                <use>core_read</use>
+            </connection>
+        </flexishipping_read>
+    </resources>  
+ <index>
+	<indexer>
+		<emipro_flexishipping>
+		<model>emipro_flexishipping/indexer</model>
+		</emipro_flexishipping>
+	</indexer>
+</index>
+ <events>
+<sales_convert_quote_item_to_order_item>
+                <observers>
+                    <emipro_flexishipping>
+                        <type>singleton</type>
+                        <class>emipro_flexishipping/observer</class>
+                        <method>saveProductShippingFees</method>
+                    </emipro_flexishipping>
+                </observers>
+</sales_convert_quote_item_to_order_item>	 
+
+<catalog_product_save_commit_after>
+	<observers>
+		 <emipro_flexishipping>
+		<class>emipro_flexishipping/observer</class>
+		<method>applyRule</method>
+		</emipro_flexishipping>
+	</observers>
+</catalog_product_save_commit_after>
+<catalog_entity_attribute_delete_after>
+	<observers>
+		<emipro_flexishipping>
+		<class>emipro_flexishipping/observer</class>
+		<method>applyRule</method>
+		</emipro_flexishipping>
+	</observers>
+</catalog_entity_attribute_delete_after>
+<catalog_entity_attribute_save_after>
+	<observers>
+		<emipro_flexishipping>
+		<class>emipro_flexishipping/observer</class>
+		<method>applyRule</method>
+		</emipro_flexishipping>
+	</observers>
+</catalog_entity_attribute_save_after>
+<controller_action_postdispatch>
+	<observers> 
+		<emipro_flexishipping>
+		<class>emipro_flexishipping/observer</class>
+		<method>methodcheck</method>  
+		</emipro_flexishipping>   
+	</observers> 
+</controller_action_postdispatch>
+<admin_system_config_changed_section_flexishipping>
+				<observers>
+					<emipro_flexishipping>
+						<type>model</type>
+						<class>emipro_flexishipping/observer</class>
+						<method>checkflexishipping</method>
+					</emipro_flexishipping>
+				</observers>
+</admin_system_config_changed_section_flexishipping>	 
+
+</events>
+</global>
+<adminhtml>
+<menu>
+	<marketplace translate="emipro_flexishipping">
+	
+	<children>
+		<flexishipping>
+		<title>Flexi Shipping Method</title> 
+		<action>flexishipping/adminhtml_index</action>
+		 <sort_order>13</sort_order>
+		</flexishipping>
+		<seller>
+		<title>Flexi Shipping Seller Rules</title> 
+		<action>flexishipping/adminhtml_seller</action>
+		 <sort_order>14</sort_order>
+		</seller>
+	</children>
+	</marketplace>
+</menu>
+<acl>
+    <resources>
+		  <all>
+                <title>Allow Everything</title>
+            </all>
+		 <admin>
+                <children>
+                    <marketplace translate="emipro_flexishipping" >
+						
+                       <children>
+                            <!-- child items go here -->
+                            <flexishipping translate="emipro_flexishipping">
+                                <title>Flexi Shipping Method</title>
+                                <sort_order>1</sort_order>
+                            </flexishipping>
+                            <seller translate="emipro_flexishipping">
+                                <title>Flexi Shipping Seller Rules</title>
+                                <sort_order>2</sort_order>
+                            </seller>
+                         
+                        </children>
+                    </marketplace>
+                </children>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <flexishipping>
+                                        <title>Flexi Shipping Fees</title>
+                                    </flexishipping>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+</acl>
+<layout>
+	<updates>
+		<emipro_flexishipping>
+		<file>flexishipping.xml</file>
+		</emipro_flexishipping>
+	</updates>   
+</layout>
+</adminhtml>
+<default>
+        <carriers>
+          <flexishipping>
+               <active>1</active>
+               <model>emipro_flexishipping/carrier_flexiShipping</model>
+             <title>Emipro Shipping</title>
+               <name>Flexi Shipping</name>
+              <specificerrmsg>Shipping is not available for {products}</specificerrmsg>
+            </flexishipping>
+         </carriers>
+       </default>
+ <crontab>
+        <jobs>
+            <emipro_flexishipping>
+                <schedule><cron_expr>0 1 * * *</cron_expr></schedule>
+                <run>
+                    <model>emipro_flexishipping/observer::dailyShippingRulesUpdate</model>
+                    
+                </run>
+            </emipro_flexishipping>
+        </jobs>
+  </crontab>
+</config>

@@ -1,0 +1,104 @@
+<style type="text/css" >
+    ul { list-style-type:none; padding:0; margin:0; }
+    li { margin-left:0; border:1px solid #ccc; margin:2px; padding:2px 2px 2px 2px; font:normal 12px sans-serif; }
+    img { margin-right:5px; }
+</style>
+<ul>
+	<li><img src="<?php echo $this->getSkinUrl('images/note_msg_icon.gif')?>" class="v-middle" style="margin-right:5px"/>
+            <?php echo $this->__("Starting profile execution, please wait...");?>
+            </li>
+            <li style="background-color:#FFD;">
+            <img src="<?php echo $this->getSkinUrl('images/fam_bullet_error.gif');?>" class="v-middle" style="margin-right:5px"/>
+            <?php echo $this->__("Warning: Please do not close the window during importing data");?>
+	
+<div>
+	<li style="background-color:#DDF"><img src="<?php echo $this->getSkinUrl('images/fam_bullet_success.gif');?>" /><span id="count" style="background-color:#DDF"></span>/<span id="total" style="background-color:#DDF"></span></li>
+<span id="importprocess"  >
+	
+	</span>
+</div>
+
+</div>
+</ul>
+<?php
+		$session=Mage::getSingleton("admin/session");
+		$fileName=$session->getFileName();
+		
+		if($fileName)
+		{
+			$count=0;
+			$file = fopen($fileName,"r");
+			while(!feof($file)){
+				$csv[] = fgetcsv($file, 0, ',');
+				}
+			$csv=array_filter($csv);
+?>
+<script type='text/javascript'>
+<?php
+	$js_array = json_encode($csv);
+	echo "var alldata = ". $js_array . ";\n";
+?>
+	
+	var len=(alldata.length)-1;
+	var keys=alldata[0];
+	var url='<?php echo Mage::helper('adminhtml')->getUrl('*/*/importrowdata');?>';
+	document.getElementById('total').innerHTML='<b>'+ len + '</b>'+ ' ' + 'records';
+	importRow(1);
+	function importRow(rowdata)
+	{
+		new Ajax.Request(url + '&isAjax=true', {
+			parameters : {row :JSON.stringify(alldata[rowdata]),keys:JSON.stringify(keys),form_key: FORM_KEY},
+			method     : 'post',
+			onComplete : function(transport) {
+				var response =  transport.responseText;
+				if(response)
+				{
+					var e = document.createElement('li');
+					e.setAttribute("style", "background-color: #FDD;");
+					e.innerHTML = '<img src="<?php echo $this->getSkinUrl('images/error_msg_icon.gif');?>"/>Line No'+' ' +'<b>' +rowdata+ '</b>' +' '+response;
+					document.getElementById('importprocess').appendChild(e);
+					
+				}
+				var percentage=(rowdata*100/len);
+				var per=Math.round(percentage);
+				document.getElementById('count').innerHTML='Processed'+' ' + '<b>' +per +'%' +' ' +rowdata + '</b>' ;
+				rowdata++;
+				if(rowdata<=len)
+				{
+					importRow(rowdata);
+				}
+				else
+				{					
+									var e = document.createElement('li');
+									e.setAttribute("style", "background-color: #FFD;");
+									e.innerHTML='<img src="<?php echo $this->getSkinUrl('images/fam_bullet_error.gif');?>"/>'+ "Please wait while the indexes are being refreshed";
+									document.getElementById('importprocess').appendChild(e);
+									
+									var url='<?php echo Mage::helper('adminhtml')->getUrl('*/*/indexdata');?>';
+									new Ajax.Request(url + '&isAjax=true', {
+									parameters : {row :JSON.stringify(alldata[rowdata]),keys:JSON.stringify(keys),form_key: FORM_KEY},
+									method     : 'post',
+									onComplete : function(transport) {
+										var responsenew =  transport.responseText;
+										var e = document.createElement('li');
+										e.setAttribute("style", "background-color: #FFD;");
+										e.innerHTML='<img src="<?php echo $this->getSkinUrl('images/note_msg_icon.gif');?>"/>'+ responsenew;	
+										document.getElementById('importprocess').appendChild(e);
+									}
+								});				
+				}
+			}
+		});
+	}
+</script>
+<?php
+			fclose($file);
+			$session->unsetData('file_name');
+			
+		}
+		
+		function reindexdata()
+		{
+			echo "hello";exit;
+		}
+?>

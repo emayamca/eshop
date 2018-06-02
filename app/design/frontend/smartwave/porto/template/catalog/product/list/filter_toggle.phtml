@@ -1,0 +1,25 @@
+<?php
+$store = Mage::app()->getStore();
+$code  = $store->getCode();
+$filter_toggle = Mage::getStoreConfig("porto_settings/category/filter_toggle",$code);
+?>
+<script type="text/javascript">
+jQuery(function($){
+    $(".category-products > .toolbar > .sorter > .view-mode").after('<a href="javascript:void(0)" class="filter-toggle active"><?php echo $this->__('Filter'); ?></a>');
+    $(".filter-toggle").off("click").on("click", function(){
+        if($(this).hasClass("active")) {
+            $(".main-container .col-left").addClass("toggle-close");
+            $(".main-container .col-main").addClass("toggle-close");
+            $(this).removeClass("active");
+        } else {
+            $(".main-container .col-left").removeClass("toggle-close");
+            $(".main-container .col-main").removeClass("toggle-close");
+            $(this).addClass("active");
+        }
+        setTimeout(function(){
+            var owl = $(".col-main .owl-carousel").data('owlCarousel');
+            owl.reinit();
+        }, 600);
+    });
+});
+</script>

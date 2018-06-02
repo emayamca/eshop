@@ -1,0 +1,161 @@
+/**
+ * Apptha
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.apptha.com/LICENSE.txt
+ *
+ * ==============================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * ==============================================================
+ * This package designed for Magento COMMUNITY edition
+ * Apptha does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * Apptha does not provide extension support in case of
+ * incorrect edition usage.
+ * ==============================================================
+ *
+ * @category    Apptha
+ * @package     Apptha_TrackYourOrder
+ * @version     0.1.1
+ * @author      Apptha Team <developers@contus.in>
+ * @copyright   Copyright (c) 2014 Apptha. (http://www.apptha.com)
+ * @license     http://www.apptha.com/LICENSE.txt
+ *
+ * */
+/* track your order ===========================================================*/
+.trackurorder-tbl{border: 1px solid #ccc;}
+.trackurorder-tbl th{position: relative; padding: 6px 10px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;font-size: 14px;background: #f2f2f2;}
+.trackurorder-tbl th:last-child{border-right:none;}
+.trackurorder-tbl td{padding: 10px;background-color: #fff}
+.trackurorder-carrier span{padding: 10px;clear: both;}
+.trackurorder-carrier{font-size: 14px; color:#666; margin:20px 0 10px 0}
+.trackurorder-carrier b{font-weight: normal; color:#333;}
+.trackorder-statuspoint{position: relative;}
+.trackurorder-tbl .trackurorder-productimg img{max-width:100px;float:left;width: 80%;}
+.trackurorder-tbl .trackurorder-productimg  p{margin: 5px 10px 0 10px;}
+.trackurorder-tbl .trackurorder-shipment span{background: url('../trackyourorder/process_arrow.png') no-repeat right top !important;height: 29px;width: 16px;top: -5px;right: 7px;display: block;position: absolute;}
+.trackurorder-tbl .trackurorder-shipment span{background:none;}
+.trackurorder-tbl .tractpdt_closed span{background:none !important;}
+.trackurorder-tbl .trackurpdt{float:left;position: relative;width:28%;position: relative;}
+.trackurorder-tbl .tractpdt_approve{width:30%;}
+.trackurorder-tbl .tractpdt_process{width:35%;}
+.trackurorder-tbl .tractpdt_ship{width:30%;}
+.trackurorder-tbl .tractpdt_closed{width:22%;}
+.trackurorder-tbl .tractpdt_ship span{background:0px;}
+
+.tracrefundprice .price { color: rgb(204, 0, 0); }
+.trackurorder-tbl tr.total-row-bottom td {text-align:right; border-top:solid 1px #ccc; padding:5px 8px; background-color:#f2f2f2}
+.trackurorder-tbl tr.total-row-bottom td span{font-size: 14px; font-weight: bold; text-align: right;}
+.trackurorder-tbl span b {color: rgb(204, 0, 0);}
+
+.trackorder-details-div{top: 31px;position: absolute;background: white;border: 1px solid #ccc;padding: 6px 10px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 4px;width: 300px; }
+.trackorder-tooltip{background: url('../trackyourorder/tool-tip.png') no-repeat 0 0;height: 10px;width: 15px;position: absolute;top: -9px;left: 12px;}
+.trackorder-tdblocks .trackorder-td-content{background: url('../trackyourorder/process_bullets.png') repeat-x -6px -221px; margin:25px 0px 0px -10px;}
+.trackorder-td-content .trackorder-tdblock1, .trackorder-td-content .trackorder-tdblock2, .trackorder-td-content .trackorder-tdblock3, .trackorder-td-content .trackorder-tdblock4{display: inline-block;list-style-type: none;height:26px;}
+.trackorder-tdblock1{width:25%}
+.trackorder-tdblock2{width:32%}
+.trackorder-tdblock3{width:34%;list-style-type: none;}
+.trackorder-tdblock4{width:25%;}
+.trackorder-td-content ul{border-left: dotted 1px #ccc;text-align: center;}
+.trackorder-td-content ul li{background: url('../trackyourorder/process_bullets.png') no-repeat 0 0;height: 22px;width: 30px;margin-top: 7px;text-align: center;display: inline-block;zoom: 1;}
+.trackorder-td-content ul li:hover{background-position: 0px -22px;}
+.trackorder-td-content li .trackorder-unprocesstab{background: url('../trackyourorder/process_bullets.png') no-repeat 0 -132px !important;height: 22px;width: 30px;margin-top: 7px;text-align: center;display: inline-block;zoom: 1;}
+.trackorder-td-content li .trackorder-unprocesstab:hover{background-position: 0px -155px !important;}
+.trackorder-td-content li .trackorder-approvetab{background: url('../trackyourorder/process_bullets.png') no-repeat 0 -45px !important;height: 22px;width: 30px;margin-top: 7px;text-align: center;display: inline-block;zoom: 1;}
+.trackorder-td-content li .trackorder-holdtab{background: url('../trackyourorder/process_bullets.png') no-repeat 0 -110px !important;height: 22px;width: 30px;margin-top: 7px;text-align: center;display: inline-block;zoom: 1;}
+.trackorder-td-content li .trackorder-canceltab{background: url('../trackyourorder/process_bullets.png') no-repeat 0 -198px !important;height: 22px;width: 30px;margin-top: 7px;text-align: center;display: inline-block;zoom: 1;}
+
+.trackorder-main-index{padding: 10px; border: 1px solid #ccc; width: 70%; background-color: #fff; box-shadow: 1px 1px 7px #ccc; overflow:hidden; margin: 15px 0;}
+.trackorder-main-index .ordersummary {float: left; width: 45%;}
+.trackorder-main-index .ordersummary hr {height: 1px; border: none; color: #000; background-color: #999; margin:2px;}
+.trackorder-main-index .ordersummary ul {padding:0px; margin:0px;}
+.trackorder-main-index .ordersummary ul li { border-bottom:solid 1px #ccc; padding:10px 0;  font-size: 14px;}
+.trackorder-main-index .ordersummary ul p{margin:0px; padding:10px 0 0 0px;}
+.trackorder-main-index .ordersummary ul img {float:left;}
+.trackorder-main-index .ordersummary ul b{margin:0px; padding: 0px 0 0 3px; display: block; float: left; }
+
+.trackorder-main-index .ordersummary .billingaddres p {padding:0px; margin: 0px; font-size: 13px;}
+.trackorder-main-index .ordersummary .billingaddres p.cname{border-bottom:solid 1px #ccc; margin: 8px 0; padding: 6px 0; font-size: 14px;}
+.trackorder-main-index .ordersummary ul li label{font-size:12px; padding-right:10px; color:#666;}
+
+.trackorder-main-index .ordersummary p.pay-method b{ color:#666; padding-left: 5px; }
+
+.trackorder-main-index .ordersummary h3{font-size: 15px; font-weight:normal}
+
+.ordersummaryborder{float: left; width: 1px; background-color: #ccc; height: 175px; padding: 0px; margin: 0 25px;}
+.ordersummary .price{font-weight:bold; font-size: 16px;}
+
+/*login page*/
+.trackorder-login{padding: 10px;border: 1px solid #ccc;width: 33%;padding: 30px;background-color: #fff;box-shadow: 1px 1px 7px #ccc;overflow: hidden;margin: 15px 0;float: left;}
+.trackorder-login span {font-style: italic; font-size: 12px;}
+.trackorder-login ul li{margin:8px 0 2px 0;}
+.trackorder-login .form-list input.input-text{width:300px; font-size: 13px;}
+.trackorder-login .error{font-weight:bold!important;}
+.trackorder-login .title{text-align: left;}
+
+/*end login page*/
+
+.orderfooter p{margin:10px 0;text-align:center;}
+.trackorder-content {width:100%;}
+.track-your-order {width:45%; float:left; border-right:solid 0px #ccc}
+.track-your-order span{font-size: 11px;}
+.track-login {float:left; margin: 80px 35px;}
+.track-login b {float: left; color: #666; font-weight: bold; position: relative; z-index: 0; margin: 0 0 15px 0;} 
+.track-login p{margin:15px; text-align:center;}
+.ordersummary p { text-transform: capitalize; } 
+/*.trackorder-content .trackorder-main-index{padding: 10px; border: 1px solid #ccc; width: 55%; background-color: #fff; box-shadow: 1px 1px 7px #ccc; overflow:hidden; margin: 15px 0;}
+.trackorder-content .trackorder-main-index .ordersummary {float: left; width: 43%;}
+.trackorder-content .trackorder-main-index .ordersummary hr {height: 1px; border: none; color: #000; background-color: #999; margin:2px;}
+.trackorder-content .trackorder-main-index .ordersummary ul {padding:0px; margin:0px;}
+.trackorder-main-index .ordersummary ul li { border-bottom:solid 1px #ccc; padding:10px 0;  font-size: 14px;}
+.trackorder-main-index .ordersummary ul p{margin:0px; padding:5px 0 0 0px;}
+.trackorder-main-index .ordersummary .billingaddres p {padding:0px; margin: 0px; font-size: 13px;}
+.trackorder-main-index .ordersummary .billingaddres p.cname{border-bottom:solid 1px #ccc; margin: 8px 0; padding: 6px 0; font-size: 14px;}
+.trackorder-main-index .ordersummary ul li label{font-size:12px; padding-right:10px; color:#666;}*/
+
+.trackorder-main-index .ordersummary h3{font-size: 15px; font-weight:normal}
+
+.trackurorder-tbl td i {  background-color: #fff; font-weight: bold; text-transform: capitalize;  padding: 4px 5px; border: solid 1px #ccc; border-radius: 4px; font-style: normal;}
+.trackurorder-productimg p a{ text-decoration: none; font-size: 14px; text-transform: capitalize; color: black; }
+.trackurorder-productimg p a:hover { text-decoration: underline; font-size: 14px; text-transform: capitalize; }
+.trackorder-bg { background-color: #fff;  padding: 1px 4px; border: solid 1px #ccc; border-radius: 4px; font-style: normal;margin: 2px; float: left;text-align: center; }
+.trackorder-bg a { font-weight: bold;  }
+.trackdetail-loading { background: url('../trackyourorder/ajax-loader.gif') no-repeat; height: 50px; margin-top: 5px;   }
+#trackdetail-loading1 { margin: 0 auto;  }
+.trackerror{ color: red; font-size: 14px; font-weight:bold; }
+
+.track-validate-msg i{ font-size: 12px; color: #df280a; font-style: normal; font-weight: bold; }
+
+.requiredfields{text-align:left; font-size: 11px; margin:5px 0 15px 0;}
+.requiredfields i{color:red;}
+
+
+.form-list label {margin:2px 0}
+.trackproduct-name a{ color: #333;}
+
+
+.trackurorder-tbl .trackurorder-productimg img{max-width:100px;float:left;width: 65%; padding: 5px; border: solid 1px #ccc; margin: 5px;}
+.trackurorder-tbl .trackurorder-productimg .content{width:200px;}
+.trackurorder-tbl .trackurorder-productimg .content span{font-size: 11px; padding:0 0 5px 0px; width: 100%; display: block;}
+.trackurorder-tbl .trackurorder-productimg .content b{font-size: 11px; color: #333;}
+.trackurorder-tbl .trackurorder-productimg ul li {float:left;}
+.trackurorder-tbl .trackurorder-productimg ul li div.fimage {width: 82px;float: left;}
+.trackurorder-tbl .trackurorder-productimg  p{margin: 5px 10px 0px 0px;}
+
+.trackurorder-tbl span.shippingdetail{font-size: 12px; text-align:right; display:block;}
+.trackurorder-tbl span.shippingdetail b{padding:0 0 0 2px; color:#333;}
+
+
+.trackurorder-tbl .trackrowtotal ul{}
+.trackurorder-tbl .trackrowtotal ul li{}
+
+.trackurorder-tbl span.shippingdetail{font-size: 12px; text-align:right; display:block;}
+.trackurorder-tbl span.shippingdetail b{padding:0 0 0 2px; color:#333;}
+
+.trackcus-mobno { border-bottom: solid 1px #ccc; margin: 0px 0; padding: 2px 0; font-size: 14px; }
+.trackorder-content p.error{ clear: both; font-size: 13px; padding: 10px; width: 400px }
+.track-order-login{color: #FFF !important;}

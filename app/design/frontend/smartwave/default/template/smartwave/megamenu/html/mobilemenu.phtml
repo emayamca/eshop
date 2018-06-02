@@ -1,0 +1,46 @@
+<?php $menuHelper = Mage::helper('megamenu'); ?>
+<?php $only_categories = $this->getOnlyCategories(); ?>
+<div class="mobile-nav side-block container">
+    <div class="menu-all-pages-container">
+        <ul class="menu">
+        <?php if(!$menuHelper->getConfig('popup/ajax_load_popups')): ?>
+            <?php echo $menuHelper->getMobileMenuContent($only_categories); ?>
+        <?php else: ?>
+            <li style="padding: 30px 0; text-align: center;"><i class="ajax-loader medium animate-spin"></i></li>
+        <?php endif; ?>
+        </ul>
+    </div>
+</div>
+<div class="mobile-nav-overlay close-mobile-nav"></div>
+<script type="text/javascript">
+<?php if($menuHelper->getConfig('popup/ajax_load_popups')): ?>
+jQuery(function($){
+    $(document).ready(function(){
+        var ajax_mobile_url = "<?php echo Mage::getBaseUrl()."swmegamenu/index/showmobilemenu" ?>";
+        $(".menu-icon, .header-container.type10 .dropdown-menu > .menu-container > a").off("mousedown").on("mousedown",function(){
+            if (!$(".mobile-nav ul.menu").hasClass("ajax-loaded") && !$(".mobile-nav ul.menu").hasClass("ajax-loading")) {
+                $(".mobile-nav ul.menu").addClass("ajax-loading");
+                $.ajax({
+                    url: ajax_mobile_url,
+                    dataType: 'json',
+                    type: 'post',
+                    success: function(data) {
+                        $(".mobile-nav ul.menu").removeClass("ajax-loading").addClass("ajax-loaded").html(data['popup_content']).hide().fadeIn();
+                        $(".mobile-nav ul.menu").find("li.menu-parent-item").prepend('<span class="open-child">(open)</span>');
+                        $(".mobile-nav ul.menu").find(".open-child").off("click").on("click", function(){
+                            if(!$(this).parent().hasClass("over")) {
+                                $(this).parent().addClass("over");
+                                $(this).parent().children("ul").slideDown();
+                            } else {
+                                $(this).parent().removeClass("over");
+                                $(this).parent().children("ul").slideUp();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+<?php endif; ?>
+</script>

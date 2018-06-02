@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fuel_Trackyourorder>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Fuel_Trackyourorder>
+    </modules>
+</config> 

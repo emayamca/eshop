@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+       <reference name="notifications">
+            <block type="licensemanager/adminhtml_notifications" name="notification_licensemanager" />
+       </reference>
+    </default>
+</layout>

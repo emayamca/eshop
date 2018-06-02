@@ -1,0 +1,40 @@
+<!--@subject Take a look at {{var customer.name}}'s wishlist @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"var message":"Wishlist Message",
+"var items":"Wishlist Items"}
+@-->
+<!--@styles
+@-->
+
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td class="action-content">
+            <h2 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Welcome to {{var store.getFrontendName()}}.</h2>
+            <p style="font-size:14px;margin:10px;">Hey, take a look at my wishlist from {{var store.getFrontendName()}}.</p>
+            <p class="highlighted-text" style="border:1px solid #e2e2e2;border-radius:3px;background-color:#f7f7f7;margin:8px;padding:14px;font-size:14px;line-height: 20px;">
+                <strong>{{var message}}</strong><br>
+                <strong>{{var items}}</strong><br>
+                <strong> {{depend salable}}</strong><br>
+            </p>
+            <p style="font-size:12px;font-weight:600;margin:10px;">
+            <strong>
+                <a href="{{var addAllLink}}"style="color:#2fa4fa;text-decoration:none;">Add all items to shopping cart</a></strong> |
+                    {{/depend}}
+            <strong><a href="{{var viewOnSiteLink}}" style="color:#2fa4fa;text-decoration:none;">View all wishlist items</a></strong></p>
+            <p style="font-size:12px;font-weight:600;margin:10px;">
+                If you have any questions, please feel free to contact us at
+                <a href="mailto:{{var store_email}}" style="color:#2fa4fa;text-decoration:none;">{{var store_email}}</a>
+                {{depend store_phone}} or by phone at <a href="tel:{{var phone}}" style="color:#2fa4fa;text-decoration:none;">{{var store_phone}}</a>{{/depend}}.
+            </p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

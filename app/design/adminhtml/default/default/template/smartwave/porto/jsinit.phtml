@@ -1,0 +1,19 @@
+<script type="text/javascript">
+//<![CDATA[
+	jQuery(document).ready(function($){
+		var purchase_code = $("#porto_license_general_purchase_code").val();
+        if(purchase_code) {
+            $("#porto_license_general_purchase_code").attr("value","********-****-****-****"+purchase_code.substring(23));
+        }
+        $(".content-header .form-buttons > button.save").click(function(){
+            if(purchase_code) {
+                if($("#porto_license_general_purchase_code").val() == "********-****-****-****"+purchase_code.substring(23)) {
+                    $("#porto_license_general_purchase_code").attr("value",purchase_code);
+                    $("#porto_license_general_purchase_code").attr("type","password");
+                    configForm.submit();
+                }
+            }
+        });
+	});
+//]]>
+</script>

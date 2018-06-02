@@ -1,0 +1,25 @@
+<config>
+	<modules>
+		<Emipro_Captcha>
+			<version>0.1.0</version>
+		</Emipro_Captcha>
+	</modules>
+	<frontend>
+		<routers>
+			<emcaptcha>
+				<use>standard</use>
+				<args>
+					<module>Emipro_Captcha</module>
+					<frontName>emcaptcha</frontName>
+				</args>
+			</emcaptcha>
+		</routers> 
+	</frontend>
+	<global>
+		<blocks>
+			<emcaptcha>
+				<class>Emipro_Captcha_Block</class>
+			</emcaptcha>
+		</blocks>
+	</global>
+</config>

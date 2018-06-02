@@ -1,0 +1,95 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+	if(count($this->getData('data'))>0 && Mage::helper('marketplace')->getSellerIdfromLoginUser())
+	{
+	    $data = $this->getData('data');
+?>
+	        <div class="em_dash_block">
+				<div class="entry-edit">
+					<div class="entry-edit-head"><h4><?php echo $this->__('Your Review'); ?></h4></div>
+					<fieldset class="a-center bold">
+						<span class="nowrap" style="font-size:18px;"><img src="<?php echo $this->getSkinUrl('emipro/'.$data['seller_review'].'.png'); ?>" alt="" /></span>
+					</fieldset>
+				</div>
+            </div> 
+<?php
+	}
+?>
+		
+<?php if( sizeof($this->getTotals()) > 0 ): 
+	$array = array();
+	$sort = array(6,7,1,4,5,9,10);
+ foreach( $this->getTotals() as $key=>$_total ){
+	 $array[$sort[$key]] = $_total;
+	}
+	ksort($array);
+?>
+            <?php foreach( $array as $key=>$_total ): ?>
+            <?php if($key==9) continue; //month sales remove ?>
+<?php
+	if(count($this->getData('data'))>0 && Mage::helper('marketplace')->getSellerIdfromLoginUser() && $key==4)
+	{
+?>
+            <div class="em_dash_block">
+	        <div class="entry-edit">
+                <div class="entry-edit-head"><h4><?php echo $this->__('Your Balance'); ?></h4></div>
+                <fieldset class="a-center bold">
+                    <span class="nowrap" style="font-size:18px;margin: 5px;display:inline-block;"><?php echo $data['remainamount']; ?></span>
+                </fieldset>
+            </div>
+            </div> 
+<?php
+	}
+?>
+            <div class="em_dash_block" style="<?php if($key==4 || $key==11) echo 'clear:both;float:left;' ?>" >
+            <div class="entry-edit"> 
+                <div class="entry-edit-head"><h4><?php echo $this->__($_total['label']); ?></h4></div>
+                <fieldset class="a-center bold">
+                    <span class="nowrap" style="font-size:18px;margin: 5px;display:inline-block;"><?php echo $_total['value'] ?><span style="font-size:14px; color:#686868;"><?php echo $_total['decimals'] ?></span></span>
+                </fieldset>
+            </div>
+            </div>
+            
+            <?php endforeach; ?>
+<?php
+	if(Mage::helper('marketplace')->getSellerIdfromLoginUser() && $data['pending_amount']!='')
+	{
+?>
+            <div class="em_dash_block">
+	        <div class="entry-edit">
+                <div class="entry-edit-head"><h4><?php echo $this->__('Pending Balance'); ?></h4></div>
+                <fieldset class="a-center bold"> 
+                    <span class="nowrap" style="font-size:18px;margin: 5px;display:inline-block;"><?php print_r( $data['pending_amount']); ?></span>
+                </fieldset>
+            </div>
+            </div>
+<?php
+	}
+?>            
+<?php endif; ?>
+  

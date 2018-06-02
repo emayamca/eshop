@@ -1,0 +1,71 @@
+<div>
+	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('marketplace-content')->toHtml();	?> 
+</div>
+<?php
+	$collection = $this->getSellerdata();
+	if(count($collection)>0){
+?> 
+	<div class="seller-list">
+		<h3><?php echo $this->__("Seller List");?></h3>
+		<ul>
+<?php
+	foreach($collection->getData() as $item){
+?>		
+			<li class="em_left">
+				<div class="em_index_seller">
+				<div class="em_index_logo">
+					<?php if(isset($item['company_logo']) && !empty($item['company_logo'])){ ?> 
+					<a href="<?php echo  Mage::getBaseUrl().$item['store_url'];?>"  >
+							<img src="<?php echo Mage::getBaseUrl('media').$item['company_logo'];?>" alt="<?php echo $item['store_name'];?>"  class="image"/>
+					</a>
+					<?php } ?> 
+				</div> 
+				<div class="m_index_text"> 
+					<a href="<?php echo  Mage::getBaseUrl().$item['store_url'];?>"  ><?php echo $item['store_name']; ?></a>
+				</div>
+				</div>
+			</li>
+<?php
+	}
+?>
+	  </ul>
+	</div>
+<?php 
+	}
+?>	
+	<div class="em_clear"></div> 
+<?php
+	$collection = $this->getSellerProducts();
+	if(count($collection)>0){
+?>
+	<div class="em_index_productlist">
+		<h3><?php echo $this->__("Latest Added Product");?></h3>
+		<ul>
+<?php
+	foreach($collection->getData() as $key=>$item){
+		if($key==7) break;
+		$product = Mage::getModel('catalog/product')->load($item['entity_id']);
+?>		
+			<li class="em_left">
+				<div class="m_index_product"> 
+				<div  class="m_index_product_img"> 
+					<a href="<?php echo $product->getProductUrl();?>"  >
+					<?php
+						$image_path_url = Mage::helper('catalog/image')->init($product, 'image');
+						?>
+						<img src="<?php echo $image_path_url;?>" alt="<?php echo $product['name']; ?>" class="image" />
+					</a>
+				</div>
+				<div class="m_index_text">
+					<a href="<?php echo $product->getProductUrl();?>"  ><?php echo $product['name']; ?></a>
+				</div> 
+				</div>
+			</li>
+<?php
+		}
+?>
+		</ul>
+	</div>
+<?php 
+	}
+?>

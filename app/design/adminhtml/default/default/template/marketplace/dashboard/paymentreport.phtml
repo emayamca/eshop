@@ -1,0 +1,20 @@
+<?php
+	if(count($this->getData('data'))>0 && Mage::helper('marketplace')->getSellerIdfromLoginUser())
+	{
+		$data = $this->getData('data');
+?>
+	        <div class="entry-edit">
+                <div class="entry-edit-head"><h4><?php echo $this->__('Seller Review'); ?></h4></div>
+                <fieldset class="a-center bold">
+                    <span class="nowrap" style="font-size:18px;"><img src="<?php echo $this->getSkinUrl('emipro/'.$data['seller_review'].'.png'); ?>" alt="" /></span>
+                </fieldset>
+            </div>
+	        <div class="entry-edit">
+                <div class="entry-edit-head"><h4><?php echo $this->__('Remaining Amount'); ?></h4></div>
+                <fieldset class="a-center bold">
+                    <span class="nowrap" style="font-size:18px;"><?php echo $data['remainamount']; ?></span>
+                </fieldset>
+            </div>
+<?php
+	}
+?>

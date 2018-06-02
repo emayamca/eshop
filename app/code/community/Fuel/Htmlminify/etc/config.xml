@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Fuel_Htmlminify_Model_Observer
+ *
+ * @category   Fuel
+ * @package    Fuel_Htmlminify
+ * @author     Emayavaramban <emayavaramban@businessfuel.in>
+ * @copyright  Copyright (c) 2017 Metacrust.com
+ * @license    https://www.magentocommerce.com/
+ * @version    1.0.0
+ * @since      2017
+ */
+-->
+
+<config>
+    <modules>
+        <Fuel_Htmlminify>
+            <version>1.0.0</version>
+        </Fuel_Htmlminify>
+    </modules>
+    <frontend>
+        <events>
+            <controller_action_postdispatch>
+                <observers>
+                    <Fuel_Htmlminify_Model_Observer>
+                        <type>singleton</type>
+                        <class>Fuel_Htmlminify_Model_Observer</class>
+                        <method>HtmlMinify</method>
+                    </Fuel_Htmlminify_Model_Observer>
+                </observers>
+            </controller_action_postdispatch>
+        </events>
+    </frontend>
+	<global>
+	        <helpers>
+            <htmlminify>
+                <class>Fuel_Htmlminify_Helper</class>
+            </htmlminify>
+        </helpers>
+	</global>
+</config>

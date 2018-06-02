@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <notificationmanager translate="title" module="notificationmanager">
+                                <title>Notification manager</title>
+                            </notificationmanager>
+                        </children>
+                    </catalog>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <notificationmanager>
+                                        <title>Notification manager</title>
+                                    </notificationmanager>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <translate>
+        <modules>
+            <Wyomind_Notificationmanager>
+                <files>
+                    <default>Wyomind_Notificationmanager.csv</default>
+                </files>
+            </Wyomind_Notificationmanager>
+        </modules>
+    </translate>
+    <layout>
+        <updates>
+            <notificationmanager>
+                <file>notificationmanager.xml</file>
+            </notificationmanager>
+        </updates>
+    </layout>
+</config>

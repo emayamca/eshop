@@ -1,0 +1,265 @@
+<?php
+    $_helper = Mage::helper("megamenu");
+    $categories = $_helper->getFirstLevelCategories();
+    
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();    
+
+    $aspect_ratio = $this->getData("aspect_ratio");
+    if($aspect_ratio == null) {
+        $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
+    }
+    $ratio_width = $this->getData("image_width");
+    if(!$ratio_width) {
+        $ratio_width = Mage::getStoreConfig("porto_settings/category/ratio_width",$code);
+    }
+    $ratio_height = $this->getData("image_height");
+    if(!$ratio_height) {
+        $ratio_height = Mage::getStoreConfig("porto_settings/category/ratio_height",$code);
+    }
+    
+    if(!$ratio_width)
+        $ratio_width = 300;
+    if(!$ratio_height)
+        $ratio_height = 400;
+        
+    $lazy_owl = $this->getData("lazy_owl");
+    if(!$lazy_owl)
+        $lazy_owl = 0;
+    $product_count = $this->getData("product_count");
+    if(!$product_count)
+        $product_count = 12;
+    $columns = $this->getData("columns");
+    if(!$columns)
+        $columns = "[[0,1],[320,1],[480,2],[768,3],[992,4],[1280,5]]";
+    $custom_styles='<style type="text/css">';
+?>
+<div class="onepage-category">
+    <div class="category-list">
+        <ul>
+        <?php
+            $i = 0;
+            foreach($categories as $category) {
+                $cat_id = $category->getId();
+                $cat_model = Mage::getModel('catalog/category')->load($cat_id);
+                if($category->getIsActive() && !$cat_model->getData("sw_ocat_hide_this_item")) {
+                    $icon = '<i class="icon-cat-default"></i>';
+                    if($cat_icon_img=$cat_model->getData("sw_ocat_category_icon_image")) {
+                        $icon = '<img src="'.Mage::getBaseUrl('media').'catalog/category/'.$cat_icon_img.'" alt=""/>';
+                    } else if($cat_font_icon=$cat_model->getData("sw_ocat_category_font_icon")){
+                        $icon = '<i class="'.$cat_font_icon.'"></i>';
+                    }
+                    if($hover_bg_color = $cat_model->getData("sw_ocat_category_hoverbgcolor"))
+                        $custom_styles .= '.onepage-category .category-list > ul > li > a[data-cat="'.$cat_id.'"]:hover,.onepage-category .category-list > ul > li > a[data-cat="'.$cat_id.'"].active{background-color:'.$hover_bg_color.';}.onepage-category .category-list > ul > li > a[data-cat="'.$cat_id.'"]:hover:after,.onepage-category .category-list > ul > li > a[data-cat="'.$cat_id.'"].active:after{border-left-color:'.$hover_bg_color.';}';
+                    echo '<li data-index="'.$i.'"><a href="javascript:void(0)" data-cat="'.$cat_id.'"><em class="onepage-category-icon">'.$icon.'</em><span>'.$category->getName().'</span></a></li>';
+                    $i++;
+                }
+            }
+        ?>
+        </ul>
+        <?php
+            $custom_styles .= '</style>';
+            echo $custom_styles;
+        ?>
+    </div>
+    <div class="category-details">
+    <?php
+        foreach($categories as $category) {
+            $cat_id = $category->getId();
+            $cat_model = Mage::getModel('catalog/category')->load($cat_id);
+            if($category->getIsActive() && !$cat_model->getData("sw_ocat_hide_this_item")) {
+    ?>
+        <div id="category_<?php echo $cat_id; ?>" class="category-detail">
+            <div class="onepage_category_ajax_loader" style="text-align: center; display: none;"><i class="ajax-loader large animate-spin" style="position: absolute;top: 50%;margin-top: -20px;"></i></div>
+            <div class="title-menu"></div>
+            <div class="products-area"></div>
+            <div class="additional-content"></div>
+        </div>
+    <?php
+            }
+        }
+    ?>
+    </div>
+    <script type="text/javascript">
+    jQuery(function($){
+        var timer;
+        $(".onepage-category .category-list > ul > li > a").off("click").on("click", function(){
+            cat_id = $(this).attr("data-cat");
+            if(!$("#category_"+cat_id).hasClass("ajax-loaded") || $("#category_"+cat_id).hasClass("subcat-loaded")) {
+                url = "<?php echo Mage::getBaseUrl()."swmegamenu/index/onepagecategory" ?>";
+                $("#category_"+cat_id+" .onepage_category_ajax_loader").fadeIn();
+                $("#category_"+cat_id).css("min-height","200px");
+                $(".onepage-category .category-details").addClass("ajax-loading");
+                $.ajax({
+                    method:"POST",
+                    url:url,
+                    data:{
+                        aspect_ratio:"<?php echo $aspect_ratio; ?>",
+                        image_width:"<?php echo $ratio_width; ?>",
+                        image_height:"<?php echo $ratio_height; ?>",
+                        lazy_owl:"<?php echo $lazy_owl; ?>",
+                        product_count:"<?php echo $product_count; ?>",
+                        columns:"<?php echo $columns; ?>",
+                        category_id:cat_id
+                    },
+                    dataType: 'json'
+                }).done(function(data){
+                    current_cat_id = data.category_id;
+                    if($("#category_"+current_cat_id).hasClass("subcat-loaded"))
+                        $("#category_"+current_cat_id).removeClass("subcat-loaded");
+                    else {
+                        $(".onepage-category .category-details").removeClass("ajax-loading");
+                        $("#category_"+current_cat_id).addClass("ajax-loaded");
+                        $("#category_"+current_cat_id+" .title-menu").html(data.title_menu);
+                        $("#category_"+current_cat_id+" .title-menu > a.parent").off("click").on("click", function(){
+							var cur_cat_id = $(this).attr("data-id");
+                            if($(this).hasClass("opened")) {
+                                $(this).parent().children(".menu-popup").fadeOut(200);
+                                $(this).removeClass("opened");
+                            } else {
+                                $(this).addClass("opened");
+                                popup_url = "<?php echo Mage::getBaseUrl()."swmegamenu/index/showtitlemenupopup" ?>";
+                                $(this).parent().children(".menu-popup").fadeIn(200);
+                                if(!$(this).parent().hasClass("ajax-loaded") && !$(this).parent().hasClass("ajax-loading") && $(this).attr("data-id")) {
+                                    var cur_menu_item = $(this).parent();
+                                    param = "?category_id="+cur_cat_id;
+                                    $(cur_menu_item).addClass("ajax-loading");
+                                    $.ajax({
+                                        url: popup_url+param,
+                                        dataType: 'json',
+                                        type: 'post',
+                                        success: function(data) {
+                                            $(cur_menu_item).removeClass("ajax-loading").addClass("ajax-loaded");
+                                            $(cur_menu_item).children(".menu-popup").html(data['popup_content']).hide().fadeIn(200);
+                                            //$("#category_"+cat_id+" .title-menu .menu-popup a").attr("href","javascript:void(0)");
+                                            $("#category_"+cur_cat_id+" .title-menu a").attr("parent-id", cur_cat_id);
+                                            $("#category_"+cur_cat_id+" .title-menu .menu-popup a").off("click").on("click",function(){
+                                                $(cur_menu_item).children(".menu-popup").fadeOut(200);
+                                                $(cur_menu_item).children("a").removeClass("opened");
+                                                parent_id = $(this).attr("parent-id");
+                                                subcat_id = $(this).attr("data-id");
+                                                $("#category_"+parent_id+" .onepage_category_ajax_loader").fadeIn();
+                                                $("#category_"+parent_id+" .additional-content").html("");
+                                                $.ajax({
+                                                    method:"POST",
+                                                    url:url+"?subcat=1",
+                                                    data:{
+                                                        aspect_ratio:"<?php echo $aspect_ratio; ?>",
+                                                        image_width:"<?php echo $ratio_width; ?>",
+                                                        image_height:"<?php echo $ratio_height; ?>",
+                                                        lazy_owl:"<?php echo $lazy_owl; ?>",
+                                                        product_count:"<?php echo $product_count; ?>",
+                                                        columns:"<?php echo $columns; ?>",
+                                                        category_id:$(this).attr("data-id")
+                                                    },
+                                                    dataType: 'json'
+                                                }).done(function(data){
+                                                    $("#category_"+parent_id).addClass("subcat-loaded");
+                                                    $("#category_"+parent_id+" .products-area").attr("id","cat_prod_"+subcat_id);
+                                                    $("#category_"+parent_id+" .products-area").html(data.category_products);
+                                                    $("#category_"+parent_id+" .additional-content").html(data.addtional_content);
+                                                    $("a.product-image img.defaultImage").each(function(){
+                                                        var default_img = $(this).attr("src");
+                                                        if(!default_img)
+                                                            default_img = $(this).attr("data-src");
+                                                        var thumbnail_img = $(this).parent().children("img.hoverImage").attr("src");
+                                                        if(!thumbnail_img)
+                                                            thumbnail_img = $(this).parent().children("img.hoverImage").attr("data-src");
+                                                        if(default_img){
+                                                            if(default_img.replace("/small_image/","/thumbnail/")==thumbnail_img){
+                                                                $(this).parent().children("img.hoverImage").remove();
+                                                                $(this).removeClass("defaultImage");
+                                                            }
+                                                        }
+                                                    });
+                                                }).fail(function(){
+                        
+                                                }).always(function(){
+                                                    $(".onepage_category_ajax_loader").fadeOut();
+                                                });
+                                                return false;
+                                            });
+                                        },
+                                        error: function(){
+                                            $(cur_menu_item).removeClass("ajax-loading");
+                                            $(".onepage_category_ajax_loader").fadeOut();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    $("#category_"+current_cat_id+" .products-area").attr("id","cat_prod_"+current_cat_id);
+                    $("#category_"+current_cat_id+" .products-area").html(data.category_products);
+                    $("#category_"+current_cat_id+" .additional-content").html(data.addtional_content);
+                    $("a.product-image img.defaultImage").each(function(){
+                        var default_img = $(this).attr("src");
+                        if(!default_img)
+                            default_img = $(this).attr("data-src");
+                        var thumbnail_img = $(this).parent().children("img.hoverImage").attr("src");
+                        if(!thumbnail_img)
+                            thumbnail_img = $(this).parent().children("img.hoverImage").attr("data-src");
+                        if(default_img){
+                            if(default_img.replace("/small_image/","/thumbnail/")==thumbnail_img){
+                                $(this).parent().children("img.hoverImage").remove();
+                                $(this).removeClass("defaultImage");
+                            }
+                        }
+                    });
+                }).fail(function(){
+                    
+                }).always(function(){
+                    $(".onepage_category_ajax_loader").fadeOut();
+                });
+            }
+            if(!first_load)
+                $("#category_"+cat_id).scrollToMe();
+            var cur_item = $(this);
+            setTimeout(function(){
+                $(".onepage-category .category-list > ul > li > a").removeClass("active");
+                $(cur_item).addClass("active");
+            },500);
+        });
+        var first_load = true;
+        $(".onepage-category .category-list > ul > li:first-child > a").trigger("click");
+        first_load = false;
+        $(window).scroll(function(){
+            $(".onepage-category .category-list > ul > li > a").each(function(){
+                if($("#category_"+$(this).attr("data-cat")+".ajax-loaded").offset() && ($(window).scrollTop() >= $("#category_"+$(this).attr("data-cat")+".ajax-loaded").offset().top - $(window).innerHeight() / 2) && ($(window).scrollTop() <= $("#category_"+$(this).attr("data-cat")+".ajax-loaded").offset().top + $("#category_"+$(this).attr("data-cat")+".ajax-loaded").height() - $(window).innerHeight() / 2)) {
+                    $(this).addClass("active");
+                    $(".onepage-category .category-list > ul > li > a:not([data-cat='"+$(this).attr("data-cat")+"'])").removeClass("active");
+                }
+            });
+            if($(".onepage-category .category-list > ul").outerHeight() < $(this).innerHeight()) {
+                $(".onepage-category .category-list > ul").removeClass("fixed-bottom");
+                if($(this).scrollTop() >= $(".onepage-category .category-list").offset().top - 24) {
+                    $(".onepage-category .category-list > ul").addClass("fixed-top");
+                } else {
+                    $(".onepage-category .category-list > ul").removeClass("fixed-top");
+                }
+            } else {
+                $(".onepage-category .category-list > ul").removeClass("fixed-top");
+                if($(this).scrollTop() >= $(".onepage-category .category-list").offset().top + $(".onepage-category .category-list > ul").outerHeight() + 46 - $(this).innerHeight()) {
+                    $(".onepage-category .category-list > ul").addClass("fixed-bottom");
+                } else {
+                    $(".onepage-category .category-list > ul").removeClass("fixed-bottom");
+                }
+            }
+            $(".onepage-category .category-detail.ajax-loaded").next(".category-detail:not(.ajax-loaded)").each(function(){
+                if(!$(".onepage-category .category-details").hasClass("ajax-loading") && ($(this).offset().top <= $(window).scrollTop()+$(window).innerHeight()*0.7)) {
+                    first_load = true;
+                    tmp_id = $(this).attr("id").split("_");
+                    current_id = tmp_id[1];
+                    $('.onepage-category .category-list > ul > li > a[data-cat="'+current_id+'"]').trigger("click");
+                    first_load = false;
+                }
+            });
+            if(($(".onepage-category .category-list > ul").hasClass("fixed-bottom") && ($(this).scrollTop() + $(window).innerHeight() >= $(".footer-container").offset().top)) || ($(".onepage-category .category-list > ul").hasClass("fixed-top") && ($(this).scrollTop() + $(window).innerHeight() >= $(".footer-container").offset().top) && ($(".onepage-category .category-list > ul").offset().top + $(".onepage-category .category-list > ul").outerHeight() >= $(".footer-container").offset().top) && ($(this).scrollTop() + $(".onepage-category .category-list > ul").outerHeight() + 70 >= $(".footer-container").offset().top))) {
+                $(".onepage-category .category-list > ul").addClass("absolute-bottom");
+            } else {
+                $(".onepage-category .category-list > ul").removeClass("absolute-bottom");
+            }
+        });
+    });
+    </script>
+</div>

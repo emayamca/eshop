@@ -1,0 +1,289 @@
+<config>
+    <tabs>
+        <emipro translate="label" module="marketplace"> 
+            <label>Emipro</label>
+            <sort_order>0</sort_order>
+        </emipro>
+    </tabs> 
+    <sections>
+        <marketplace_setting translate="label" module="marketplace">
+            <label>Marketplace</label>
+            <tab>emipro</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>0</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+				<licence translate="label" module="marketplace">
+						<label>Licence</label>
+						<frontend_type>text</frontend_type>
+						<sort_order>0</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>0</show_in_website>
+						<show_in_store>0</show_in_store>
+						<fields>
+							<licence translate="label">
+								<label>Licence Key</label>
+								<frontend_type>text</frontend_type>
+								<sort_order>20</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</licence>                      
+						</fields>
+				</licence>
+                <marketplace translate="label" module="marketplace">
+				    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                
+					<fields>
+						<logo translate="label comment">
+							<label>Seller Panel Logo</label>  
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">seller</upload_dir>
+							<base_url type="media" scope_info="1">seller</base_url> 
+							<sort_order>2</sort_order> 
+							<show_in_default>1</show_in_default> 
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</logo>
+						<sellerinvoice translate="label" module="marketplace">
+							<label>Allow seller to create invoice</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<comment><![CDATA[if you set option "Yes" then seller can create invoice.]]></comment>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>                    
+						</sellerinvoice>
+						<forgotpasswordcaptcha translate="label" module="marketplace">
+							<label>Forgot Password Captcha Enable</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<comment><![CDATA[You can enable captcha in seller forgot password template.]]></comment>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>                    
+						</forgotpasswordcaptcha>
+						<offers1 translate="label" module="marketplace">
+							<label>Offer 1</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Offer will be displayed in Product Page. Example : Offer 10% off on credit card.]]></comment>
+							<sort_order>5</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</offers1>
+						<offers2 translate="label" module="marketplace">
+							<label>Offer 2</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Offer will be displayed in Product Page.Example : Offer 15% off on credit card.]]></comment>
+							<sort_order>6</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</offers2>
+						<offers3 translate="label" module="marketplace">
+							<label>Offer 3</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Offer will be displayed in Product Page.Example : Offer 20% off on credit card.]]></comment>
+							<sort_order>7</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</offers3>
+						<cashondelivery translate="label" module="marketplace">
+							<label>Cash On Delivery</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Example: May be available enter your pincode.]]></comment>
+							<sort_order>8</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</cashondelivery>
+						<maxupload translate="label" module="marketplace">
+							<label>Maximum image upload size for seller(MB)</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[e.g. 100 for 100MB, 0 for unlimited upload size]]></comment>
+							<sort_order>9</sort_order>
+							<validate>validate-number</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>                    
+						</maxupload>
+						<catalogprice_includes_tax translate="label comment">
+                            <label>Seller Credit and Commission Calculate on Catalog price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tax/system_config_source_priceType</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </catalogprice_includes_tax>
+					</fields>   
+                </marketplace>
+            </groups>
+   			<groups>
+				<categorycommission translate="label" >
+				<label>Commission</label>
+				<sort_order>670</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+				   <fields>
+					   <commission_rate translate="label" module="marketplace"> 
+							<label>Default Commission Amount</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[When new seller approved then this amount will be applied automatically.]]></comment>
+							<sort_order>2</sort_order> 
+							<validate>validate-number</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</commission_rate>
+						<commission_type translate="label" module="marketplace"> 
+							<label>Default Commission Type</label>
+                            <frontend_type>select</frontend_type>
+                            <comment><![CDATA[When new seller approved then this commission type will be applied automatically.]]></comment>
+						    <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>marketplace/system_config_source_defaultcommissiontype</source_model> 
+						</commission_type>   
+					<ua_regexp translate="comment" module="marketplace">
+						<label>Default Category Commission</label>
+						<frontend_model>marketplace/adminhtml_system_config_form_field_regexceptions</frontend_model>
+						<backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+						<comment><![CDATA[Category Commission priority is higher than Default Commission.]]></comment>
+						<sort_order>5</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</ua_regexp>
+				   </fields>
+				</categorycommission>
+			</groups>
+			<groups>
+				<sellerpanelcolor translate="label" >
+				<label>Seller Panel Color Settings</label>
+				<sort_order>680</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+				   <fields>
+					   <maincolor translate="label" module="marketplace"> 
+							<label>Primary Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #0083d5]]></comment>
+							<sort_order>1</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</maincolor>
+						<subcolor translate="label" module="marketplace"> 
+							<label>Secondary Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #106BBD]]></comment>
+							<sort_order>2</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</subcolor>
+						<hovercolor translate="label" module="marketplace"> 
+							<label>Hover Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #0076c8]]></comment>
+							<sort_order>3</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</hovercolor>
+						<activecolor translate="label" module="marketplace"> 
+							<label>Menu Active Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #106BBD]]></comment>
+							<sort_order>4</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</activecolor>
+						<textcolor translate="label" module="marketplace"> 
+							<label>Text Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #FFFFFF]]></comment>
+							<sort_order>5</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</textcolor>
+						<texthovercolor translate="label" module="marketplace"> 
+							<label>Text Hover Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #FFFFFF]]></comment>
+							<sort_order>6</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</texthovercolor>
+						<tabcolor translate="label" module="marketplace"> 
+							<label>Tab Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #B9E1FB]]></comment>
+							<sort_order>7</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</tabcolor>
+						<tabhovercolor translate="label" module="marketplace"> 
+							<label>Tab Hover Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #84C9F9]]></comment>
+							<sort_order>8</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</tabhovercolor>
+						<ordertotal translate="label" module="marketplace"> 
+							<label>Order Total And Floating Header Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #b6e2ff]]></comment>
+							<sort_order>9</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</ordertotal>
+						<headertext translate="label" module="marketplace"> 
+							<label>Floating Header Text Color</label>
+							<frontend_type>text</frontend_type>
+							<comment><![CDATA[Select Or Enter Color For Ex : #585858]]></comment>
+							<sort_order>10</sort_order> 
+							<validate>color</validate>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>                    
+						</headertext>
+						
+				   </fields>
+				</sellerpanelcolor>
+			</groups>
+        </marketplace_setting>
+    </sections>     
+</config> 

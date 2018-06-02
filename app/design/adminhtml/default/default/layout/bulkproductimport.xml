@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout>
+	<emipro_bulkproductimport_adminhtml_index_importdata>
+		<remove name="header"/>
+		<remove name="menu"/>
+		<remove name="notification"/>
+		<remove name="breadcrumbs"/>
+		<remove name="footer"/>
+       
+	</emipro_bulkproductimport_adminhtml_index_importdata>
+</layout>

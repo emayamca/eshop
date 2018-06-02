@@ -1,0 +1,93 @@
+<style>
+	.marketplace-sellerreview-index .col-main div{margin:8px 0px;}
+</style>
+<div >
+	<h3><?php echo $this->__('Write Seller Review today!');?></h3>
+</div>
+<div>
+	<h4><span style="color:#62989d!important"><?php echo $this->__('Why should you review a seller?');?></span></h4>
+	<p><?php echo $this->__('Your rating of the seller has a direct effect on customer perception of the seller. Your rating contributes to the seller’s overall rating. You may rate/provide feedback for a seller up to 30 days after placing an order.');?></p>
+</div> 
+<?php
+	$selleravailable = $this->getSellerforreview();
+	if($selleravailable){
+?>
+<div class="sellerreview">
+	<form action="<?php echo Mage::getBaseUrl().'marketplace/sellerreview/save/';?>" method="POST" id="sellerreview">
+	<div>
+		<span style="color:#62989d!important;font-size:16px;font-weight:bold;">Seller Review</span>
+	</div> 
+	<div  style="margin-bottom:20px;">
+		<select name="seller_id" style="width:150px;" class="validate-select">
+			<?php foreach($selleravailable as $key =>$sellerdata){?>
+			<option value="">Select Seller</option>
+			<option value="<?php echo $key;?>"><?php echo $sellerdata;?></option>
+			<?php } ?>
+		</select>
+	</div>
+	<div>
+		<table class="review-summary-table ratings" style="border-bottom:none!important">
+		<tr>
+			<td>
+				<div class="rating-box seller-rating-box" >
+                    <span class="rating-number">1</span>
+                    <span style="width:20%;" class="rating nobr">1 star</span>
+                </div>
+			</td>
+			<td>
+				<div class="rating-box seller-rating-box" >
+                    <span class="rating-number">2</span>
+                    <span style="width:40%;" class="rating nobr">2star</span>
+                </div>
+            </td>
+			<td>
+				<div class="rating-box seller-rating-box" >
+                    <span class="rating-number">3</span>
+                    <span style="width:60%;" class="rating nobr">3star</span>
+                </div>
+			</td>
+			<td>
+				<div class="rating-box seller-rating-box" >
+                    <span class="rating-number">4</span>
+                    <span style="width:80%;" class="rating nobr">4star</span>
+                </div>
+			</td>
+			<td>
+				<div class="rating-box seller-rating-box" >
+                    <span class="rating-number">5</span>
+                    <span style="width:100%;" class="rating nobr">5star</span>
+                </div>
+			</td>
+		</tr>
+		<tr >
+			<td><input type="radio" name="rating" value="1" class="validate-one-required-by-name"/></td>
+			<td><input type="radio" name="rating" value="2" class="validate-one-required-by-name"/></td>
+			<td><input type="radio" name="rating" value="3" class="validate-one-required-by-name"/></td>
+			<td><input type="radio" name="rating" value="4" class="validate-one-required-by-name"/></td>
+			<td><input type="radio" name="rating" value="5" class="validate-one-required-by-name" checked="true" /></td>
+		</tr>
+		</table>
+		
+	</div>
+	<div>
+		<label for="review" class="required"><em>*</em>Review</label>
+		<div>
+		<textarea col="20" rows="5" name="text" class="required-entry " id="review"></textarea>
+		</div>
+ 	</div>
+ 	<div class="buttons-set" style="width:50%">
+		<button type="submit" class="button"><span><span>Submit Review</span></span></button>
+ 	</div>
+	</form>
+</div>
+<?php } ?>
+<script type="text/javascript">
+//<![CDATA[
+    var sellerReviewForm = new VarienForm('sellerreview', true);
+</script>
+<style>
+.seller-rating-box
+{
+	margin:10px!important;
+}
+</style>

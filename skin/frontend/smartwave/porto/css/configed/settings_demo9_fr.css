@@ -1,0 +1,18 @@
+/**
+ * WARNING: Do not change this file. Your changes will be lost.
+ * 2015-04-06 14:10:52 */
+
+.header-container.type9 { border-top: 5px solid #7aa93c; border-bottom: 1px solid #e1e1e1; }
+.header-container.type9 .main-nav { text-align: center; }
+.header-container.type9 .main-nav ul.menu>li.fl-right { float: none !important; }
+.header-container.type9 .main-nav ul.menu>li>a { padding-left: 20px; margin-right: 0; padding-top: 13px; padding-bottom: 13px; }
+.header-container.type9 .main-nav ul.menu>li.fl-right.last>a{padding-right: 30px !important;}
+.header-container.type9 .main-nav ul.menu>li.fl-right.last>a:after{right: 15px;}
+.search-area {height: 36px; margin-top: -18px;}
+.header-container.type9 .header>.logo {margin: 20px 0;}
+.header-wrapper {margin-bottom: 10px;}
+.header-container.type9 .header>.logo img {height: 65px;}
+
+@media (max-width:991px){
+    .header-container.type9 .header>.logo {margin: 20px 0;}
+}

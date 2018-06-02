@@ -1,0 +1,25 @@
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td class="action-content">
+            <h2 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Welcome to {{var store.getFrontendName()}}.</h2>
+            <p style="font-size:14px;margin:10px;">Hello</p>
+            <p class="highlighted-text" style="border:1px solid #e2e2e2;border-radius:3px;background-color:#f7f7f7;margin:8px;padding:14px;font-size:14px;line-height: 20px;">
+                You have a message from <b>{{var seller_name}}</b> on Support Ticket Id <b>{{var ticket_id}}</b>
+            </p>
+            <p style="margin-left:20px;">Ticket status:</p>
+            <ul style="font-size:14px;list-style-type: square;margin:10px 0px 30px 0px;">
+                <li style="margin:5px;">{{var ticket_status}}</li>
+            </ul>
+            <p style="font-size:12px;font-weight:600;margin:10px;">
+                {{var message}}
+            </p>
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer"}}
+
+

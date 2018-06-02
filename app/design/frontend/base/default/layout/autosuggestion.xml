@@ -1,0 +1,12 @@
+<?xml version="1.0"?>   
+<layout version="1.0">  
+	<default>
+        <reference name="head">	
+        	<action method="addItem"><type>skin_js</type><name>js/autosuggestion/jquery.autocomplete-min.js</name></action>
+        </reference>
+		<reference name="header">	
+            <block type="autosuggestion/index" name="apptha.search" as="topSearch" template="autosuggestion/index.phtml"/>
+        </reference>
+    </default>
+</layout>   
+	

@@ -1,0 +1,100 @@
+<?php
+/*Product Information*/
+$product_id = Mage::app()->getRequest()->getParam('id');
+if($product_id){
+	$product = Mage::getModel('catalog/product')->load($product_id);
+}
+?>
+<?php 
+/*Customer Information*/
+$cSession = Mage::getSingleton('customer/session');
+if($cSession->isLoggedIn()){ 
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+}
+?>
+
+<!--bulk order form-->
+<div class="col-md-3">
+    <div class="bulkOrderForm">
+        <h4><?php echo $this->__('BULK ORDERS'); ?> <span id="bulkOrderForm-toggleBtn"><i class="fa fa-bars"></i></span></h4>
+        <form action="<?php echo $this->getUrl('bulkorderform/index/saveBulkOrder'); ?>" method="post" id="bulk-oroder-form-validate">
+		<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+            <div class="input-group">
+                <span><i class="fa fa-user"></i></span>
+				<input type="text" id="name" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getFirstname().''.$customer->getLastname(); } ?>" class="form-control required-entry" name="customername" placeholder="<?php echo $this->__('Enter your fullname'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-envelope"></i></span>
+               <input type="email" id="email" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getEmail(); } ?>" class="form-control validate-email required-entry" name="customeremail" placeholder="<?php echo $this->__('Enter your email address'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-phone"></i></span>
+                <input type="number" id="phone" value="<?php if($cSession->isLoggedIn() && $product_id){ echo $customer->getMobile(); } ?>" class="form-control validate-number required-entry input-box validate-length maximum-length-10 minimum-length-10 validate-digits" name="telephone" placeholder="<?php echo $this->__('Enter your phone number'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-globe"></i></span>
+                <?php $_countries = Mage::getResourceModel('directory/country_collection')->loadByStore()->toOptionArray(false) ?>
+				<?php if (count($_countries) > 0): ?>
+					<select name="customer[country_id]" id="customer:country_id" class="form-control validate-select" onchange="getstate(this.value);">
+						<option value=""><?php echo $this->__('--Choose a country--'); ?></option>
+						<?php foreach($_countries as $_country): ?>
+							<option value="<?php echo $_country['value'] ?>">
+								<?php echo $_country['label'] ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				<?php endif; ?>
+            </div>
+            <div class="input-group" id='statediv'>
+                <span><i class="fa fa-map-marker"></i></span>
+                <input type="text" name="customerstate" placeholder="<?php echo $this->__('Enter your city'); ?>" id="state" title="<?php echo Mage::helper('contacts')->__('State') ?>" class="form-control required-entry" />
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-pencil"></i></span>
+                <input type="text" id="pname" value="<?php if($product_id){ echo $product->getName(); } ?>" class="form-control required-entry" name="customerproductname" placeholder="<?php echo $this->__('Enter product name'); ?>"/>
+            </div>
+            <div class="input-group">
+                <span><i class="fa fa-archive"></i></span>
+                <input type="number" id="quantity" class="form-control validate-number required-entry validate-value-greater-than-10" name="customerqty" placeholder="<?php echo $this->__('Enter order quantity'); ?>"/>
+            </div>
+            <button type="submit" id="bulkBtn" class="btn btn-primary form-control"><?php echo $this->__('Submit'); ?></button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	var dataForm = new VarienForm('bulk-oroder-form-validate', false);
+	Validation.add('validate-value-greater-than-10', 'Please enter a qty greater than 10.', function(v) {
+    return Validation.get('IsEmpty').test(v) || (v > 10);
+});
+//]]>
+</script>
+<script type="text/javascript">
+function getstate(countryValue) {
+    var reloadurl = '<?php echo $this->getUrl('sociallogin/index/state'); ?>' + 'country/' + countryValue;
+    jQuery.ajax({
+        url: reloadurl, //Relative or absolute path to response.php file
+        method: 'get',
+        success: function (data) {
+            jQuery('#statediv').html(data);
+        }
+    });
+}
+</script>
+<!--bulk order form-->
+<script type="text/javascript">
+//Disable submit button
+        var formAlreadySubmitted = false;
+        jQuery('#bulk-oroder-form-validate').submit(function(e){
+           if(dataForm.validator.validate()){
+              if(formAlreadySubmitted){
+                 e.preventDefault();
+                    return false;
+                 }
+                 var submitChildren = jQuery(this).find('button[type=submit]');
+                 submitChildren.attr('disabled', 'disabled');
+                 submitChildren.addClass('disabled');
+                 formAlreadySubmitted = true;
+            }
+        });
+</script>

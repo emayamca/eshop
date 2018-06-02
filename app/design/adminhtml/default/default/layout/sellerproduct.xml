@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_sellerproduct_products>
+		<block type="core/text_list" name="root" output="toHtml">
+			   <block type="sellerproduct/adminhtml_sellerproduct_edit_tab_sellerproducts" name="sellerproduct.grid"/>
+			   <block type="adminhtml/widget_grid_serializer" name="grid_serializer_sellerproduct">
+				   <reference name="grid_serializer_sellerproduct">
+					   <action method="initSerializerBlock">
+						   <grid_block_name>sellerproduct.grid</grid_block_name>
+						   <data_callback>getSelectedProducts</data_callback>
+						   <hidden_input_name>links[sellerproducts]</hidden_input_name>
+						   <reload_param_name>products_id</reload_param_name>
+					   </action>
+					   <action method="addColumnInputName">
+						   	<input_name>position</input_name>
+					   </action>               
+				   </reference>
+			   </block>
+		</block>
+	</adminhtml_sellerproduct_products>
+	<adminhtml_sellerproduct_productsgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="sellerproduct/adminhtml_sellerproduct_edit_tab_sellerproducts" name="sellerproduct.grid"/>
+        </block>
+	</adminhtml_sellerproduct_productsgrid>
+</layout>

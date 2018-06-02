@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "C:/xampp/htdocs/metacrust-live/js/smartwave/jquery/plugins/isotope/packery.pkgd.min.js",
+        "C:/xampp/htdocs/meta-live/js/smartwave/jquery/plugins/isotope/packery.pkgd.min.js",
+        "C:/xampp/htdocs/meta-live/js/smartwave/jquery/plugins/mcolorpicker/mcolorpicker.min.js",
+        "C:/xampp/htdocs/meta-live/skin/frontend/smartwave/porto/js/metacrust.js"
+    ]
+}

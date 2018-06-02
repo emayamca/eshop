@@ -1,0 +1,214 @@
+<?php echo $this->getChildHtml('sticky.nav') ?>
+<?php
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();
+    $custom_block = Mage::getStoreConfig('porto_settings/header/static_block', $code);
+?>
+<meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<div class="header-container type20">
+    <div class="top-links-container">
+        <div class="top-links container">
+            <div class="top-links-inner">
+                <?php echo $this->getChildHtml('store_currency'); ?>
+                <div class="top-links-area">
+                    <div class="top-links-icon"><a href="javascript:void(0)"><?php echo $this->__("links"); ?></a></div>
+                    <ul class="links">
+					<?php if(Mage::getSingleton('customer/session')->isLoggedIn()){ ?>
+						<li class="first"><a href="<?php echo $this->getUrl('wishlist/'); ?>" title="<?php echo $this->__("My Wishlist"); ?>"><?php echo $this->__("My Wishlist"); ?></a></li>
+                        <li class="first"><a href="<?php echo $this->getUrl('trackyourorder/index/'); ?>" title="<?php echo $this->__("Track Order"); ?>"><?php echo $this->__("Track Order"); ?></a></li>
+						<li class="first"><a href="<?php echo $this->getUrl('customer/account/'); ?>" title="<?php echo $this->__("My Account"); ?>"><?php echo $this->__("My Account"); ?></a></li>
+                        <li class="first last"><a onclick="logoutShop()" title="<?php echo $this->__("Log Out"); ?>"><?php echo $this->__("Log Out"); ?></a></li>
+                        <?php } else { ?>
+                        <li class="first"><a href="<?php echo $this->getUrl('wishlist/'); ?>" title="<?php echo $this->__("My Wishlist"); ?>"><?php echo $this->__("My Wishlist"); ?></a></li>
+						<li class="first"><a href="<?php echo $this->getUrl('trackyourorder/index/'); ?>" title="<?php echo $this->__("Track Order"); ?>"><?php echo $this->__("Track Order"); ?></a></li>
+                        <li class="first noDesk"><a onclick="signupClick()" href="<?php echo $this->getUrl('customer/account/create'); ?>" title="<?php echo $this->__("Register"); ?>"><?php echo $this->__("Register"); ?></a></li>
+                        <li class="first last noDesk"><a onclick="signinClick()" href="<?php echo $this->getUrl('customer/account/login'); ?>" title="<?php echo $this->__("Login"); ?>"><?php echo $this->__("Login"); ?></a></li>
+                        <i class="fa fa-user noMob" id="accountBlockSwitch">
+                            <div class="accountBlockOuter">
+                                <div class="accountBlock">
+                                    <h4><?php echo $this->__("Your Account"); ?></h4>
+                                    <ul>
+                                        <li class="first"><a id="signup" onclick="signupClick()" href="<?php echo $this->getUrl("customer/account/create/"); ?>" title="<?php echo $this->__("Register"); ?>"><?php echo $this->__("Register"); ?></a></li>
+                                        <li class="first last"><a onclick="signinClick()" href="<?php echo $this->getUrl("customer/account/login/"); ?>" title="<?php echo $this->__("Login"); ?>"><?php echo $this->__("Login"); ?></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </i>
+                       
+                        <?php } ?>
+						<li class="first last noDesk"><p class="altius-contact" style="font-weight: 700;margin: 0px 10px !important;"><i class="icon-phone-1" style="font-size: 11px !important;"></i>8081881122</p></li>
+                    </ul>
+                    <?php //echo $this->getChildHtml('topLinks'); ?>
+                </div>
+                <p class="welcome-msg"><?php echo $this->getChildHtml('welcome'); ?> <?php echo $this->getAdditionalHtml(); ?></p>
+                <div class="clearer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt(); ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt(); ?>" class="logo"><img src="<?php echo $this->getLogoSrc(); ?>" alt="<?php echo $this->getLogoAlt(); ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl(''); ?>" title="<?php echo $this->getLogoAlt(); ?>" class="logo"><strong><?php echo $this->getLogoAlt(); ?></strong><img src="<?php echo $this->getLogoSrc(); ?>" alt="<?php echo $this->getLogoAlt(); ?>" /></a>
+        <?php endif; ?>
+        <div class="cart-area">
+            <?php echo '<div class="custom-block">'.$this->getLayout()->createBlock('cms/block')->setBlockId($custom_block)->toHtml().'</div>'; ?>
+            <?php echo $this->getChildHtml('minicart'); ?>
+        </div>
+        <div class="search-area">
+            <a href="javascript:void(0);" class="search-icon"><i class="icon-search"></i></a>
+            <?php echo $this->getChildHtml('topSearch'); ?>
+        </div>
+        <div class="menu-icon"><a href="javascript:void(0)" title="<?php echo $this->__('Menu'); ?>"><i class="fa fa-bars"></i></a></div>
+        <?php echo $this->getChildHtml("demo_header_tooltip"); ?>
+            <ul class="scrolled-prime-menu-ul">
+                <a href="<?php echo Mage::getStoreConfig('sociallogin/newandrent/new_equipment'); ?>"><li><?php echo $this->__('New Equipment'); ?></li></a>
+                <a href="<?php echo Mage::getStoreConfig('sociallogin/newandrent/rentnsell'); ?>"><li><?php echo $this->__('Rentals & Used'); ?></li></a>
+                <a href="<?php echo Mage::getBaseUrl(); ?>"><li><?php echo $this->__('Spare Parts E-Shop'); ?></li></a>
+            </ul>
+    </div>
+    
+    <div class="main-nav">
+		<div class="container">            
+			<div class="menu-wrapper">
+				<div class="menu-all-pages-container">
+					<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('Header_static_menu')->toHtml() ?>          
+					<ul class="menu">
+						<li><a href="<?php echo Mage::getBaseUrl(); ?>"><?php echo $this->__('HOME'); ?></a></li>
+						<li><a class="top-categories"><?php echo $this->__('Categories'); ?></a>
+							<ul>
+								<li>
+									<div class="meta-sidebar">
+										<div class="show-more-btn"><?php echo $this->__('Show more'); ?></div>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li class="manufacturing_types"><a class="amanufacturing_types"><?php echo $this->__('By Machine Type'); ?></a>
+							<ul class="manufacturing-loop">
+							<?php
+								$mattributeCode = 'manufacturing_types';
+								$mloop = "manufacturing-loop";
+								$murl = 'by-machine-type.html?manufacturing_types';
+								echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($mattributeCode, $murl, $mloop);
+							?>
+							</ul>
+						</li>
+						<li class="brandsli"><a class="brandsa"><?php echo $this->__('By Brand'); ?></a>
+							<ul class="brands-loop brands-head-menu-ul">
+							<?php
+								$battributeCode = 'brands';
+								$bloop = "brands-loop";
+								$burl = 'by-brands.html?brands';
+								echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($battributeCode, $burl, $bloop);
+							?>
+							<li class="show-more-brand"><?php echo $this->__('Show more') ?></li>
+							</ul>
+						</li>
+						<li class="category_typeli"><a class="category_typea"><?php echo $this->__('By Industry Type'); ?></a>
+							<ul class="category-loop">
+							<?php
+								$cattributeCode = 'category_type';
+								$cloop = "category-loop";
+								$curl = 'by-industry-type.html?category_type';
+								echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($cattributeCode, $curl, $cloop);
+							?>
+							</ul>
+						</li>
+						<?php if(Mage::getStoreConfig('sociallogin/deals/enable_deals')): ?>
+							<li><a href="<?php echo Mage::getBaseUrl().'deals.html'; ?>"><?php echo $this->__('Deals'); ?></a></li>
+						<?php endif; ?>
+						<li><a href="<?php echo Mage::getBaseUrl().'about-porto-2'; ?>"><?php echo $this->__('About US'); ?></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<?php //echo $this->getChildHtml('topMenu') ?>
+	</div>
+	<?php echo $this->getChildHtml('mobile.nav') ?>
+	<!--popup for all categories start-->
+	<div class="phantom-overlay"></div>
+	<div class="catpop">
+		<h3 class="catpoph3"><?php echo $this->__('All Categories'); ?><span style="float:right;"><i class="fa fa-times" id="close-catpop"></i></span></h3>
+	</div>
+	<!--Brand Pop-up-->  
+	<div class="brandpop">
+		<h3><?php echo $this->__('All Brands'); ?><span style="float:right;"><i class="fa fa-times" id="close-brandpop"></i></span></h3>
+		<div class="panel-group brandpopdiv" id="accordion" style="width:100%;">
+		</div>
+	</div> 
+</div>  
+<!--popup for all categories end-->
+<script type="text/javascript">
+//Login Form
+function signupClick() {       
+    document.getElementById('register').click();
+}
+//Sign up From
+function signinClick() {       
+    document.getElementById('log_in').click();
+}
+
+// Mana layered Navigation for mobile
+jQuery(document).ready(function() {
+	//	executes when HTML-Document is loaded and DOM is ready
+	filter_popup = 0;
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+	jQuery('.show-more-btn').hide();
+	jQuery(".show-more-btn").before('<img class="catpop-loader" src="<?php echo $this->getSkinUrl('images/top-cat-loader.jpg');?>"/>');
+	jQuery.ajax({
+		url: '<?php echo $this->getUrl('trackyourorder/index/getTreeCategories/'); ?>',
+		cache: false,
+		dataType:'json',
+		success: function(data) {
+			jQuery('.catpop-loader').remove();
+			jQuery('.show-more-btn').show();
+			jQuery('.show-more-btn').before(data);
+		}
+	});
+});
+
+//All categories pop-up in Ajax
+jQuery(".show-more-btn").click(function(){
+	jQuery(".catpop").css("display","block");
+	jQuery(".phantom-overlay").css("display","block");
+	jQuery("body").addClass("blockScroll");
+	var popup_cat_ajax = '<?php echo Mage::getBaseUrl() ?>trackyourorder/index/getPopUpCatAjax/';
+	if(jQuery( ".pop-up-cat-ajax" ).length == 0){
+		jQuery(".catpoph3").after('<img class="catpop-loader" style="margin-top: 200px;" width="32" height="32" src="<?php echo $this->getSkinUrl('images/ajax_loader.gif');?>"/>');
+		jQuery.ajax({
+			url:popup_cat_ajax,
+			type:'post',
+			crossDomain: true,
+			dataType:'json',
+			success:function(data){
+				jQuery(".catpoph3").after(data);
+				jQuery(".catpop-loader").css('display','none');
+			}
+		});
+	}
+});
+//Brand pop-up
+jQuery(".show-more-brand").click(function(){
+	jQuery(".brandpop").css("display","block");
+	jQuery(".phantom-overlay").css("display","block");
+	jQuery("body").addClass("blockScroll");
+	var popup_brand_ajax = '<?php echo Mage::getBaseUrl() ?>trackyourorder/index/getPopUpBrandAjax/';
+	if(jQuery( ".brand-loop-alive" ).length == 0){
+	jQuery(".brandpopdiv").html('<img class="brandpop-loader" style="margin-top: 200px;" width="32" height="32" src="<?php echo $this->getSkinUrl('images/ajax_loader.gif');?>"/>');
+		jQuery.ajax({
+			url:popup_brand_ajax,
+			type:'post',
+			crossDomain: true,
+			dataType:'json',
+			success:function(data){
+				jQuery(".brandpopdiv").html(data);
+				jQuery(".brandpop-loader").css('display','none');
+			}
+		});
+	}
+});
+</script>
+<div class="cart-ghost-overlay"></div>

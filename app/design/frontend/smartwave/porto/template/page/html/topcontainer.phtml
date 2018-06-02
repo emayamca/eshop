@@ -1,0 +1,23 @@
+<?php
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();
+    $breadcrumbs_below_header = Mage::getStoreConfig('porto_settings/general/breadcrumbs_below_header', $code);
+?>
+<?php
+if(!$breadcrumbs_below_header)
+    echo $this->getChildHtml("page.header");
+$breadcrumbs = $this->getChildHtml("breadcrumbs");
+if ($breadcrumbs) :
+?>
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+        <?php echo $breadcrumbs; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php
+if($breadcrumbs_below_header)
+    echo $this->getChildHtml("page.header");
+?>

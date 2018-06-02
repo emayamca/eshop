@@ -1,0 +1,24 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="head-dashboard"><?php echo $this->__('Dashboard') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-container">
+    <?php echo $this->getChildHtml('store_switcher') ?>
+    <table cellspacing="25" width="100%">
+        <tr>
+			<td><?php echo $this->getChildHtml('sales') ?>
+            </td>
+        </tr>
+        <tr>
+			<td> 
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Last 5 Orders') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('lastOrders'); ?></fieldset>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

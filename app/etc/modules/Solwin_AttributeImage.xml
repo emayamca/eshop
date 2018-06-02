@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Solwin_AttributeImage>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Solwin_AttributeImage>
+    </modules>
+</config>

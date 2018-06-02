@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <WYOMIND translate="label">
+            <label>WYOMIND</label>
+            <sort_order>1000000</sort_order>
+        </WYOMIND>
+    </tabs>
+    <sections>
+        <notificationmanager translate="label">
+            <label>Notification Manager</label>
+            <tab>WYOMIND</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>999</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <notificationmanager translate="label">
+                    <label>Notification Manager</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <version translate="label comment">
+                            <label>Version</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>Wyomind_Notificationmanager_Model_Adminhtml_System_Config_Form_Field_Link</frontend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </version>
+                        <extensions translate="label comment">
+                            <label>Receive notifications for</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>notificationmanager/adminhtml_system_config_form_field_extensions</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </extensions>
+                    </fields>
+                </notificationmanager>
+            </groups>
+        </notificationmanager>
+    </sections>
+</config>

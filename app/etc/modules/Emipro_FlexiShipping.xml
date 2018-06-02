@@ -1,0 +1,12 @@
+<config>
+	<modules>
+		<Emipro_FlexiShipping>
+			<version>1.0.0</version>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Emipro_Marketplace />
+			</depends>
+		</Emipro_FlexiShipping>
+	</modules>
+</config>

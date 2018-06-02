@@ -1,0 +1,20 @@
+<!--@subject Products back in stock alert @-->
+<!--@vars
+{"var customerName":"Customer Name",
+"var alertGrid":"Alert Data Grid"}
+@-->
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td class="action-content">
+            <h2 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">{{var customerName}},</h2>
+             <p class="highlighted-text" style="border:1px solid #ff0000;border-radius:3px;background-color:#ffffff;color:#ff0000;margin:8px;padding:14px;font-size:14px;line-height: 20px;">
+                <strong>{{var alertGrid}}</strong>
+            </p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

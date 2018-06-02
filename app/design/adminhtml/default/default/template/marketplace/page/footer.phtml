@@ -1,0 +1,27 @@
+<?php 
+	$display = true;
+	if(Mage::helper("marketplace")->getSellerIdfromLoginUser()){$display = false;}
+?>
+<p class="bug-report">
+    <a style="<?php if(!$display) echo 'display:none;';?>" href="<?php echo $this->getBugreportUrl() ?>" id="footer_bug_tracking"><?php echo $this->__('Help Us Keep Magento Healthy - Report All Bugs') ?></a><br/>
+    <?php echo $this->__('Interface Locale: %s', $this->getLanguageSelect()) ?>
+</p>
+<p class="legality" style="<?php if(!$display) echo 'display:none;';?>" >
+    <a href="<?php echo $this->getConnectWithMagentoUrl() ?>" id="footer_connect"><?php echo $this->__('Connect with the Magento Community') ?></a><br/>
+    <img src="<?php echo $this->getSkinUrl('images/varien_logo.gif') ?>" class="v-middle" alt="" />&nbsp;&nbsp;
+    <?php echo $this->__('Magento&trade; is a trademark of Magento Inc.<br/>Copyright &copy; %s Magento Inc.', date('Y')) ?>
+</p>
+<?php if($display){  ?>
+<?php echo $this->__('Magento ver. %s', Mage::getVersion()) ?> - <?php echo $this->__('1.9.3.8') ?>
+<?php } ?> 
+<script type="text/javascript">
+    $('footer_bug_tracking').target = 'Varien_External';
+    $('footer_connect').target = 'Varien_External';
+    function setInterfaceLanguage(evt){
+        var elem = Event.element(evt);
+        if(elem){
+            setLocation('<?php echo $this->getChangeLocaleUrl() ?>locale/'+elem.value+'/<?php echo $this->getRefererParamName() ?>/<?php echo $this->getUrlForReferer() ?>');
+        }
+    }
+    Event.observe('interface_locale', 'change', setInterfaceLanguage)
+</script>

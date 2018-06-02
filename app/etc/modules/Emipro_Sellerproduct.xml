@@ -1,0 +1,9 @@
+<config>
+	<modules>
+		<Emipro_Sellerproduct>
+			<active>true</active> 
+			<codePool>community</codePool>
+			<depends><Emipro_Marketplace /></depends>
+		</Emipro_Sellerproduct>
+	</modules>
+</config>

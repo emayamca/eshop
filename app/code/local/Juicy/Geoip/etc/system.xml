@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <juicy translate="label" module="geoip">
+            <label>Juicy Media</label>
+            <sort_order>10</sort_order>
+        </juicy>        
+    </tabs>
+    <sections>
+        <geoip translate="label" module="geoip">
+            <label>GeoIP</label>
+            <tab>juicy</tab>
+            <sort_order>0</sort_order>            
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+                <groups>
+                    <general translate="label" module="geoip">
+                        <label>General</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>1000</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <fields>
+                            <status translate="label">
+                                <label>GeoIP Ext</label>
+                                <frontend_type>select</frontend_type>
+                                <comment>Enable/Disable GeoIP Extension</comment>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>20</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                            </status>
+                            <testing translate="label">
+                                <label>Enable Testing Mode for:</label>
+                                <frontend_type>select</frontend_type>
+                                <comment>Enable/Disable testing mode. This will disable session storage for the users location</comment>
+                                <source_model>geoip/adminhtml_source_testingMode</source_model>
+                                <sort_order>25</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>         
+                                <depends><status>1</status></depends>
+                            </testing>
+                            <ip_whitelist translate="label">
+                                <label>IP Whitelist</label>
+                                <frontend_type>text</frontend_type>
+                                <comment>List of comma seperated IP addresses that are immune from session storage</comment>
+                                <sort_order>28</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                                <depends><testing>2</testing></depends>
+                            </ip_whitelist>
+                            <country_override translate="label">
+                                <label>Country Override</label>
+                                <frontend_type>text</frontend_type>
+                                <comment>ISO 3166 country code to mimic. Can be left blank to disable session only</comment>
+                                <sort_order>30</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                                <depends><testing separator=",">1,2,3</testing></depends>
+                            </country_override>
+                            <switch_currency translate="label">
+                                <label>Allow Currency Switching</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>40</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store> 
+                                <depends><status>1</status></depends>
+                            </switch_currency>
+                            <switch_store translate="label">
+                                <label>Allow Store Switching</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>60</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store> 
+                                <depends><status>1</status></depends>
+                            </switch_store>
+                            <apache_or_file translate="label">
+                                <label>Use local GeoIP file</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>70</sort_order>
+                                <comment> <![CDATA[ <span>Enable if you cannot use the Apache GeoIP module</span> ]]></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store> 
+                                <depends><status>1</status></depends>
+                            </apache_or_file>                         
+                            <file_location translate="label">
+                                <label>GeoIP data Override file name</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>80</sort_order>
+                                <comment>Place .dat file in [Mage Dir]/lib/Juicy/Geoip/Data</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                                <depends><apache_or_file>1</apache_or_file></depends>
+                            </file_location>     
+                            <!--                
+                            <varnish_enabled translate="label">
+                                <label>Enable Remote Header rewrite for IP detection (for Varnish/CDNs)</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>90</sort_order>
+                                <comment>Enabling this will rewrite the "remote_addr_headers" to allow you to use Varnish and CDN's</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                            </varnish_enabled>                   
+                            <varnish_headers translate="label">
+                                <label>Server address headers</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>95</sort_order>
+                                <comment>Comma seperated list of server address headers in order or priority. <![CDATA[<strong style="color:red;">ADVANCED USERS ONLY - DO NOT EDIT</strong>]]></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                                <depends><varnish_enabled>1</varnish_enabled></depends>
+                            </varnish_headers>   
+                            -->               
+                            <private_bypass translate="label">
+                                <label>Enable localhost bypass</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                <sort_order>100</sort_order>
+                                <comment>Extension does not work correctly on localhost. Enable this to bypass checks and attempt to run as normal anyway</comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>0</show_in_store>
+                            </private_bypass>
+                        </fields>
+                    </general>
+                    <geoipset translate="label" module="geoip">
+                        <label>GeoIP Pairing</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>2000</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <fields>
+                            <ippair translate="label">
+                                <label>GeoIP Pairing</label>
+                                <frontend_model>juicy_geoip_block_countrydefine</frontend_model>
+                                <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                                <sort_order>0</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                                <comment><!--<![CDATA[  ]]>--></comment>
+                            </ippair>
+                        </fields>
+                    </geoipset>
+                </groups>
+        </geoip>
+    </sections>
+</config>

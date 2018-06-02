@@ -1,0 +1,49 @@
+<?php
+$seller = $this->getSeller(); 
+if(isset($seller) && !empty($seller))
+{ 
+?>
+<?php $rate = Mage::helper('marketplace')->getSellerRating($seller->getSellerId());?>
+<table style="width:100%;" id="viewallTable">
+    <tbody>
+        <tr>
+            <td><?php echo $this->__('Seller Rating') ?></td>
+            <td>
+                <div class="ratings">
+                    <div class="rating-box">
+                        <div class="rating" style="width:<?php echo $rate*20; ?>%"></div>            
+                    </div>
+                </div>
+            </td>
+        </tr>
+		<?php if($seller->getCountryId()!=''){ ?>
+        <tr>
+            <td><?php echo $this->__('Country') ?></td>
+            <td><?php echo $this->__(Mage::helper("marketplace")->getCountryName($seller->getCountryId())) ?></td>
+        </tr>
+		<?php } ?>
+		<?php if($seller->getRegion()!='' || $seller->getRegionId()!=''){ ?>
+        <tr>
+            <td><?php echo $this->__('State/Province') ?></td>
+			<?php if($seller->getRegion()){?>
+            <td><?php echo $this->escapeHtml($seller->getRegion()) ?></td>
+			<?php } else { 
+				if($seller->getRegion()=='' && $seller->getRegionId()){
+				$regionModel = Mage::getModel('directory/region')->load($seller->getRegionId());
+				$region = $regionModel->getName();
+			?>
+			<td><?php echo $this->escapeHtml($region) ?></td>
+			<?php } } ?>
+        </tr>
+		<?php } ?>
+		<?php if($seller->getCity()!=''){ ?>
+        <tr>
+            <td><?php echo $this->__('City') ?></td>
+            <td><?php echo $this->__($seller->getCity()) ?></td>
+        </tr>
+		<?php } ?>
+    </tbody>
+</table>
+<?php
+}
+?>

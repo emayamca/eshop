@@ -1,0 +1,62 @@
+<div class="mobile-registration">
+	<form action="<?php echo $this->getUrl('trackyourorder/index/mobileregistration'); ?>" id="reg-mobile" method="post">
+		<div class="static-mobile">
+			<ul class="form-list">
+				<li>
+					<label for="telephone"><?php echo $this->__('Enter your mobile number to get Rs.150 OFF') ?></label>
+					<div class="input-box">
+						<input name="mobile" title="<?php echo $this->__('Mobile Number') ?>" value="" class="input-text validate-number required-entry validate-length maximum-length-10 minimum-length-10 validate-digits offer-mobile" type="text"/>
+						<button type="button" name="submit" onclick="regmobile.submit(this)" title="<?php echo $this->__('GO') ?>" class="button reg-mobile"><span><span><?php echo $this->__('GO') ?></span></span></button>
+						<div id="reg-mobile-ajax" style="display: none;"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var regmobile = new VarienForm('reg-mobile', false);
+//]]>
+</script>
+<script type="text/javascript">
+/*Ajax Form submit*/
+regmobile.submit = function() {
+	if (this.validator.validate()) {
+		jQuery('.reg-mobile').attr('disabled', true);
+		var regform = this.form;
+		ajaxRegistration(regform.id, regform.action);
+	}
+}.bind(regmobile);
+function ajaxRegistration(regform_id,regform_action){
+	jQuery('.reg-mobile').attr('disabled', true);
+	jQuery("#reg-mobile-ajax").show();
+	jQuery("#reg-mobile-ajax").html('<img src="<?php echo $this->getSkinUrl('sociallogin/images/ajax-loader.gif'); ?>" alt="loading please wait" width="16" height="16" />');
+	jQuery.ajax({
+		url:regform_action,
+		data:jQuery('#reg-mobile').serialize(),
+		type:'post',
+		crossDomain: true,
+		dataType:'json',
+		success:function(data){
+			if(data.status == 1){
+				jQuery(".mobile-registration").html(data.html);
+			} else{
+				jQuery("#reg-mobile label").html(data.html);
+			setTimeout(function(){
+				jQuery("#reg-mobile label").html("Enter your mobile number to get Rs.150 OFF");
+			}, 2000);
+			
+			}
+			jQuery("#reg-mobile-ajax").hide();
+			jQuery('.reg-mobile').attr('disabled', false);
+		}
+	});
+}
+
+function mobileSignUp(){
+	fuel_sociallogin();
+	show_hide_socialforms("2");
+}
+/*Ajax Form submit*/
+</script>

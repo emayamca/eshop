@@ -1,0 +1,133 @@
+<style>
+.head-menu-links{
+	display:none;
+}
+.tabbed {
+    background: #fff;
+    width: 100%;
+    padding: 10px 10px 10px 10px;
+}
+a.cate-im-menu {
+    color: #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 800;
+}
+a.cate-im-menu.active {
+    background: #000;
+    color: #fff;
+    padding: 2px;
+}
+a.header-menu {
+    color: #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 800;
+}
+a.header-menu.active {
+    background: #000;
+    color: #fff;
+    padding: 2px;
+}
+</style>
+<?php $menuHelper = Mage::helper('megamenu'); ?>
+<?php $only_categories = $this->getOnlyCategories(); ?>
+
+<div class="mobile-nav side-block container">
+	<div class="tabbed">
+		<a class="cate-im-menu active"><?php echo $this->__('Categories'); ?></a>
+		<a class="header-menu"><?php echo $this->__('Header Menu'); ?></a>
+	</div>
+    <div class="menu-all-pages-container">
+        <ul class="cat-im-ul-menus menu">
+        <?php if(!$menuHelper->getConfig('popup/ajax_load_popups')): ?>
+            <?php echo $menuHelper->getMobileMenuContent($only_categories); ?>
+        <?php else: ?>
+            <li style="padding: 30px 0; text-align: center;"><i class="ajax-loader medium animate-spin"></i></li>
+        <?php endif; ?>
+        </ul>
+		<ul class="menu sw-mobile-menu head-menu-links">
+			<li><a href="<?php echo Mage::getBaseUrl(); ?>"><?php echo $this->__('HOME'); ?></a></li>
+			<li class="manufacturing_types"><a class="amanufacturing_types"><?php echo $this->__('By Machine Type'); ?></a>
+				<ul class="manufacturing-loop">
+				<?php
+					$mattributeCode = 'manufacturing_types';
+					$mloop = "manufacturing-loop";
+					$murl = 'by-machine-type.html?manufacturing_types';
+					echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($mattributeCode, $murl, $mloop);
+				?>
+				</ul>
+			</li>
+			<li class="brandsli"><a class="brandsa"><?php echo $this->__('By Brand'); ?></a>
+				<ul class="brands-loop brands-head-menu-ul">
+				<?php
+					$battributeCode = 'brands';
+					$bloop = "brands-loop";
+					$burl = 'by-brands.html?brands';
+					echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($battributeCode, $burl, $bloop);
+				?>
+				<li class="show-more-brand"><?php echo $this->__('Show more') ?></li>
+				</ul>
+			</li>
+			<li class="category_typeli"><a class="category_typea"><?php echo $this->__('By Industry Type'); ?></a>
+				<ul class="category-loop">
+				<?php
+					$cattributeCode = 'category_type';
+					$cloop = "category-loop";
+					$curl = 'by-industry-type.html?category_type';
+					echo Mage::helper ( 'sociallogin' )->headerAttributeMenu($cattributeCode, $curl, $cloop);
+				?>
+				</ul>
+			</li>
+			<?php if(Mage::getStoreConfig('sociallogin/deals/enable_deals')): ?>
+				<li><a href="<?php echo Mage::getBaseUrl().'deals.html'; ?>"><?php echo $this->__('Deals'); ?></a></li>
+			<?php endif; ?>
+			<li><a href="<?php echo Mage::getBaseUrl().'about-porto-2'; ?>"><?php echo $this->__('About US'); ?></a></li>
+		</ul>
+    </div>
+</div>
+<div class="mobile-nav-overlay close-mobile-nav"></div>
+<script type="text/javascript">
+<?php if($menuHelper->getConfig('popup/ajax_load_popups')): ?>
+jQuery(function($){
+    $(document).ready(function(){
+        var ajax_mobile_url = "<?php echo Mage::getBaseUrl()."swmegamenu/index/showmobilemenu" ?>";
+        $(".menu-icon, .header-container.type10 .dropdown-menu > .menu-container > a").off("mousedown").on("mousedown",function(){
+            if (!$(".mobile-nav ul.menu").hasClass("ajax-loaded") && !$(".mobile-nav ul.menu").hasClass("ajax-loading")) {
+                $(".mobile-nav ul.menu").addClass("ajax-loading");
+                $.ajax({
+                    url: ajax_mobile_url,
+                    dataType: 'json',
+                    type: 'post',
+                    success: function(data) {
+                        $(".mobile-nav ul.menu").removeClass("ajax-loading").addClass("ajax-loaded").html(data['popup_content']).hide().fadeIn();
+                        $(".mobile-nav ul.menu").find("li.menu-parent-item").prepend('<span class="open-child">(open)</span>');
+                        $(".mobile-nav ul.menu").find(".open-child").off("click").on("click", function(){
+                            if(!$(this).parent().hasClass("over")) {
+                                $(this).parent().addClass("over");
+                                $(this).parent().children("ul").slideDown();
+                            } else {
+                                $(this).parent().removeClass("over");
+                                $(this).parent().children("ul").slideUp();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+<?php endif; ?>
+	jQuery(".cate-im-menu").click(function(){
+		jQuery(".head-menu-links").hide();
+		jQuery(".cat-im-ul-menus").show();
+		jQuery(".header-menu").removeClass("active");
+		jQuery(".cate-im-menu").addClass("active");
+	});
+	jQuery(".header-menu").click(function(){
+		jQuery(".cat-im-ul-menus").hide();
+		jQuery(".head-menu-links").show();
+		jQuery(".header-menu").addClass("active");
+		jQuery(".cate-im-menu").removeClass("active");
+	});
+</script>

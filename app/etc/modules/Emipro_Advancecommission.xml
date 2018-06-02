@@ -1,0 +1,10 @@
+<config>
+	<modules>
+		<Emipro_Advancecommission>
+			<version>1.0.0</version>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends><Emipro_Marketplace /></depends>
+		</Emipro_Advancecommission> 
+	</modules>
+</config>

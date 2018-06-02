@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+
+	<default>
+		<reference name="head">
+			<action method="addJs"><script>smartwave/jquery/jquery-1.11.3.min.js</script></action>
+            <action method="addJs"><script>smartwave/jquery/jquery-noconflict.js</script></action>
+		</reference>
+	</default>
+	
+	<adminhtml_system_config_edit>
+        <reference name="content">
+            <block type="core/template" name="jsinit" template="smartwave/porto/jsinit.phtml"></block>
+        </reference>
+    </adminhtml_system_config_edit>
+	
+</layout>

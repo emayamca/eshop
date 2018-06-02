@@ -1,0 +1,294 @@
+
+<?php
+$_coreHelper = $this->helper('core');
+$_weeeHelper = $this->helper('weee');
+$_taxHelper  = $this->helper('tax');
+$_product     = $this->getProduct();
+$_priceModel  = $_product->getPriceModel();
+list($_minimalPriceTax, $_maximalPriceTax) = $_priceModel->getTotalPrices($_product, null, null, false);
+list($_minimalPriceInclTax, $_maximalPriceInclTax) = $_priceModel->getTotalPrices($_product, null, true, false);
+$_weeeTaxAmount = 0;
+?>
+<?php
+if ($_product->getPriceType() == 1) {
+    $_weeeTaxAmount = $_weeeHelper->getAmount($_product);
+    $_weeeTaxAmountInclTaxes = $_weeeTaxAmount;
+    if ($_weeeHelper->isTaxable()) {
+        $_attributes = $_weeeHelper->getProductWeeeAttributesForRenderer($_product, null, null, null, true);
+        $_weeeTaxAmountInclTaxes = $_weeeHelper->getAmountInclTaxes($_attributes);
+    }
+    if ($_weeeTaxAmount && $_weeeHelper->typeOfDisplay($_product, array(0, 1, 4))) {
+        $_minimalPriceTax += $_weeeTaxAmount;
+        $_minimalPriceInclTax += $_weeeTaxAmountInclTaxes;
+    }
+    if ($_weeeTaxAmount && $_weeeHelper->typeOfDisplay($_product, 2)) {
+        $_minimalPriceInclTax += $_weeeTaxAmountInclTaxes;
+    }
+
+    if ($_weeeHelper->typeOfDisplay($_product, array(1, 2, 4))) {
+        $_weeeTaxAttributes = $_weeeHelper->getProductWeeeAttributesForDisplay($_product);
+    }
+}
+?>
+
+<div class="price-box">
+        <?php if ($_product->getPriceView()): ?>
+            <p class="minimal-price">
+                <span class="price-label"><?php echo $this->__('As low as') ?>:</span>
+                <?php if ($this->displayBothPrices()): ?>
+                    <span class="price-excluding-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Excl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                    </span>
+                    <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                        <span class="weee">(<small>
+                            <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                <?php else: ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                <?php endif; ?>
+
+                                <?php echo $_weeeSeparator; ?>
+                                <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                <?php $_weeeSeparator = ' + '; ?>
+                            <?php endforeach; ?>
+                        </small>)</span>
+                    <?php endif; ?>
+                    <span class="price-including-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Incl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    </span>
+            <?php else: ?>
+                <?php if ($_taxHelper->displayPriceIncludingTax()): ?>
+                    <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                <?php else: ?>
+                    <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                <?php endif; ?>
+                <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                    <span class="weee">(<small>
+                        <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                            <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                            <?php else: ?>
+                                <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                            <?php endif; ?>
+
+                            <?php echo $_weeeSeparator; ?>
+                            <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                            <?php $_weeeSeparator = ' + '; ?>
+                        <?php endforeach; ?>
+                    </small>)</span>
+                <?php endif; ?>
+                <?php if ($_weeeHelper->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
+                    <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                <?php endif; ?>
+            <?php endif; ?>
+            </p>
+        <?php else: ?>
+            <?php if ($_minimalPriceTax <> $_maximalPriceTax): ?>
+            <p class="price-from">
+                <span class="price-label"><?php echo $this->__('From') ?>:</span>
+                <?php if ($this->displayBothPrices()): ?>
+                    <span class="price-excluding-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Excl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                    </span>
+                    <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                        <span class="weee">(<small>
+                            <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                <?php else: ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                <?php endif; ?>
+
+                                <?php echo $_weeeSeparator; ?>
+                                <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                <?php $_weeeSeparator = ' + '; ?>
+                            <?php endforeach; ?>
+                        </small>)</span>
+                    <?php endif; ?>
+                    <span class="price-including-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Incl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    </span>
+                <?php else: ?>
+                    <?php if ($_taxHelper->displayPriceIncludingTax()) : ?>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    <?php else: ?>
+                        <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                    <?php endif; ?>
+                    <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                        <span class="weee">(<small>
+                            <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                <?php else: ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                <?php endif; ?>
+
+                                <?php echo $_weeeSeparator; ?>
+                                <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                <?php $_weeeSeparator = ' + '; ?>
+                            <?php endforeach; ?>
+                        </small>)</span>
+                    <?php endif; ?>
+                    <?php if ($_weeeHelper->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </p>
+                <?php
+                    if ($_product->getPriceType() == 1) {
+                        if ($_weeeTaxAmount && $_weeeHelper->typeOfDisplay($_product, array(0, 1, 4))) {
+                            $_maximalPriceTax += $_weeeTaxAmount;
+                            $_maximalPriceInclTax += $_weeeTaxAmountInclTaxes;
+                        }
+                        if ($_weeeTaxAmount && $_weeeHelper->typeOfDisplay($_product, 2)) {
+                            $_maximalPriceInclTax += $_weeeTaxAmountInclTaxes;
+                        }
+                    }
+                ?>
+                <p class="price-to">
+                    <span class="price-label"><?php echo $this->__('To') ?>:</span>
+                    <?php if ($this->displayBothPrices()): ?>
+                        <span class="price-excluding-tax">
+                            <span class="label"><?php echo $_taxHelper->__('Excl. Tax:') ?></span>
+                            <?php echo $_coreHelper->currency($_maximalPriceTax) ?>
+                        </span>
+                        <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                            <span class="weee">(<small>
+                                <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                    <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                        <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                    <?php else: ?>
+                                        <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                    <?php endif; ?>
+
+                                    <?php echo $_weeeSeparator; ?>
+                                    <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                    <?php $_weeeSeparator = ' + '; ?>
+                                <?php endforeach; ?>
+                            </small>)</span>
+                        <?php endif; ?>
+                        <span class="price-including-tax">
+                            <span class="label"><?php echo $_taxHelper->__('Incl. Tax') ?></span>
+                            <?php echo $_coreHelper->currency($_maximalPriceInclTax) ?>
+                        </span>
+                    <?php else: ?>
+                    <?php if ($_taxHelper->displayPriceIncludingTax()) : ?>
+                        <?php echo $_coreHelper->currency($_maximalPriceInclTax) ?>
+                    <?php else: ?>
+                        <?php echo $_coreHelper->currency($_maximalPriceTax) ?>
+                    <?php endif; ?>
+                        <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                            <span class="weee">(<small>
+                                <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                    <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                        <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                    <?php else: ?>
+                                        <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                    <?php endif; ?>
+
+                                    <?php echo $_weeeSeparator; ?>
+                                    <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                    <?php $_weeeSeparator = ' + '; ?>
+                                <?php endforeach; ?>
+                            </small>)</span>
+                        <?php endif; ?>
+                        <?php if ($_weeeHelper->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
+                            <?php echo $_coreHelper->currency($_maximalPriceInclTax) ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </p>
+            <?php else: ?>
+                <?php if ($this->displayBothPrices()): ?>
+                    <span class="price-excluding-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Excl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                    </span>
+                    <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                        <span class="weee">(<small>
+                            <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                <?php else: ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                <?php endif; ?>
+
+                                <?php echo $_weeeSeparator; ?>
+                                <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                <?php $_weeeSeparator = ' + '; ?>
+                            <?php endforeach; ?>
+                        </small>)</span>
+                    <?php endif; ?>
+                    <span class="price-including-tax">
+                        <span class="label"><?php echo $_taxHelper->__('Incl. Tax:') ?></span>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    </span>
+                <?php else: ?>
+                    <?php echo $_coreHelper->currency($_minimalPriceTax) ?>
+                    <?php if ($_weeeTaxAmount && $_product->getPriceType() == 1 && $_weeeHelper->typeOfDisplay($_product, array(2, 1, 4))): ?>
+                        <span class="weee">(<small>
+                            <?php $_weeeSeparator = ''; foreach ($_weeeTaxAttributes as $_weeeTaxAttribute): ?>
+                                <?php if ($_weeeHelper->typeOfDisplay($_product, array(2, 4))): ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount()+$_weeeTaxAttribute->getTaxAmount(); ?>
+                                <?php else: ?>
+                                    <?php $amount = $_weeeTaxAttribute->getAmount(); ?>
+                                <?php endif; ?>
+
+                                <?php echo $_weeeSeparator; ?>
+                                <?php echo $_weeeTaxAttribute->getName(); ?>: <?php echo $_coreHelper->currency($amount, true, true); ?>
+                                <?php $_weeeSeparator = ' + '; ?>
+                            <?php endforeach; ?>
+                        </small>)</span>
+                    <?php endif; ?>
+                    <?php if ($_weeeHelper->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
+                        <?php echo $_coreHelper->currency($_minimalPriceInclTax) ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+</div>
+<?php  if(Mage::getStoreConfig("geolocationcc/geolocationccparams/status")==1)  {  
+            $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+            $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();  ?> 
+    <br>
+    <div class="product-essential disable-conversion" style="padding: 7px;"> 
+        <div style="border-bottom:2px solid #BF9999;color: #934B4B;font-weight: bold;"><?php echo $this->__("Converted Price For Your Region"); ?></div>                                       
+        <div id="gp_converted" class="gp_converted<?php echo $_product->getId() ?>">
+        <div>From: <label class="gcc_from"></label></div>
+        <div>To: <label class="gcc_to"></label></div>
+        </div>
+    </div>  
+    <script type="text/javascript">
+        jQuery(document).ready(function(){  
+            var gpminamount = <?php echo Mage::helper('directory')->currencyConvert($_minimalPriceInclTax, $baseCurrencyCode, $currentCurrencyCode);?>;     
+            var gpmaxamount = <?php echo Mage::helper('directory')->currencyConvert($_maximalPriceInclTax, $baseCurrencyCode, $currentCurrencyCode);?>;
+            var gp_from ="<?php echo Mage::app()->getStore()->getBaseCurrencyCode();?>";    
+            var gp_to ="<?php echo Mage::app()->getStore()->getCurrentCurrencyCode();?>" ;
+            function gp_convertIt(gp_amount,classdata) {
+                jQuery.getJSON( "http://www.geoplugin.net/currency_converter.gp?jsoncallback=?",{from:gp_to, to:gp_from, amount:gp_amount},
+                function(output){
+                    jQuery(".gp_converted"+<?php echo $_product->getId() ?>).find(classdata).html('<div style="display:inline-block;color:#C76A25;font-weight: bold;">'+output.from.code+output.from.amount+' = '+output.to.code+output.to.amount+"</div>");
+                });
+            }
+
+            function gp_convertbundle(gp_amount) {
+                jQuery.getJSON( "https://ssl.geoplugin.net/currency_converter.gp?k=e41869f2d131d37c&jsoncallback=?",{from:gp_to, to:gp_from, amount:gp_amount},
+                function(output){
+                    jQuery(".gcc_bundle").remove();
+                    jQuery(".price-as-configured").append('<div class="product-essential gcc_bundle" style="padding: 7px;"><div style="border-bottom:2px solid #BF9999;color: #934B4B;font-weight: bold;"><?php echo $this->__("Converted Price For Your Region"); ?></div><div style="display:inline-block;color:#C76A25;font-weight: bold;">'+output.from.code+output.from.amount+' = '+output.to.code+output.to.amount+"</div></div>");
+                });
+            }
+            gp_convertIt(gpminamount,".gcc_from");
+            gp_convertIt(gpmaxamount,".gcc_to");
+            jQuery(".product-options .input-box,.product-options select,.product-options input").change(function(){
+                 var wkprice = jQuery('.product-shop').find('.full-product-price').find('.price').text();
+                  var wkprice = wkprice.replace(/[^0-9\.]/g, '');
+                 gp_convertbundle(wkprice);
+             });
+        });
+    </script>
+<?php  }  ?>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Juicy_Geoip>
+            <active>false</active>
+            <codePool>local</codePool>
+        </Juicy_Geoip>
+    </modules>
+</config>

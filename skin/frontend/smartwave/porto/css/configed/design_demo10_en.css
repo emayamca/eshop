@@ -1,0 +1,136 @@
+/**
+ * WARNING: Do not change this file. Your changes will be lost.
+ * 2015-03-18 01:21:52 */
+
+button.button span{
+}
+button.button:hover span{
+}
+span.new-product-icon{
+}
+span.sale-product-icon{
+}
+.fixed-header .menu > li > a > span.cat-label.cat-label-label1, .main-nav .menu > li > a > span.cat-label.cat-label-label1,.fixed-header .menu > li .nav-sublist-dropdown ul li a > span > span.cat-label.cat-label-label1, .main-nav .menu > li .nav-sublist-dropdown ul li a > span > span.cat-label.cat-label-label1,div.mobile-nav .sw-mobile-menu li>a span.cat-label.cat-label-label1,.menu.side-menu li>a span.cat-label.cat-label-label1{
+}
+.fixed-header .menu > li > a > span.cat-label.cat-label-label2, .main-nav .menu > li > a > span.cat-label.cat-label-label2,.fixed-header .menu > li .nav-sublist-dropdown ul li a > span > span.cat-label.cat-label-label2, .main-nav .menu > li .nav-sublist-dropdown ul li a > span > span.cat-label.cat-label-label2,div.mobile-nav .sw-mobile-menu li>a span.cat-label.cat-label-label2,.menu.side-menu li>a span.cat-label.cat-label-label2{
+}
+.top-container >.breadcrumbs{background-color:transparent}
+.top-container >.breadcrumbs{color:#777777}
+.breadcrumbs li a{color:#0088cc}
+.breadcrumbs li a:hover{color:#0088cc}
+.header-container.type2 .top-links-container,
+.header-container.type3 .top-links-container,
+.header-container.type4 .top-links-container,
+.header-container.type5 .top-links-container,
+.header-container.type6 .top-links-container,
+.header-container.type7 .top-links-container,
+.header-container.type9 .top-links-container,
+.header-container.type10 .top-links-container{
+    background-color:transparent;
+}
+.header-container.type1,
+.header-container.type2,
+.header-container.type3,
+.header-container.type4,
+.header-container.type5,
+.header-container.type6,
+.header-container.type7,
+.header-container.type8,
+.header-container.type9,
+.header-container.type10,
+.header-container.type1.sticky-header .header-wrapper,
+.header-container.type2.sticky-header .header-wrapper,
+.header-container.type4.sticky-header .header-wrapper,
+.header-container.type5.sticky-header .header-wrapper,
+.header-container.type6.sticky-header .header-wrapper,
+.header-container.type7.sticky-header .header-wrapper,
+.header-container.type8.sticky-header .header-wrapper,
+.header-container.type9.sticky-header .header-wrapper,
+.header-container.type11.sticky-header .header-wrapper{
+    background-color:transparent;
+}
+.header-container.type2 .main-nav .menu-wrapper,
+.header-container.type3 .main-nav,
+.header-container.type4 .main-nav .menu-wrapper,
+.header-container.type9 .main-nav .menu-wrapper,
+.header-container.type10 .header-wrapper,
+.header-container.type3.sticky-header .header-wrapper,
+.header-container.type4.sticky-header .header-wrapper,
+.header-container.type10.sticky-header .header-wrapper{
+    background-color:#0088cc;
+}
+.header-container.type1 .main-nav ul.menu>li>a,
+.header-container.type2 .main-nav ul.menu>li>a,
+.header-container.type3 .main-nav ul.menu>li>a,
+.header-container.type4 .main-nav ul.menu>li>a,
+.header-container.type5 .main-nav ul.menu>li>a,
+.header-container.type6 .main-nav ul.menu>li>a,
+.header-container.type7 .main-nav ul.menu>li>a,
+.header-container.type8 .main-nav ul.menu>li>a,
+.header-container.type9 .main-nav ul.menu>li>a,
+.header-container.type10 .main-nav ul.menu>li>a{
+    color:#ffffff;
+}
+.header-container.type1 .main-nav ul.menu>li:hover,.header-container.type1 .main-nav ul.menu>li.act,
+.header-container.type2 .main-nav ul.menu>li:hover,.header-container.type2 .main-nav ul.menu>li.act,
+.header-container.type3 .main-nav ul.menu>li:hover,.header-container.type3 .main-nav ul.menu>li.act,
+.header-container.type4 .main-nav ul.menu>li:hover,.header-container.type4 .main-nav ul.menu>li.act,
+.header-container.type5 .main-nav ul.menu>li:hover,.header-container.type5 .main-nav ul.menu>li.act,
+.header-container.type6 .main-nav ul.menu>li:hover,.header-container.type6 .main-nav ul.menu>li.act,
+.header-container.type7 .main-nav ul.menu>li:hover,.header-container.type7 .main-nav ul.menu>li.act,
+.header-container.type8 .main-nav ul.menu>li:hover,.header-container.type8 .main-nav ul.menu>li.act,
+.header-container.type9 .main-nav ul.menu>li:hover,.header-container.type9 .main-nav ul.menu>li.act,
+.header-container.type10 .main-nav ul.menu>li:hover,.header-container.type10 .main-nav ul.menu>li.act{
+    background-color:#ffffff;
+}
+.header-container.type1 .main-nav ul.menu>li:hover>a,.header-container.type1 .main-nav ul.menu>li.act>a,
+.header-container.type2 .main-nav ul.menu>li:hover>a,.header-container.type2 .main-nav ul.menu>li.act>a,
+.header-container.type3 .main-nav ul.menu>li:hover>a,.header-container.type3 .main-nav ul.menu>li.act>a,
+.header-container.type4 .main-nav ul.menu>li:hover>a,.header-container.type4 .main-nav ul.menu>li.act>a,
+.header-container.type5 .main-nav ul.menu>li:hover>a,.header-container.type5 .main-nav ul.menu>li.act>a,
+.header-container.type6 .main-nav ul.menu>li:hover>a,.header-container.type6 .main-nav ul.menu>li.act>a,
+.header-container.type7 .main-nav ul.menu>li:hover>a,.header-container.type7 .main-nav ul.menu>li.act>a,
+.header-container.type8 .main-nav ul.menu>li:hover>a,.header-container.type8 .main-nav ul.menu>li.act>a,
+.header-container.type9 .main-nav ul.menu>li:hover>a,.header-container.type9 .main-nav ul.menu>li.act>a,
+.header-container.type10 .main-nav ul.menu>li:hover>a,.header-container.type10 .main-nav ul.menu>li.act>a{
+    color:#0088cc;
+}
+.main-nav .menu>li.menu-full-width .nav-sublist-dropdown,.main-nav .menu>li.menu-static-width .nav-sublist-dropdown,.fixed-header .menu>li.menu-full-width .nav-sublist-dropdown,.fixed-header .menu>li.menu-static-width .nav-sublist-dropdown{
+}
+.footer-middle{
+    background-color:#ffffff;
+}
+.footer-middle, .footer-middle p, .footer-middle .contact-info i{
+    color:#777777;
+}
+.footer-middle a{
+    color:#777777;
+}
+.footer-middle .block .block-title strong{
+    color:#0088cc;
+}
+.footer-middle .links i.theme-color,.footer-middle .features i.theme-color{
+    color:#0088cc !important;
+}
+.footer-bottom{
+    background-color:#ffffff;
+}
+.footer-bottom, .footer-bottom p{
+    color:#777777;
+}
+.footer-bottom a{
+    color:#777777;
+}
+#totop{
+}
+#totop:hover{
+}
+.main{
+    background-color:#ffffff;
+}
+    .page{
+            background-color:#e6e6e3;
+            background-image:url(//192.168.0.144/porto_live/media/porto/page/stores/19/page.png);
+            background-position: top center;
+background-repeat: repeat-x;;
+        }

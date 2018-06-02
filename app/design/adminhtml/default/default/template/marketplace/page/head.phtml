@@ -1,0 +1,89 @@
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>"/>
+<title>
+	<?php
+		$title = htmlspecialchars(html_entity_decode($this->getTitle()));
+		if(Mage::helper('marketplace')->getSellerIdfromLoginUser()){
+			$storename = Mage::getStoreConfig('general/store_information/name');
+			if(trim($storename)=='')
+				$storename = 'Seller Login';
+			$title = str_replace('Magento Admin', $storename, $title);
+		}
+		echo $title;
+	?>
+</title>
+<?php
+if(Mage::helper('marketplace')->getSellerIdfromLoginUser()){
+		$folderName = Mage_Adminhtml_Model_System_Config_Backend_Image_Favicon::UPLOAD_DIR;
+        $storeConfig = Mage::getStoreConfig('design/head/shortcut_icon');
+        $faviconFile = Mage::getBaseUrl('media') . $folderName . '/' . $storeConfig;
+        $absolutePath = Mage::getBaseDir('media') . '/' . $folderName . '/' . $storeConfig;
+
+        if(!is_null($storeConfig) && is_file($absolutePath)) {
+            $url = $faviconFile;
+        } else {
+            $url = $this->getSkinUrl('favicon.ico');
+        }
+}
+else
+{
+	$url = $this->getSkinUrl('favicon.ico');
+}
+?>
+<?php 
+$button = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/maincolor');
+$subcolor = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/subcolor');
+$buttonhover = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/hovercolor');
+$menuactive = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/activecolor');
+$textcolor = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/textcolor');
+$texthovercolor = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/texthovercolor');
+$tab = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/tabcolor');
+$tabhover = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/tabhovercolor');
+$ordertotal = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/ordertotal');
+$headertext = Mage::getStoreConfig('marketplace_setting/sellerpanelcolor/headertext');
+?>
+<style type="text/css">
+:root {
+  --emi-button: <?php if($button){ echo $button;}else{echo '#0083d5';} ?>;
+  --emi-subcolor: <?php if($subcolor){ echo $subcolor;}else{echo '#106BBD';} ?>;
+  --emi-buttonhover: <?php if($buttonhover){ echo $buttonhover;}else{echo '#0076c8';} ?>;
+  --emi-menuactive: <?php if($menuactive){ echo $menuactive;}else{echo '#106BBD';} ?>;
+  --emi-textcolor:<?php if($textcolor){ echo $textcolor;}else{echo '#FFFFFF';} ?>;
+  --emi-texthovercolor:<?php if($texthovercolor){ echo $texthovercolor;}else{echo '#FFFFFF';} ?>;
+  --emi-tab:<?php if($tab){ echo $tab;}else{echo '#B9E1FB';} ?>;
+  --emi-tabhover:<?php if($tabhover){ echo $tabhover;}else{echo '#84C9F9';} ?>;
+  --emi-ordertotal:<?php if($ordertotal){ echo $ordertotal;}else{echo '#b6e2ff';} ?>;
+  --emi-headertext:<?php if($headertext){ echo $headertext;}else{echo '#585858';} ?>;
+}
+</style>
+<link rel="icon" href="<?php echo $url; ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $url; ?>" type="image/x-icon" />
+
+<script type="text/javascript">
+    var BLANK_URL = '<?php echo $this->getJsUrl() ?>blank.html';
+    var BLANK_IMG = '<?php echo $this->getJsUrl() ?>spacer.gif';
+    var BASE_URL = '<?php echo $this->getUrl('*') ?>';
+    var SKIN_URL = '<?php echo $this->getSkinUrl() ?>';
+    var FORM_KEY = '<?php echo $this->getFormKey() ?>';
+</script>
+
+<?php echo $this->getCssJsHtml() ?>
+
+<?php if($this->getCanLoadExtJs()): ?>
+<script type="text/javascript">
+    Ext.BLANK_IMAGE_URL = BLANK_IMG;
+    Ext.UpdateManager.defaults.loadScripts = false;
+    Ext.UpdateManager.defaults.disableCaching = true;
+</script>
+<?php endif; ?>
+
+<?php if($this->getCanLoadTinyMce()): // TinyMCE is broken when loaded through index.php ?>
+<script type="text/javascript" src="<?php echo $this->getJsUrl() ?>tiny_mce/tiny_mce.js"></script>
+<?php endif; ?>
+
+<script type="text/javascript">
+    Fieldset.addToPrefix(<?php echo Mage::helper('adminhtml')->getCurrentUserId() ?>);
+</script>
+
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getChildHtml('calendar'); ?>
+<?php echo $this->getChildHtml('optional_zip_countries'); ?>

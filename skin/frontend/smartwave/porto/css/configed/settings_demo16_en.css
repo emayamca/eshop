@@ -1,0 +1,26 @@
+/**
+ * WARNING: Do not change this file. Your changes will be lost.
+ * 2015-04-06 14:10:52 */
+
+.footer-middle .block.block-subscribe .input-box input.input-text { background-color: #fff; }
+.footer-middle .block.block-subscribe .input-box button span { background-color: #000; }    .catalog-category-view .breadcrumbs > .container, .catalog-product-view .breadcrumbs > .container, .catalog-category-view .main-container > .container, .catalog-product-view .main-container > .container { width: 100%; }
+
+    @media (min-width:1280px){
+        .catalog-category-view .breadcrumbs > .container, .catalog-product-view .breadcrumbs > .container, .catalog-category-view .main-container > .container, .catalog-product-view .main-container > .container { padding: 0 20px }
+        .catalog-category-view  .col2-left-layout .col-main { width: 80%; }
+        .catalog-category-view  .col2-left-layout .col-left { width: 20%; }
+        .catalog-category-view  .col2-right-layout .col-main { width: 80%; }
+        .catalog-category-view  .col2-right-layout .col-right { width: 20%; }
+        .catalog-category-view  .col3-layout .col-wrapper { width: 80%; }
+        .catalog-category-view  .col3-layout .col-main { width: 75%; }
+        .catalog-category-view  .col3-layout .col-left { width: 25%; }
+        .catalog-category-view  .col3-layout .col-right { width: 20%; }
+        .catalog-product-view  .col2-left-layout .col-main { width: 80%; }
+        .catalog-product-view  .col2-left-layout .col-left { width: 20%; }
+        .catalog-product-view  .col2-right-layout .col-main { width: 80%; }
+        .catalog-product-view  .col2-right-layout .col-right { width: 20%; }
+        .catalog-product-view  .col3-layout .col-wrapper { width: 80%; }
+        .catalog-product-view  .col3-layout .col-main { width: 75%; }
+        .catalog-product-view  .col3-layout .col-left { width: 25%; }
+        .catalog-product-view  .col3-layout .col-right { width: 20%; }
+    }

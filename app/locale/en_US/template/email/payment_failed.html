@@ -1,0 +1,53 @@
+<!--@subject Payment Transaction Failed Reminder @-->
+<!--@vars
+{"var reason":"Transaction Failed Reason",
+"var checkoutType":"Checkout Type",
+"var customerEmail":"Customer Email",
+"var customer":"Customer Name",
+"var items":"Shopping Cart Items",
+"var total":"Total",
+"var billingAddress.format('html')":"Billing Address",
+"var shippingAddress.format('html')":"Shipping Address",
+"var shippingMethod":"Shipping Method",
+"var paymentMethod":"Payment Method",
+"var dateAndTime":"Date and Time of Transaction"}
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="action-content">
+                        <h2 style="background-color:#ef5531;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Payment transaction failed</h2>
+                        <p style="font-size:14px;margin:10px;">Details for the failed transaction:</p>
+                        <p class="highlighted-text" style="border:1px solid #e2e2e2;border-radius:3px;background-color:#f7f7f7;margin:8px;padding:14px;font-size:14px;line-height: 20px;">
+                            <strong>Reason:</strong> {{var reason}}<br>
+                            <strong>Checkout Type:</strong> {{var checkoutType}}<br>
+                            <strong>Customer:</strong> <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;<br>
+                            <strong>Items:</strong> {{var items}}<br>
+                            <strong>Total:</strong> {{var total}}<br>
+                            <strong>Billing Address:</strong> {{var billingAddress.format('html')}}<br>
+                            <strong>Shipping Address:</strong> {{var shippingAddress.format('html')}}<br>
+                            <strong>Shipping Method:</strong> {{var shippingMethod}}<br>
+                            <strong>Payment Method:</strong> {{var paymentMethod}}<br>
+                            <strong>Date & Time:</strong> {{var dateAndTime}}<br>
+                        </p>
+                    
+                        <p style="font-size:12px;font-weight:600;margin:30px 10px 10px 10px;">
+                            If you have any questions, please feel free to contact us at
+                            <a href="mailto:{{var store_email}}" style="color:#2fa4fa;text-decoration:none;">{{var store_email}}</a>
+                            {{depend store_phone}} or by phone at <a href="tel:{{var phone}}" style="color:#2fa4fa;text-decoration:none;">{{var store_phone}}</a>{{/depend}}.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}
+

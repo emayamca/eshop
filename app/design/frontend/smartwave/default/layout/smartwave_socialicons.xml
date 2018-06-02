@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="footer">
+            <block type="core/template" name="socialicons" after="-" template="socialicons/socialicons.phtml" />
+        </reference>
+    </default>
+</layout>

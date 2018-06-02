@@ -1,0 +1,17 @@
+<div class="view_sellerprofile">
+	<?php
+		$id = $this->getRequest()->getParam('id');
+		$sellerurl='';
+		if($id)
+		{
+			$seller = Mage::getModel('marketplace/seller')->load($id,'seller_id');
+			if(isset($seller)&& !empty($seller)){
+				$sellerurl = $seller['store_url'];
+			}
+		}
+	?>
+		<a href="<?php echo Mage::getBaseUrl().$sellerurl;?>" class="view_sellerprofile_button"><?php echo $this->__('View Seller Profile');?></a>
+</div>
+<style>
+	.block-layered-nav .block-title{border-top:none;}
+</style>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @package 
+ */
+ -->
+<config>
+    <modules>
+        <Wyomind_Notificationmanager>
+            <active>true</active>
+            <codePool>local</codePool>
+            <version>2.0.0</version>
+        </Wyomind_Notificationmanager>
+    </modules>
+</config> 

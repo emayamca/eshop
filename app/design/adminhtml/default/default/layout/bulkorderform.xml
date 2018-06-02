@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <bulkorderform_adminhtml_bulkorderform_index>
+        <reference name="content">
+            <block type="bulkorderform/adminhtml_bulkorderform" name="bulkorderform" />
+        </reference>
+    </bulkorderform_adminhtml_bulkorderform_index>
+</layout>

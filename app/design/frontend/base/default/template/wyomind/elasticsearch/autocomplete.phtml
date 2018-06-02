@@ -1,0 +1,44 @@
+<?php
+/**
+ * @category    Wyomind
+ * @package     Wyomind_Elasticsearch
+ * @version     4.5.0
+ * @copyright   Copyright (c) 2017 Wyomind (https://wyomind.net)
+ */
+/**
+ * @var $this Wyomind_Elasticsearch_Block_Catalogsearch_Autocomplete
+ */
+?>
+
+<?php $url = $this->getResultUrl(); ?>
+<?php $url = substr($url, 0, strpos($url, "q=") + 2); ?>
+
+
+<ul class="wyomind-elasticsearch">
+    <li style="display:none;"></li>
+    <?php if ($this->isNoResult() && !count($this->getSuggests())): ?>
+        <li><a href="#"><?php echo $this->getLabel('No Result') ?></a></li>
+    <?php else: ?>
+        <?php if (count($this->getSuggests())): ?>
+            <?php foreach ($this->getSuggests() as $suggest) : ?>
+                <li class=""><a href='<?php echo $url . $suggest; ?>'/><?php echo $suggest; ?></a></li>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php foreach ($this->getAllResults() as $_entity => $_results): ?>
+            <?php if (count($_results)): ?>
+                <li class="title"><?php echo $this->getEntityTitle($_entity) ?></li>
+                <?php foreach ($_results as $_result): /** @var Varien_Object $_entity */ ?>
+                    <?php echo $this->getEntityHtml($_entity, $_result) ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php if (!$this->isNoResult()): ?>
+            <li class="all-results">
+                <a href="<?php echo $this->escapeUrl($this->getResultUrl()) ?>">
+                    <?php echo $this->getAllResultsLabel() ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    <?php endif; ?>
+</ul>

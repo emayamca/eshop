@@ -1,0 +1,38 @@
+<!--@subject Bulk Orders! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+@-->
+
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td class="action-content">
+			<h2 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Hello Metacrust Team,</h2>
+            <p style="font-size:14px;margin:10px;">A customer submitted bulk order request form. Please find the customer details as below.</p>
+            <p class="highlighted-text" style="border:1px solid #e2e2e2;border-radius:3px;background-color:#f7f7f7;margin:8px;padding:14px;font-size:14px;line-height: 20px;">
+<label>Name: </label>
+                <strong>{{var fullname}}</strong><br>
+<label>Email Address: </label>
+                <strong>{{var emailaddress}}</strong><br>
+<label>Phone Number: </label>
+                <strong>{{var mobilenumber}}</strong><br>
+<label>City: </label>
+                <strong>{{var city}}</strong><br>
+<label>Country: </label>
+                <strong>{{var country}}</strong><br>				
+<label>Product Name: </label>
+                <strong>{{var productname}}</strong><br>
+<label>Qty: </label>
+                <strong>{{var quantity}}</strong><br>
+            </p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

@@ -1,0 +1,281 @@
+<?xml version="1.0"?>   
+<layout> 
+<default>
+	<reference name="top.links">
+            <block type="marketplace/toplinks" name="marketplace_toplinks">
+                <action method="addMarketplaceLinks"></action>
+            </block>  
+    </reference>  
+    <!-- <reference name="root">
+            <reference name="header">  
+                <action method="setTemplate"><template>marketplace/header.phtml</template></action>
+            </reference> 
+    </reference>
+    <reference name="head">
+		<action method="addCss">
+            <stylesheet>css/emipro/marketplace.css</stylesheet> 
+        </action>  
+    </reference>  --> 
+    <reference name="left">
+		<remove name="left.permanent.callout" /> 
+	    <remove name="catalog.compare.sidebar" />
+		<remove name="left.reports.product.viewed" />
+		<remove name="tags_popular"/> 
+    </reference>
+</default>
+ <customer_account translate="label">
+         <reference name="left">
+          <reference name="customer_account_navigation">
+                <action method="addLink" translate="label"><name>sellerreviews</name><path>marketplace/sellerreview/index/</path><label>Seller Reviews</label></action>
+            </reference>
+         </reference>
+    </customer_account>
+<marketplace_seller_viewprofile>
+	<reference name="root">   
+      <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+    </reference>
+    <reference name="head">
+		<action method="setRobots"><value>NOINDEX,NOFOLLOW</value></action>
+		<action method="addCss">
+            <stylesheet>css/emipro/marketplace.css</stylesheet> 
+        </action>
+    </reference>
+	<reference name="left"> 
+	    <block type="marketplace/sellerprofile" name="marketplace_profile_left" before="-" template="marketplace/seller-profile_left.phtml"/>   
+	</reference> 
+	<reference name="content">
+		<block type="marketplace/sellerprofile" name="marketplace_profile" template="marketplace/seller-profile.phtml">
+			<block type="marketplace/products_list" name="product_list_custom" template="catalog/product/list.phtml">
+				   <block type="core/text_list" name="product_list.name.after" as="name.after" />
+                    <block type="core/text_list" name="product_list.after" as="after" />
+     			<block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+					<block type="page/html_pager" name="product_list_toolbar_pager"/>
+				</block> 
+				<action method="setColumnCount"><count>4</count></action>
+				<action method="addColumnCountLayoutDepend"><layout>empty</layout><count>4</count></action>
+				<action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+				<action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>3</count></action>
+				<action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>3</count></action>
+				<action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+				<action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+			</block> 
+		</block> 
+    </reference>   
+</marketplace_seller_viewprofile>
+  <marketplace_index_index>    
+    <reference name="root">   
+      <action method="setTemplate"><template>page/1column.phtml</template></action>   
+    </reference>
+	<reference name="head">
+		<action method="addCss"><stylesheet>css/emipro/marketplace.css</stylesheet></action> 
+	</reference>
+    <reference name="content">   
+      <block type="marketplace/index" name="marketplace_index" template="marketplace/index.phtml"/>   
+    </reference>   
+  </marketplace_index_index>   
+
+  <marketplace_seller_create>   
+	   <reference name="head">
+		<action method="addCss">
+            <stylesheet>css/emipro/marketplace.css</stylesheet> 
+        </action>
+    </reference>
+   <reference name="head">
+        <action method="addJs"><script>emipro/marketplace.js</script></action>
+    </reference>
+    <reference name="root">   
+      <action method="setTemplate"><template>page/1column.phtml</template></action>   
+    </reference>
+    <reference name="content">   
+      <block type="core/template" name="marketplace_index" template="marketplace/register.phtml"/>   
+    </reference>   
+  </marketplace_seller_create>   
+	<marketplace_seller_productview>   
+		<reference name="root">   
+		  <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+		</reference> 
+         <update handle="catalog_category_layered"/>
+         <remove name="catalog.leftnav"/>
+		 <reference name="left"> 
+			<remove name="tags_popular"/> 
+				   <reference name="head">
+		<action method="addCss">
+            <stylesheet>css/emipro/marketplace.css</stylesheet> 
+        </action>
+    </reference>
+			<block type="core/template" name="marketplace.leftnav" before="-" template="marketplace/navigation/leftcustom.phtml" />
+            <block type="marketplace/catalog_layer_marketplaceprod" name="marketplace.catalog.leftnav" after="currency" template="catalog/layer/view.phtml">
+				<block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+            </block>   
+		 </reference>    
+		 <reference name="content">
+			<reference name="category.products">
+				<action method="setTemplate"><template>marketplace/catalog/category/view.phtml</template></action>
+			</reference> 
+		 </reference>
+   </marketplace_seller_productview>   
+	<catalog_product_view> 
+		<reference name="head">
+			<action method="addCss">
+				<stylesheet>css/emipro/marketplace.css</stylesheet> 
+			</action> 
+		</reference>
+		<reference name="content">
+			<block type="marketplace/sellerreview" name="multisellers_block" template="marketplace/catalog/product/sellertable.phtml" after="-" /> 
+		</reference>
+		<reference name="product.info.extrahint">
+			<block type="marketplace/sellerreview" name="seller_product_page" template="marketplace/seller_product_page.phtml"/>
+		</reference>
+	</catalog_product_view> 
+	<marketplace_sellerreview_index>
+		<update handle="customer_account"/> 
+		<reference name="root">   
+		  <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+		</reference>
+   </marketplace_sellerreview_index> 
+	<marketplace_sellerreview_new>
+		<update handle="customer_account"/>
+		<reference name="root">   
+		  <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+		</reference>
+	</marketplace_sellerreview_new> 
+	<marketplace_sellerlogin_index>
+		<reference name="head">
+			<action method="setRobots"><value>NOINDEX,NOFOLLOW</value></action>
+		</reference>
+		<reference name="root">   
+			<action method="setTemplate"><template>marketplace/admin/login.phtml</template></action>   
+		</reference>  
+	</marketplace_sellerlogin_index>
+	<marketplace_sellerlogin_forgotpassword>
+		<reference name="head">
+			<action method="setRobots"><value>NOINDEX,NOFOLLOW</value></action>
+		</reference>
+		<reference name="root">    
+			<action method="setTemplate"><template>marketplace/admin/forgotpassword.phtml</template></action> <block type="emcaptcha/captcha" name="captcha">
+                    <action method="setFormId"> 
+                        <id>backend_forgotpassword</id>   
+                    </action>
+                    <action method="setImgWidth">
+                        <width>200</width>
+                    </action>
+                    <action method="setImgHeight">
+                        <height>40</height>
+                    </action>
+                </block>  
+		</reference> 
+	</marketplace_sellerlogin_forgotpassword>
+
+	 <sales_order_printinvoice translate="label">
+        <reference name="sales.order.print.invoice">
+            <action method="setTemplate"><template>marketplace/sales/order/print/invoice.phtml</template></action>
+        </reference>
+    </sales_order_printinvoice>
+
+    <sales_order_printshipment translate="label">
+        <reference name="sales.order.print.shipment">
+            <action method="setTemplate"><template>marketplace/sales/order/print/shipment.phtml</template></action>
+        </reference>
+    </sales_order_printshipment>
+
+    <sales_order_printcreditmemo>
+        <reference name="sales.order.print.creditmemo">
+            <action method="setTemplate"><template>marketplace/sales/order/print/creditmemo.phtml</template></action>
+        </reference>
+    </sales_order_printcreditmemo>
+
+    <sales_order_view>
+        <reference name="order_items">
+                    <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+                    <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_order_view>
+
+    <sales_order_invoice>
+    	<reference name="invoice_items">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_order_invoice>
+    <sales_order_shipment>
+    	<reference name="shipment_items">
+    		<action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/shipment/items/renderer/default.phtml</template></action>
+    	</reference>
+    </sales_order_shipment>
+
+    <sales_email_order_items>
+        <reference name="items">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_order_default</block><template>marketplace/email/order/items/order/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_email_items_order_grouped</block><template>marketplace/email/order/items/order/default.phtml</template></action>
+        </reference>
+    </sales_email_order_items>
+
+    <sales_email_order_invoice_items>
+        <reference name="items">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>marketplace/email/order/items/invoice/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_email_items_order_grouped</block><template>marketplace/email/order/items/invoice/default.phtml</template></action>
+        </reference>
+    </sales_email_order_invoice_items>
+     <sales_email_order_shipment_items>
+        <reference name="items">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>marketplace/email/order/items/shipment/default.phtml</template></action>
+        </reference>
+    </sales_email_order_shipment_items>
+    <sales_order_print>
+    	<reference name="sales.order.print">
+    		<action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+        	<action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+    	</reference>
+    </sales_order_print>
+
+    <sales_order_printinvoice>
+        <reference name="sales.order.print.invoice">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_order_printinvoice>
+    <sales_order_printshipment>
+        <reference name="sales.order.print.shipment">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/shipment/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_order_printshipment>
+
+    <sales_guest_view>
+        <reference name="order_items">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_view>
+    <sales_guest_invoice>
+        <reference name="invoice_items">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_invoice>
+    <sales_guest_shipment>
+        <reference name="shipment_items">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/shipment/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_shipment>
+
+    <sales_guest_print>
+        <reference name="sales.order.print">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_print>
+
+    <sales_guest_printinvoice>
+        <reference name="sales.order.print.invoice">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>marketplace/sales/order/invoice/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_printinvoice>
+
+    <sales_guest_printshipment>
+        <reference name="sales.order.print.shipment">
+            <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>marketplace/sales/order/shipment/items/renderer/default.phtml</template></action>
+        </reference>
+    </sales_guest_printshipment>
+</layout>   
+	

@@ -1,0 +1,47 @@
+<!--@subject Welcome, {{var customer.name}}! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"htmlescape var=$customer.name":"Customer Name",
+"store url=\"customer/account/\"":"Customer Account Url"}
+@-->
+
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0" style="border:1px solid #efefef;color:#696969;font-family:Helvetica, sans-serif;" width="600px">
+    <tr>
+        <td class="action-content">
+            <h1 style="background-color:#fbba00;color:#fff;padding:10px;margin:0px 0px 10px 0px;">Dear {{htmlescape var=$customer.name}},</h1>
+			<p style="font-size:14px;margin:10px;">Thanks for signing up to keep in touch with world's first H2H e-Commerce marketplace <a href="{{store url=""}}" style="color:#2fa4fa;text-decoration:none;">Spare Parts E-Shop</a>. From now on, you'll get regular updates on sales and special offers from the house of Metacrust giving you good gain and experience.</p>
+			<p style="font-size:14px;margin:10px;">You've been added to our mailing list and will now be among the first to hear about new product arrivals, special deals and special offers.</p>
+			<p style="font-size:14px;margin:10px;">As a Special Treat, Enjoy 150 off on your first purchase online with code <span style="font-weight: 900;color: #1ca89f;font-size: 20px;">NEW150OFF</span> at checkout.</p>
+			<ul style="font-size:14px;list-style-type: square;margin:10px 0px 30px 0px;">
+                <li style="margin:5px;">FLAT 150 discount is applicable for a minimum cart value of Rs.500.</li>
+                <li style="margin:5px;">This offer is applicable only once for a customer.</li>
+            </ul>
+			
+			<p style="font-size:14px;margin:10px;">To log in when visiting our site just click <a href="{{store url="customer/account/"}}" style="color:#2fa4fa;text-decoration:none;">Login</a> or <a href="{{store url="customer/account/"}}" style="color:#2fa4fa;text-decoration:none;">Register</a> at the top of every page, and then enter your email address and password.</p>
+            <p style="margin-left:20px;">When you log in to your account, you will be able to do the following:</p>
+            <ul style="font-size:14px;list-style-type: square;margin:10px 0px 30px 0px;">
+                <li style="margin:5px;">Proceed through checkout faster when making a purchase</li>
+                <li style="margin:5px;">Check the status of orders</li>
+                <li style="margin:5px;">View past orders</li>
+                <li style="margin:5px;">Make changes to your account information</li>
+                <li style="margin:5px;">Change your password</li>
+            </ul>
+			
+            <p style="font-size:12px;font-weight:600;margin:10px;">
+                If you have any questions, please feel free to contact us at
+                <a href="mailto:{{var store_email}}" style="color:#2fa4fa;text-decoration:none;">{{var store_email}}</a>
+                {{depend store_phone}} or by phone at <a href="tel:{{var phone}}" style="color:#2fa4fa;text-decoration:none;">{{var store_phone}}</a>{{/depend}}.
+            </p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

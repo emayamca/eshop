@@ -1,0 +1,10 @@
+<?php
+	if(Mage::helper("marketplace")->getSellerIdfromLoginUser()){
+?>
+<script>
+	$("vendor_id").parentNode.parentNode.style.display="none";
+	$("marketplace_product_approve").disabled = true;
+</script>
+<?php
+	}
+?>

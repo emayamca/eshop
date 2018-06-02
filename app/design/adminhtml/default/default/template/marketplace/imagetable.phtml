@@ -1,0 +1,86 @@
+<script type="text/javascript">
+	function delete_image()
+	{
+		var inputs = document.getElementsByTagName("input"); 
+		var cbs = []; 
+		var checked = []; 
+		for (var i = 0; i < inputs.length; i++) {
+  		if (inputs[i].type == "checkbox") {
+    		cbs.push(inputs[i]);
+    	if (inputs[i].checked) {
+      		checked.push(inputs[i].value);
+    	}
+  	}
+	}
+	var nbCbs = cbs.length; 
+	var nbChecked = checked.length;
+	var url = '<?php echo Mage::helper("adminhtml")->getUrl('/adminhtml_imageupload/deleteimage/') ?>' + 'image' + '/' + checked.join();
+	if(checked.length>0)
+	{
+		window.location.assign(url);
+	}
+	}
+	function CheckAll(chk)
+	{
+		if(!chk.length)
+		{
+			document.getElementById("delete_checkbox").checked=true;
+		}
+		else{
+		for (i = 0; i < chk.length; i++)
+			chk[i].checked = true ;
+		}
+	}
+	function UnCheckAll(chk){
+
+		if(!chk.length)
+		{
+			document.getElementById("delete_checkbox").checked=false;
+		}
+		else{
+		for (i = 0; i < chk.length; i++)
+			chk[i].checked = false ;
+		}
+	}
+</script>
+<form id="frm1"> 
+<div>
+	<?php
+	$file = $this->getImages();
+	$count = count($file);
+		$storeurl = $this->getStoreurl();
+		if($storeurl==''){$storeurl='storeurl';}
+	?>
+		<div style="border:1px solid #cccccc;display:inline-block;width:100%">
+			<div style="margin:0px 20px; ">
+				<h3><?php echo $this->__('Images');?></h3>
+				<?php if($count>0){ ?>
+				<div><?php echo $this->__('Total %s Items',$count)?> </div>
+				<?php } ?>
+				<div><?php echo $this->__('Steps to Import Image with csv file : ')?> </div>
+				<div>
+					<li><?php echo $this->__('Choose images(s) using above button');?></li>
+					<li><?php echo $this->__('Click Save button');?></li>
+					<li><?php echo $this->__('You will find uploaded image list here')?></li>
+					<li><?php echo $this->__('Use column header "image" with value "/%s/filename.jpg" in product CSV file while importing.',$storeurl);?></li> 
+				</div>
+			</div>
+			<?php if($count>0){ ?>
+			<div style="margin-top:5px;margin-left:5px;">
+			<a href="javascript:void(0);" onClick="CheckAll(document.getElementsByClassName('delete_checkbox'));" id="selectall"  style="margin-bottom:20px;margin-top:10px;"><span>Check All</span></a> 
+
+			<a href="javascript:void(0);" onClick="UnCheckAll(document.getElementsByClassName('delete_checkbox'));"  id="unselect" style="margin-bottom:20px;margin-top:10px;margin-left:5px;"><span>Uncheck All</span></a> 
+
+			<a  href="javascript:void(0);" id="delete" onclick="delete_image();" style="margin-bottom:20px;margin-top:10px;margin-left:5px;"><span>Delete Selected images</span></a> 
+			</div>
+			<?php foreach($file as $key=>$item){ ?>
+				<div style="margin:10px;">  
+					<div>
+					<input type="checkbox" class="delete_checkbox" value="<?php echo basename($item); ?>">
+					<?php echo ($key+1).'. '.basename($item);?></div>
+				</div>	
+			<?php } ?>
+			<?php } ?>
+		</div>
+</div>
+</form>

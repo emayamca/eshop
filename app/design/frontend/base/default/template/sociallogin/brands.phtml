@@ -1,0 +1,278 @@
+<?php
+/**
+ * Business Fuel - Brands
+ *
+ * This file is used to display Deal products
+ */
+?>
+<?php  echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php
+/*
+ * Brands Collections
+ */
+$productCollection = $this->getLoadedProductCollection();
+$helper = $this->helper('catalog/output');
+$coreHelper = $this->helper('core');
+?>
+<?php
+/**
+ * VARIABLES FOR CURRENT DATE AND DATE OF $ PREVIOUS DAYS USED FOR PRODUCT RIBBON
+ */
+$todTime = Mage::getModel('core/date')->timestamp(time());
+$now = date('Y-m-d' . ' 00:00:00', $todTime);
+$startArrival = Mage::getModel('core/date')->timestamp(date('Y-m-d' . ' 00:00:00', strtotime("-4 Days")));
+$newArrivalDate = date('Y-m-d' . ' 00:00:00', $startArrival);
+$value = $this->getRequest()->getParam('value');
+$mode = $this->getRequest()->getParam('mode');
+?>
+    <?php if (!$productCollection->count()): ?>
+        <div class="category-products">
+            <?php echo $this->getToolbarHtml() ?>
+            <div class="app_dealz_nav">
+            </div>
+            <p class="note-msg">
+               <?php echo $this->__('Currently no deals available.') ?>
+            </p>
+        </div>
+                    <?php else: ?>
+        <div class="category-products deal-products">
+            <?php echo $this->getToolbarHtml() ?>
+
+            <?php 
+           /**
+             * List mode  
+             */
+            if ($this->getMode() != 'grid'):
+            ?>
+                                <?php $iterator = 0; ?>
+                <ol class="products-list" id="products-list">
+            <?php foreach ($productCollection as $_product): ?>
+                                            <?php $toDate = $_product->getSpecialTODate(); ?>
+                        <li class="item<?php if (++$iterator == sizeof($productCollection)): ?> last<?php endif; ?>">
+                <?php 
+               /**
+                 *  Product Image 
+                 */ ?> 
+                        <a href="<?php echo $_product->getProductUrl() ?>"
+                           title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>"
+                            class="product-image">
+                            <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>"
+                                alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                        </a>
+                        <div class="product-shop">
+                            <div class="f-fix">
+                                <div class="productshop-list-left">
+                                    <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                                    <h2 class="product-name">
+                                        <a href="<?php echo $_product->getProductUrl() ?>"
+                                           title="<?php echo $_productNameStripped; ?>"><?php echo $helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                                        </a>
+                                    </h2>
+                                </div>
+                            <div class="clear"></div>
+                           <?php 
+                            /**
+                             * Display of price details
+                             */
+                            ?>
+                            <div class="product-details">
+                            <?php 
+                                $originalPrice = $_product->getPrice(); 
+                                $discountPrice = $_product->getSpecialPrice(); 
+                                $savings = $originalPrice - $discountPrice; 
+                                $savingsPercentage = round(($savings / $originalPrice) * 100, 0);
+                            ?>
+                            <?php if($_product->getPrice() > $_product->getSpecialPrice()){ ?>
+                            
+                                <span class="original_price"> 
+                                    <?php echo $coreHelper->currency($_product->getPrice(), true, false); ?>
+                                </span>
+                                <span class="offer_price"> 
+                                    <?php echo $coreHelper->currency($_product->getSpecialPrice(), true, false); ?>
+                                </span>
+                                <span class="discount_label">
+                                     <?php echo $this->__('Discount: ') ?> 
+                                </span> 
+                                <span class="discount_price" <?php echo $this->getIdSuffix() ?>>
+                                      <?php echo $savingsPercentage, '%';                                  
+                                      ?>                                   
+                                </span>
+                                                                  
+                                <?php }else{ ?>
+                                <span> 
+                                    <?php echo $coreHelper->currency($_product->getPrice(), true, false); ?>
+                                </span> 
+                                <?php } ?>
+                            </div>
+                        <?php
+                        /**
+                         *  Display the saving amount here
+                         */
+                        $savingsDollarValue = ($_product->getPrice() - $_product->getSpecialPrice());
+                        //get orginal price
+                        $originalPrice = $_product->getPrice();
+                        //get the discount amount
+                        $discountPrice = $_product->getSpecialPrice();
+                        //get the saving amount from orginal price - discount price
+                        $savings = $originalPrice - $discountPrice;
+                        //get discount Percentage
+                        $savingsPercentage = round(($savings / $originalPrice) * 100, 0);
+                        $productType = $_product->getTypeID();
+                        ?>
+                      <div class="productshop-list-right"> 
+                        
+                  <div class="desc std">
+                            <?php echo $helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                        <a href="<?php echo $_product->getProductUrl() ?>"
+                                           title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?>
+                                        </a>
+                                    </div> 
+                <?php if ($_product->isSaleable()): 
+                        $product = Mage::getModel('catalog/product')->load($_product->getId());
+                        $productType = $product->getTypeId();
+                        if($productType == "downloadable" || $productType == "configurable" || $product->getData('has_options')){ ?>
+                             <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" 
+                        onclick="setPLocation('<?php echo $product->getProductUrl() ?>', true)">
+                        <span><span><?php
+                         echo $this->__('Add to Cart') ?></span></span></button></p>
+                        <?php }else{?>
+                                        <p>
+                                            <button type="button"
+                                                    title="<?php echo $this->__('Add to Cart') ?>"
+                                                    class="button btn-cart"
+                                                    onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+                                                <span><span><?php echo $this->__('Add to Cart') ?> </span> </span>
+                                            </button>
+                                        </p>
+                            <?php } else: ?>
+                                        <p class="availability out-of-stock">
+                                            <span><?php echo $this->__('Out of stock') ?> </span>
+                                        </p>
+                            <?php endif; ?>
+                                    </div>                                                                       
+                                </div>
+                            </div>
+                        </li>
+                                <?php endforeach; ?>
+                </ol>
+                <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+        <?php else: 
+           /**
+             *  Grid Mode
+             */ ?>
+            <?php $collectionSize = $productCollection->count() ?>
+            <?php $columnCount = 4; ?>
+            <?php
+            $i = 0;
+            foreach ($productCollection as $item):
+                ?>
+                <?php $toDate = $item->getSpecialTODate(); ?>
+                <?php if ($i++ % $columnCount == 0): ?>
+                        <ul class="products-grid columns4">
+                                <?php endif ?>
+                        <li
+                            class="slider item<?php if (($i - 1) % $columnCount == 0): ?> first<?php elseif ($i % $columnCount == 0): ?> last<?php endif; ?>">
+                      <?php
+                    $originalPrice = $item->getPrice(); 
+                    $discountPrice = $item->getSpecialPrice(); 
+                    $savings = $originalPrice - $discountPrice; 
+                    $savingsPercentage = round(($savings / $originalPrice) * 100, 0);
+                    for ($increment = 0; $increment < 1; $increment++) { ?>                       
+                          <div class="product_image_div">
+                          <?php 
+                          /**
+                           * Display product image
+                           */
+                          ?>
+                            <a class="product-image" href="<?php echo $item->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($item, 'small_image'), null, true) ?>">
+                               <?php $_imgSize = 260; ?>
+                                    <img src="<?php echo $this->helper('catalog/image')->init($item, 'small_image')->resize($_imgSize); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($item, 'small_image'), null, true) ?>" />
+                            </a>
+                             <h3 class="product-name">
+                                <a href="<?php echo $item->getProductUrl(); ?>" title="<?php echo $item->getName(); ?>">
+                                   <?php echo $item->getName(); ?>
+                                </a>
+                            </h3>
+                        <?php 
+                            /**
+                             * Display of price details
+                             */
+                            ?>
+                            <div class="product-details">
+                            
+                            <?php if($item->getPrice() > $item->getSpecialPrice()){ ?>
+                            
+                                <span class="original_price"> 
+                                    <?php echo $coreHelper->currency($item->getPrice(), true, false); ?>
+                                </span>
+                                <span class="offer_price"> 
+                                    <?php echo $coreHelper->currency($item->getSpecialPrice(), true, false); ?>
+                                </span>
+                                <span class="discount_label">
+                                     <?php echo $this->__('Discount: ') ?> 
+                                </span> 
+                                <span class="discount_price" <?php echo $this->getIdSuffix() ?>>
+                                      <?php echo $savingsPercentage, '%';                                  
+                                      ?>                                   
+                                </span>
+                                                                  
+                                <?php }else{ ?>
+                                <span> 
+                                    <?php echo $coreHelper->currency($item->getPrice(), true, false); ?>
+                                </span> 
+                                <?php } ?>
+                            </div>
+                     <?php
+                    /**
+                     *  Display the saving amount here
+                     */
+                    $savingsDollarValue = ($item->getPrice() - $item->getSpecialPrice());
+                    //get orginal price
+                    $originalPrice = $item->getPrice(); 
+                    //get the discount amount
+                    $discountPrice = $item->getSpecialPrice();
+                    //get the saving amount from orginal price - discount price
+                    $savings = $originalPrice - $discountPrice;
+                    //get discount Percentage
+                    $savingsPercentage = round(($savings / $originalPrice) * 100, 0);
+                    $productType = $item->getTypeID();
+                    ?>
+                      <div class="productshop-list-right"> 
+                        <div class="actions">
+                            <?php if($item->isSaleable()):
+                          $product = Mage::getModel('catalog/product')->load($item->getId()); 
+
+                        $productType = $product->getTypeId();
+                        if($productType == "downloadable" || $productType == "configurable" || $product->getData('has_options')){ ?>
+                             <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" 
+                        onclick="setPLocation('<?php echo $product->getProductUrl() ?>', true)">
+                        <span><span><?php
+                         echo $this->__('Add to Cart') ?></span></span></button></p>
+                        <?php }else{
+                          
+                          ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart animated fadeIn" onclick="setLocation('<?php echo Mage::helper('checkout/cart')->getAddUrl($item) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php }else: ?>
+                        <p class="availability out-of-stock animated fadeIn"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                       <a class="button-action"><span class="plus"></span></a>
+                    </div>
+                    <?php 
+                    /**
+                     * Check product is set as new or not
+                     */
+                    ?>
+                </div>
+                    <?php } ?>
+                        </li>
+                <?php if ($i % $columnCount == 0 || $i == $collectionSize): ?>
+                        </ul>
+                <?php endif ?>
+            <?php endforeach ?>
+                <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd', 'even', 'first', 'last'])</script>
+        <?php endif; ?>
+            <div>
+            </div>
+        </div>
+    <?php endif; ?>

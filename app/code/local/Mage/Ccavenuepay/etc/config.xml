@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Elias Interactive
+ *
+ * @category   Mage
+ * @package    Mage_Local
+ * @author	   Lee Taylor / Elias Interactive -> lee@eliasinteractive.com
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+
+<config>
+    <global>
+        <models>
+            <ccavenuepay>
+                <class>Mage_Ccavenuepay_Model</class>
+            </ccavenuepay>
+        </models>		 
+    </global>
+    <frontend>        
+        <routers>
+            <ccavenuepay>
+                <use>standard</use>
+                <args>
+                    <module>Mage_Ccavenuepay</module>
+                    <frontName>ccavenuepay</frontName>
+                </args>
+            </ccavenuepay>
+        </routers>
+		<translate>
+            <modules>
+                <Mage_Ccavenuepay>
+                    <files>
+                        <default>Mage_Ccavenuepay.csv</default>
+                    </files>
+                </Mage_Ccavenuepay>
+            </modules>
+        </translate> 
+		<layout>
+            <updates>
+                <ccavenuepay>
+                    <file>ccavenuepay.xml</file>
+                </ccavenuepay>
+            </updates>
+        </layout>
+    </frontend>
+	<adminhtml>
+       <events>
+			 <admin_system_config_changed_section_web>
+                <observers>
+                    <ccavenuepay_init_system_config>
+                        <class>ccavenuepay/observer</class>
+                        <method>getUpdateBzCustomerModule</method>
+                    </ccavenuepay_init_system_config>
+                </observers>
+            </admin_system_config_changed_section_web>
+            <admin_system_config_changed_section_payment>
+                <observers>
+                    <ccavenuepay_init_system_config>
+                        <class>ccavenuepay/observer</class>
+                        <method>getUpdateBzCustomerModule</method>
+                    </ccavenuepay_init_system_config>
+                </observers>
+            </admin_system_config_changed_section_payment>
+        </events>
+		<layout>
+            <updates>
+                <ccavenuepay>
+                    <file>ccavenuepay.xml</file>
+                </ccavenuepay>
+            </updates>
+        </layout>
+	</adminhtml>
+    <default>
+        <payment>
+            <ccavenuepay>
+                <active>1</active>
+                <model>ccavenuepay/method_ccavenuepay</model>
+                <order_status>1</order_status>
+				<payment_success_status>2</payment_success_status>
+                <title>Ccavenue MCPG Payment</title>
+				<allowspecific>0</allowspecific>
+            </ccavenuepay>
+         </payment>
+    </default>
+</config>

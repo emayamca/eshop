@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config>
+      <modules>
+        <Apptha_Autosuggestion>
+          <version>0.1.0</version>
+        </Apptha_Autosuggestion>
+      </modules>
+    <frontend>
+       
+    
+      <routers>
+        <autosuggestion>
+          <use>standard</use>
+         <args>
+           <module>Apptha_Autosuggestion</module>
+           <frontName>autosuggestion</frontName>
+         </args>
+        </autosuggestion>
+      </routers>
+	  <layout>
+          <updates>
+              <autosuggestion>
+                  <file>autosuggestion.xml</file>
+              </autosuggestion>
+          </updates>
+      </layout>
+    </frontend>
+   <global>   
+  		 <blocks>
+             <autosuggestion>
+             	<class>Apptha_Autosuggestion_Block</class>
+             	<core>
+                  <rewrite>
+                      <template>Mage_CatalogSearch_Block</template>
+                  </rewrite>
+             	</core>
+             </autosuggestion> 
+        </blocks>
+        <helpers>
+            <autosuggestion><class>Apptha_Autosuggestion_Helper</class></autosuggestion>
+        </helpers>
+   </global>   
+</config> 

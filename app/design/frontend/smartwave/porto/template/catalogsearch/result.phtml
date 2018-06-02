@@ -1,0 +1,126 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     porto_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if($this->getResultCount()): ?>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<div class="page-title">
+    <?php if ($this->helper('rss/catalog')->getTagFeedUrl()): ?>
+        <a href="<?php echo $this->helper('rss/catalog')->getTagFeedUrl() ?>" class="nobr link-rss"><?php echo $this->__('Subscribe to Feed') ?></a>
+    <?php endif; ?>
+    <h1 style="display:none;"><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
+</div>
+    <?php if ($messages = $this->getNoteMessages()):?>
+    <p class="note-msg">
+        <?php foreach ($messages as $message):?>
+            <?php echo $message?><br />
+        <?php endforeach;?>
+    </p>
+    <?php endif; ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php else: ?>
+<div class="page-title">
+    <h1><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
+</div>
+<p class="no-prod-found-heading">
+    <?php echo ($this->getNoResultText()) ? $this->getNoResultText() : $this->__('Your search returns no results.') ?>
+    <?php if ($messages = $this->getNoteMessages()):?>
+        <?php foreach ($messages as $message):?>
+        <br /><?php echo $message?>
+        <?php endforeach;?>
+    <?php endif; ?>
+</p>
+
+<?php 
+/*Customer Information*/
+$customerSession = Mage::getSingleton('customer/session');
+if($customerSession->isLoggedIn()){ 
+	$customer = Mage::getSingleton('customer/session')->getCustomer();
+}
+?>
+<div class='no-prod-found'>
+    <div class='no-prod-found-inner'>
+      <div class='row'>
+        <div class='col-md-6'>
+            <p class='no-prod-gif-heading'><?php echo $this->__('WE CAN HELP YOU SEARCH BETTER') ?></p>
+            <img src='<?php echo $this->getSkinUrl('images/char_anim.gif'); ?>' class='no-prod-anim'>
+        </div>
+        <div class='col-md-5 col-md-offset-1'>
+            <p class='no-prod-form-heading'><?php echo $this->__('Fill Your Enquiry Below') ?></p>
+            <form action='<?php echo $this->getUrl('sociallogin/index/noproducts'); ?>' method='post' id="no-products-form-validate">
+                <textarea name="lookingfor" placeholder='Write what you are looking for' class='form-control halo-input-2 required-entry'></textarea>
+                <input type='text' value="<?php if($customerSession->isLoggedIn()){ echo $customer->getFirstname().''.$customer->getLastname(); } ?>" name='fullname' placeholder='Enter fullname' class='form-control halo-input-2 required-entry'>
+                <input type='number' value="<?php if($customerSession->isLoggedIn()){ echo $customer->getMobile(); } ?>" name='mobilenumber' placeholder='Enter mobile number' class='form-control halo-input-2 required-entry'>
+                <input type='email' value="<?php if($customerSession->isLoggedIn()){ echo $customer->getEmail(); } ?>" name="emailaddress" placeholder='Enter email' class='form-control halo-input-2 required-entry'>
+                <input type='submit' onclick="noProductsForm.submit(this)" value='Submit' class='btn btn-warning form-control no-product-btn'> 
+            </form>
+            <p class='no-prod-form-footer'><?php echo $this->__('We will get back to you soon') ?></p>
+        </div>
+      </div>
+    </div>
+</div>
+<ul class='no-prod-suggested'>
+    <li><i class='fa fa-exclamation-triangle' aria-hidden='true'> </i> <?php echo $this->__('Make sure that all words are spelled correctly.') ?></li>
+    <li><i class='fa fa-exclamation-triangle' aria-hidden='true'> </i> <?php echo $this->__('Try different keywords.') ?></li>
+    <li><i class='fa fa-exclamation-triangle' aria-hidden='true'> </i> <?php echo $this->__('Try more general keywords.') ?></li>
+</ul>
+<script type="text/javascript">
+//<![CDATA[
+	var noProductsForm = new VarienForm('no-products-form-validate', false);
+	noProductsForm.submit = function() {
+		 if (this.validator.validate()) {
+			 jQuery('.no-product-btn').attr('disabled', true);
+			 var form = this.form;
+			 noProductsSubmit(form.id, form.action);
+		 }
+	 }.bind(noProductsForm);
+//]]>
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery('.col-main').removeClass('col-sm-9');
+    jQuery('.col-main').removeClass('f-right');
+});
+
+function noProductsSubmit(formid, formaction){
+	jQuery.ajax({
+		url:formaction,
+		data: jQuery('#no-products-form-validate').serialize(),
+		crossDomain: true,
+		dataType:'json',
+		success:function(data){
+			if(data.status == 1){
+				Form.reset(formid);
+				jQuery('.no-prod-form-footer').html(data.message);
+				jQuery('.no-product-btn').attr('disabled', false);
+			} else {
+				jQuery('.no-prod-form-footer').html(data.message);
+				jQuery('.no-product-btn').attr('disabled', true);
+			}
+		}
+	});
+}
+</script>       
+<?php endif; ?>

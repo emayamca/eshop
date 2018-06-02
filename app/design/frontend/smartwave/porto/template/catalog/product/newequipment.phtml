@@ -1,0 +1,45 @@
+<?php
+$_proId  = Mage::registry('current_product')->getId();
+$_product = Mage::getModel('catalog/product')->load($_proId);
+$compatability = $_product->getcompatibility();
+$nhtml = "";
+
+/*CURL method to get New-Equipment collection*/
+$url = Mage::getStoreConfig('sociallogin/newandrent/new_equipment').'/home/eshop/';
+
+$c = curl_init();
+curl_setopt($c, CURLOPT_URL, $url);
+curl_setopt($c, CURLOPT_POST, 1);
+curl_setopt($c, CURLOPT_POSTFIELDS, "param=$compatability");
+// Return from curl_exec rather than echoing
+curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+// Return from curl_exec rather than echoing
+curl_setopt($c, CURLOPT_URL, $url);
+// Timeout super fast once connected, so it goes into async.
+curl_setopt( $c, CURLOPT_TIMEOUT, 1 );
+//CURL Execution to get return data
+$server_output = curl_exec ($c);
+//CURL Execution to get CURL response
+curl_exec( $c );
+$curlInfo = curl_getinfo($c);
+
+//Base on the response code assign HTML
+if($curlInfo['http_code'] == 200){
+  $success = "Process successfully running";
+  $nhtml = json_decode($server_output, true);
+}
+?>
+<?php if($nhtml): ?>
+<div id="brandslogos">
+<h1><?php echo $this->__("Releated New Equipment's") ?></h1>
+    <div class="filter-products">
+        <div class="products owl-carousel owl-theme" id="comp-div-ajax" style="opacity: 0;"><?php echo $nhtml; ?></div>
+    </div>
+</div>
+<?php curl_close($c); ?>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#comp-div-ajax").owlCarousel({lazyLoad: true,    itemsCustom: [ [0, 1], [320, 1], [480, 1], [768, 1], [992, 1], [1280, 1] ],    responsiveRefreshRate: 50,    slideSpeed: 200,    paginationSpeed: 500,    scrollPerPage: false,    stopOnHover: true,    rewindNav: true,    rewindSpeed: 600,    pagination: false,    navigation: true,    autoPlay: true,    navigationText:["<i class='icon-left-open'></i>","<i class='icon-right-open'></i>"]});
+});
+</script>
+<?php endif; ?>

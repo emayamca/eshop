@@ -1,0 +1,9 @@
+<config>
+	<modules>
+		<Emipro_Stocknotification>
+			<active>true</active> 
+			<codePool>community</codePool>
+			<depends><Emipro_Marketplace /></depends>
+		</Emipro_Stocknotification>
+	</modules>
+</config>

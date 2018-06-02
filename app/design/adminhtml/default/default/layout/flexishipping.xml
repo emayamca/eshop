@@ -1,0 +1,22 @@
+<layout>
+ <default>
+        <reference name="head">
+            <action method="addItem"><type>js</type><name>extjs/ext-tree.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>extjs/fix-defer.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>extjs/ext-tree-checkbox.js</name><params/></action>
+               <action method="addItem"><type>js</type><name>mage/adminhtml/rules.js</name><params/></action>
+            <action method="addItem"><type>js_css</type><name>extjs/resources/css/ext-all.css</name><params/></action>
+        </reference>
+    </default>
+<emipro_flexishipping_adminhtml_flexishipping_edit>
+<reference name="head">
+<action method="setCanLoadExtJs"><flag>1</flag></action>
+<action method="setCanLoadRulesJs"><flag>1</flag></action>
+</reference>
+
+</emipro_flexishipping_adminhtml_flexishipping_edit>
+
+
+
+
+</layout>

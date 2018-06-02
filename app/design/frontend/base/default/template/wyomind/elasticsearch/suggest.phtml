@@ -1,0 +1,15 @@
+<?php
+/**
+ * @category    Wyomind
+ * @package     Wyomind_Elasticsearch
+ * @version     4.5.0
+ * @copyright   Copyright (c) 2017 Wyomind (https://wyomind.net)
+ *
+ * @var $this Wyomind_Elasticsearch_Block_Catalogsearch_Suggest
+ */
+$suggestion = $this->getSuggestion();
+?>
+
+<?php if (!empty($suggestion)): ?>
+    <h2><em><?php echo $this->__('Did you mean %s?', '<a href="'. $this->getQueryUrl($suggestion) .'">'. $suggestion .'</a>'); ?></em></h2>
+<?php endif; ?>

@@ -1,0 +1,175 @@
+<?php
+/*
+ * //////////////////////////////////////////////////////////////////////////////////////
+ *
+ * @author Emipro Technologies
+ * @Category Emipro
+ * @package Emipro_FlexiShipping
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * //////////////////////////////////////////////////////////////////////////////////////
+ */
+?>
+
+<script>
+	function changeShip()
+{
+	
+	 document.getElementById("shipping").style.display="block";
+	 document.getElementById("ship_msg").style.display="none";
+	
+}
+
+function getShip()
+{
+	
+	var xmlhttp;
+	var baseUrl="<?php echo Mage::getBaseUrl();?>"+"flexishipping/index/?";
+	var country=document.getElementById("country").value;
+	var postcode=document.getElementById("postcode").value;
+	var id =document.getElementById("pro_id").value;
+	
+	
+	if (window.XMLHttpRequest)
+	  {
+		xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+		var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById("ship_msg").style.display="block";
+                document.getElementById("message").innerHTML = xmlhttp.responseText;
+                document.getElementById("shipping").style.display="none";
+              //  document.getElementById("c_message").style.display="	none"; 
+            }
+        }
+        xmlhttp.open("GET",baseUrl+"country="+country +"&postcode="+postcode+"&id="+id, true);
+        xmlhttp.send();
+}	
+
+
+function checkshipping(country_code,zip_code,prod_id)
+{
+	
+	var xmlhttp;
+	var baseUrl="<?php echo Mage::getBaseUrl();?>"+"flexishipping/index/?";
+	var country=country_code;
+	var postcode=zip_code;
+	var id =prod_id;
+	
+	if (window.XMLHttpRequest)
+	  {
+		xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+		var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById("ship_msg").style.display="block";
+                document.getElementById("message").innerHTML = xmlhttp.responseText;
+                document.getElementById("shipping").style.display="none";
+               // document.getElementById("c_message").style.display="	none"; 
+            }
+        }
+        xmlhttp.open("GET",baseUrl+"country="+country +"&postcode="+postcode+"&id="+id, true);
+        xmlhttp.send();
+	
+}
+
+</script>
+
+<?php
+
+$request=Mage::app()->getRequest()->getParams();
+$id=$request["id"];
+$product = Mage::getModel("catalog/product")->load($id); 
+$productType = $product->getTypeID();
+if($productType=="downloadable")
+{
+	return true;
+}
+if(isset($_COOKIE['country_code']) && isset($_COOKIE['zip_code']))
+{
+	$country=$_COOKIE['country_code'];
+	$zipcode= $_COOKIE['zip_code'];
+	
+	echo "<script> checkshipping('$country','$zipcode',$id); </script>";
+
+}
+?>
+
+
+<style>
+
+.check_availability
+{
+border:1px dashed #cccccc;
+padding:5px;
+}
+.check_availability_msg
+{
+border:1px dashed #cccccc;
+padding:5px;
+}
+.form-list1 select {
+  margin-top:4px;
+  max-width:100%;
+  width:205px;
+   border:1px solid silver;
+  display:block;
+  height:30px;
+}
+.form-list1 input {
+  margin-top:6px;
+  margin-left:15px;
+  margin-right:15px;
+  max-width:100%;
+  width:205px;
+   border:1px solid silver;
+  display:block;
+  height:30px;
+}
+</style>
+
+
+<div id="shipping" <?php if(isset($_COOKIE['country_code']) && isset($_COOKIE['zip_code'])){ echo "style='display:none'"; } else
+{echo "style='display:block'";}?> >
+<div class="check_availability">
+	
+<div class="h4" style="margin: 0px; text-transform: uppercase; font-weight: 500; color: #3399cc;">Check Shipping Availability</div>
+<ul class="form-list1"  >
+				<li style="float:left">
+				<div class="input-box">
+				<?php echo Mage::getBlockSingleton('directory/data')->getCountryHtmlSelect($this->getEstimateCountryId()) ?>
+					</div>
+					
+				</li>
+				<li style="float:left;">
+					
+					<div class="input1-box">
+					<input class="required input-text" type="text" id="postcode" name="postcode" placeholder="Zip" />
+					</div>
+				</li>
+				<li>
+					<div class="input-box">
+					 <button style="margin-top: 4px; padding: 5px 15px;" type="button" title="Check"  class="button" id="checkzip" onclick="getShip()" >
+					<span><span>Check</span></span>
+			</button>
+					</div>
+				</li>
+			</ul>
+			<input type="hidden" name="pro_id" value=<?php echo $id;?>  id="pro_id"/>
+			</div>
+					
+</div>
+		<div class="check_availability_msg" id="ship_msg" <?php if(isset($_COOKIE['country_code']) && isset($_COOKIE['zip_code'])){ echo "style='display:block'"; } else { echo "style='display:none'";} ?>>
+		<div id="message" >
+		</div>
+	</div>

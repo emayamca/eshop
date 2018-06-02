@@ -1,0 +1,66 @@
+<?php
+	$_sellerdata = $this->getsellersData();
+	if($_sellerdata){
+?>
+<div class="multiseller_table"  style="">
+	<div class="tabletitle">
+		<?php echo $this->__('Sold by other sellers');?>
+	</div>
+	<div>
+	<table border="0" style="width:100%"> 
+		<thead>
+		<tr>
+			<th><h6><?php echo $this->__('SELLERS');?></h6></th>
+			<th><h6><?php echo $this->__('RATING');?></h6></th>
+			<th><h6><?php echo $this->__('DELIVERED BY');?></h6></th>
+			<th><h6><?php echo $this->__('OFFERS');?></h6></th>
+			<th><h6><?php echo $this->__('PRICE');?></h6></th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody> 
+			<?php foreach($_sellerdata as $sellerdata){?>
+		<tr style="border-top:1px solid #CCCCCC;"> 
+			<td valign="top"><a href="<?php echo Mage::getBaseUrl().$sellerdata['storeurl'];?>"><?php echo $sellerdata['name']; ?></a><p style="font-size:10px"> <?php if($sellerdata['replacement_guarantee']){echo $this->__('%s Day Replacement Guarantee.',$sellerdata['replacement_guarantee']);}?></p><p style="font-size:10px"><?php echo $this->__('Cash on Delivery may be available.');?></td>
+			<td valign="top"><?php if($sellerdata['rating']!=''):?>
+				<div class="ratings">
+        		<div class="rating-box">
+					<div class="rating" style="width:<?php echo $sellerdata['rating']*20; ?>%"></div>            
+         		</div>
+
+			</div>
+			<?php endif;?>	
+			</td>
+			<td valign="top"><?php if($sellerdata['delivered_in']!='') echo $this->__($sellerdata['delivered_in']); ?></td>
+			<td valign="top"><ul class="em_ul_list">
+			<li>
+			<?php echo $this->__(Mage::getStoreConfig('marketplace_setting/marketplace/offers1')); ?>
+			</li>
+			<li>	
+				<?php echo $this->__(Mage::getStoreConfig('marketplace_setting/marketplace/offers2')); ?>
+			</li>
+			<li>
+				<?php echo $this->__(Mage::getStoreConfig('marketplace_setting/marketplace/offers3')); ?>
+			</li>
+			</ul>
+			</td>
+			<td valign="top"><?php echo Mage::helper('checkout')->formatPrice($sellerdata['price']); ?></td>
+			<?php $productload = Mage::getModel('catalog/product')->load($sellerdata['productid']);
+				$prod_link = Mage::getBaseUrl().$productload->getUrlPath();
+				$produrl = Mage::helper('checkout/cart')->getAddUrl($productload);
+			?>
+			<td valign="top" style="width:50px;">
+				<div>
+					<a href="<?php echo $prod_link;?>" class="button" title="View" style="width:100%;margin-top: 5px;margin-bottom:8px;"><span><span><?php echo $this->__('View'); ?></span></span></a>
+                </div>
+				<div> 
+					<a href="<?php echo $produrl;?>" class="button" style="margin-bottom:5px;" title="Add to Cart"><span><span><?php echo $this->__('Add to Cart'); ?></span></span></a>
+                </div>
+             </td>
+       </tr>
+			<?php } ?>
+		</tbody>
+	</table>
+	</div>
+</div>
+<?php } ?>

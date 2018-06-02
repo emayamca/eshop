@@ -1,0 +1,73 @@
+<?php
+    $store = Mage::app()->getStore();
+    $code  = $store->getCode();
+
+    $_helper = Mage::helper("megamenu");
+    $categories = $_helper->getFirstLevelCategories();
+    
+    $custom_styles='<style type="text/css">';
+?>
+<?php if(Mage::getStoreConfig('porto_settings/general/category_list_on_left', $code) && Mage::getStoreConfig('porto_settings/general/layout', $code) == "full_width"):?>
+<div class="onepage-cat category-list">
+    <ul>
+    <?php
+        $i = 0;
+        foreach($categories as $category) {
+            $cat_id = $category->getId();
+            $cat_model = Mage::getModel('catalog/category')->load($cat_id);
+            if($category->getIsActive() && !$cat_model->getData("sw_ocat_hide_this_item")) {
+                $icon = '<i class="icon-cat-default"></i>';
+                if($cat_icon_img=$cat_model->getData("sw_ocat_category_icon_image")) {
+                    $icon = '<img src="'.Mage::getBaseUrl('media').'catalog/category/'.$cat_icon_img.'" alt=""/>';
+                } else if($cat_font_icon=$cat_model->getData("sw_ocat_category_font_icon")){
+                    $icon = '<i class="'.$cat_font_icon.'"></i>';
+                }
+                if($hover_bg_color = $cat_model->getData("sw_ocat_category_hoverbgcolor"))
+                    $custom_styles .= '.onepage-cat.category-list > ul > li > a[data-cat="'.$cat_id.'"]:hover,.onepage-cat.category-list > ul > li > a[data-cat="'.$cat_id.'"].active{background-color:'.$hover_bg_color.';}.onepage-cat.category-list > ul > li > a[data-cat="'.$cat_id.'"]:hover:after,.onepage-cat.category-list > ul > li > a[data-cat="'.$cat_id.'"].active:after{border-left-color:'.$hover_bg_color.';}';
+                echo '<li data-index="'.$i.'"><a href="'.$category->getUrl().'" data-cat="'.$cat_id.'"><em class="onepage-category-icon">'.$icon.'</em><span>'.$category->getName().'</span></a></li>';
+                $i++;
+            }
+        }
+    ?>
+    </ul>
+    <?php
+        $custom_styles .= '</style>';
+        echo $custom_styles;
+    ?>
+</div>
+<script type="text/javascript">
+jQuery(function($){
+    $(document).ready(function(){
+        $(".main-container").prepend($(".onepage-cat.category-list").detach());
+        $(".main-container").addClass("onepage-category");
+        $(".onepage-cat.category-list > ul > li > a").each(function(){
+            var href = $(this).attr("href");
+            if(href.indexOf(window.location.pathname) > -1)
+                $(this).addClass("active");
+        });
+        $(window).scroll(function(){
+            if($(".onepage-cat.category-list > ul").outerHeight() < $(this).innerHeight()) {
+                $(".onepage-cat.category-list > ul").removeClass("fixed-bottom");
+                if($(this).scrollTop() >= $(".onepage-cat.category-list").offset().top + 46) {
+                    $(".onepage-cat.category-list > ul").addClass("fixed-top");
+                } else {
+                    $(".onepage-cat.category-list > ul").removeClass("fixed-top");
+                }
+            } else {
+                $(".onepage-cat.category-list > ul").removeClass("fixed-top");
+                if($(this).scrollTop() >= $(".onepage-cat.category-list").offset().top + $(".onepage-cat.category-list > ul").height() + 46 - $(this).innerHeight()) {
+                    $(".onepage-cat.category-list > ul").addClass("fixed-bottom");
+                } else {
+                    $(".onepage-cat.category-list > ul").removeClass("fixed-bottom");
+                }
+            }
+            if(($(".onepage-cat.category-list > ul").hasClass("fixed-bottom") && ($(this).scrollTop() + $(window).innerHeight() >= $(".footer-container").offset().top)) || ($(".onepage-cat.category-list > ul").hasClass("fixed-top") && ($(this).scrollTop() + $(window).innerHeight() >= $(".footer-container").offset().top) && ($(".onepage-cat.category-list > ul").offset().top + $(".onepage-cat.category-list > ul").outerHeight() >= $(".footer-container").offset().top) && ($(this).scrollTop() + $(".onepage-cat.category-list > ul").outerHeight() + 70 >= $(".footer-container").offset().top))) {
+                $(".onepage-cat.category-list > ul").addClass("absolute-bottom");
+            } else {
+                $(".onepage-cat.category-list > ul").removeClass("absolute-bottom");
+            }
+        });
+    });
+});
+</script>
+<?php endif; ?>
